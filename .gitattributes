@@ -1,0 +1,9 @@
+# All text files use LF on every platform — Windows/macOS/Linux parity from
+# commit one. Do not add per-OS exceptions; tooling must cope with LF.
+* text=auto eol=lf
+
+# Binary assets are never normalized.
+*.png binary
+*.jpg binary
+*.gif binary
+*.zip binary

@@ -1,0 +1,18 @@
+# CODEOWNERS — sdd-standard
+#
+# Code owners for this repository are the standard owner — the repo
+# maintainer(s). The role is defined in standard/SDD-STANDARD.md §13; an
+# adopting organization designates its own standard owner and binds real
+# team handles here when it hosts the standard.
+#
+# On hosting plans without required-review enforcement, CODEOWNERS is
+# documentation only (see the README "Hosting note"). Where enforcement is
+# available: create the team, uncomment, and enable required review:
+#
+# *  @your-org/standard-owner
+#
+# Each stack profile is owned by the team closest to that stack, with one
+# reviewer from outside the owning team to prevent profile capture
+# (SDD-STANDARD §7.4). The owning team is named when adoption creates one:
+#
+# /standard/profiles/backend-services/  @your-org/backend-platform

@@ -1,0 +1,32 @@
+schema_version: "1.0"
+
+extension:
+  id: sdd
+  name: "SDD Review Phase"
+  version: "0.1.0"
+  description: "The SDD review phase: checks the implementation against the approved spec/plan/tasks and prepares review notes for the human Review-gate approver; never writes Status lines"
+  category: "process"
+  effect: "read-write"
+  author: "sdd-standard maintainers"
+  repository: "https://example.com/sdd-standard"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.12.3,<0.13.0"
+
+provides:
+  commands:
+    - name: speckit.sdd.review
+      file: commands/review.md
+      description: "Prepare review notes comparing the implementation with the approved spec, plan, and tasks; the human Review approver decides"
+
+hooks:
+  after_implement:
+    command: speckit.sdd.review
+    optional: false
+    description: "The review phase runs after implementation completes, before the item is marked done (SDD-STANDARD §3.1)"
+
+tags:
+  - "sdd"
+  - "review"
+  - "process"

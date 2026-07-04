@@ -1,0 +1,33 @@
+# Repo checks
+#
+# Every push and PR, one Linux job — the merge gate on main. The converter
+# round-trip runs here too, keeping the exit a tested capability.
+# Where the hosting plan cannot mark checks "required", a red run is
+# treated as a merge blocker by convention (README "Hosting note") —
+# recorded honestly, enforced by review.
+
+name: checks
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Spec structure self-check
+        run: uv run ci/check_spec_structure.py --self
+
+      - name: Migration round-trip — the exit stays tested (SDD-STANDARD §9.4)
+        run: uv run migration/convert.py --round-trip examples/sample-feature

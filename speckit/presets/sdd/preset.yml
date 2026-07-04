@@ -1,0 +1,51 @@
+schema_version: "1.0"
+
+preset:
+  id: "sdd"
+  name: "SDD Standard"
+  version: "0.1.0"
+  description: "The SDD convention over stock Spec Kit: Requirements/Design/Tasks vocabulary, EARS with stable R-ids, human approval gates, profile contract slots"
+  author: "sdd-standard maintainers"
+  repository: "https://example.com/sdd-standard"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.12.3,<0.13.0"
+
+# Template overrides only — no command or script overrides: touch only
+# supported upstream override points; that is what keeps pin-forwards cheap.
+provides:
+  templates:
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Shared constitution: the non-negotiable principles every adopting repo inherits"
+      replaces: "constitution-template"
+
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "Requirements Document: EARS requirements with stable R-ids, human requirements gate"
+      replaces: "spec-template"
+
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Design Document: architecture plus the two contract sections a stack profile fills"
+      replaces: "plan-template"
+
+    # Full replace, not an append addendum: at
+    # v0.12.4 the scaffolded workflow scripts resolve templates by path
+    # convention (common.sh resolve_template / common.ps1 Resolve-Template)
+    # and never apply composition strategies, so an append-strategy file
+    # named anything other than tasks-template.md is invisible to the agent
+    # workflow. Template replace is a supported override point.
+    - type: "template"
+      name: "tasks-template"
+      file: "templates/tasks-template.md"
+      description: "Task List: every task carries [R-n] traceability, human tasks gate"
+      replaces: "tasks-template"
+
+tags:
+  - "sdd"
+  - "convention"

@@ -1,0 +1,225 @@
+# Tri-OS verification matrix
+#
+# The full consumption flow on every OS × script-variant cell: bootstrap a
+# temp repo through bootstrap/init.py (pinned Spec Kit + SDD preset +
+# review extension from this checkout), exercise all five scaffolded
+# workflow scripts asserting template provenance through the preset
+# resolution stack, then run both ci/ checks inside the bootstrapped repo —
+# including a negative probe that the structure gate goes red on a skipped
+# approval. The full grid (fail-fast: false) is the evidence for the
+# scaffold variant decision (SDD-STANDARD §10); it is not a
+# normal red/green gate.
+
+name: verify-tri-os
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1" # weekly heartbeat against upstream/runner drift
+  pull_request:
+    paths:
+      - "bootstrap/**"
+      - "speckit/**"
+      - "ci/**"
+      - "migration/**"
+      - ".github/workflows/verify-tri-os.yml"
+
+concurrency:
+  group: verify-tri-os-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  matrix:
+    name: ${{ matrix.os }} / ${{ matrix.script }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15 # caps macOS minute burn on a hang
+    strategy:
+      fail-fast: false # the variant decision needs every cell's result
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        script: [sh, ps]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Read pinned Spec Kit version
+        shell: bash
+        run: echo "SPECKIT_PIN=$(tr -d ' \r\n' < speckit/PINNED-VERSION)" >> "$GITHUB_ENV"
+
+      - name: Bootstrap target repo (full consumption flow)
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run bootstrap/init.py target \
+            --integration generic \
+            --integration-options "--commands-dir .agent/commands" \
+            --profile backend-services \
+            --script "${{ matrix.script }}" \
+            --ignore-agent-tools
+          cd target
+          git init -b main .
+          git config user.email "ci@verify.invalid"
+          git config user.name "verify-tri-os"
+          git add -A
+          git commit -q -m "bootstrap (${{ matrix.os }}/${{ matrix.script }})"
+          echo "--- scaffolded scripts ---"
+          ls -R .specify/scripts/
+
+      - name: Exercise scaffolded scripts (sh)
+        if: matrix.script == 'sh'
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          S=.specify/scripts/bash
+
+          run_json () { # name, cmd...
+            local name=$1; shift
+            echo "::group::$name"
+            local out
+            out=$("$@")
+            echo "$out"
+            echo "$out" | jq -e 'type=="object"' > /dev/null
+            echo "::endgroup::"
+            LAST_JSON=$out
+          }
+
+          run_json create-new-feature bash $S/create-new-feature.sh --json --short-name matrix-check "verify tri-os matrix feature"
+          # preset provenance: the scaffolded spec must be the SDD preset template
+          grep -q '^# Requirements —' "$(echo "$LAST_JSON" | jq -r '.SPEC_FILE')" \
+            || { echo "::error::spec.md did not come from the SDD preset"; exit 1; }
+          run_json setup-plan          bash $S/setup-plan.sh --json
+          grep -q '^# Design —' "$(echo "$LAST_JSON" | jq -r '.IMPL_PLAN')" \
+            || { echo "::error::plan.md did not come from the SDD preset"; exit 1; }
+
+          # negative probe: plan.md exists while spec.md is DRAFT — the
+          # structure gate must go red on a skipped approval
+          if uv run ../ci/check_spec_structure.py --repo . > probe.log 2>&1; then
+            cat probe.log
+            echo "::error::structure check passed on an unapproved gate order"
+            exit 1
+          fi
+          rm -f probe.log
+          echo "negative probe OK: structure check rejects a skipped requirements gate"
+
+          # play the human approvers' role (CI fixture; this leg exercises
+          # the plain-hyphen separator accepted by SDD-STANDARD §3.2)
+          TODAY=$(date +%F)
+          SPEC_PATH=$(echo "$LAST_JSON" | jq -r '.FEATURE_SPEC')
+          PLAN_PATH=$(echo "$LAST_JSON" | jq -r '.IMPL_PLAN')
+          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$SPEC_PATH" && rm -f "$SPEC_PATH.bak"
+          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$PLAN_PATH" && rm -f "$PLAN_PATH.bak"
+
+          run_json check-prerequisites bash $S/check-prerequisites.sh --json
+          echo "$LAST_JSON" | jq -e '.FEATURE_DIR and (.AVAILABLE_DOCS | type=="array")' > /dev/null
+          run_json setup-tasks         bash $S/setup-tasks.sh --json
+          echo "$LAST_JSON" | jq -r '.TASKS_TEMPLATE' | grep -q 'presets/sdd' \
+            || { echo "::error::tasks-template did not resolve through the SDD preset"; exit 1; }
+          # play the agent's role: /speckit.tasks materializes tasks.md from the template
+          TASKS_PATH="$(echo "$LAST_JSON" | jq -r '.FEATURE_DIR')/tasks.md"
+          cp "$(echo "$LAST_JSON" | jq -r '.TASKS_TEMPLATE')" "$TASKS_PATH"
+          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$TASKS_PATH" && rm -f "$TASKS_PATH.bak"
+          run_json check-prereq-tasks  bash $S/check-prerequisites.sh --json --require-tasks --include-tasks
+          echo "sh variant: all scripts OK on ${{ matrix.os }} (SDD preset resolved)"
+
+      - name: Exercise scaffolded scripts (ps)
+        if: matrix.script == 'ps'
+        shell: pwsh
+        working-directory: target
+        run: |
+          $ErrorActionPreference = "Stop"
+          $S = ".specify/scripts/powershell"
+
+          function Run-Json([string]$Name, [scriptblock]$Cmd) {
+            Write-Host "::group::$Name"
+            # invoking a .ps1 via & does not reset $LASTEXITCODE; without this,
+            # the exit-code guard below reads stale state from earlier native
+            # commands (e.g. the deliberately-failing negative probe)
+            $global:LASTEXITCODE = 0
+            $raw = (& $Cmd | Out-String).Trim()
+            Write-Host $raw
+            $obj = $raw | ConvertFrom-Json
+            if ($null -eq $obj) { throw "$Name produced no JSON" }
+            Write-Host "::endgroup::"
+            $script:LastJson = $obj
+            if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "$Name exited $LASTEXITCODE" }
+          }
+
+          function Approve-Artifact([string]$Path) {
+            # CI fixture playing the human approver; this leg exercises the
+            # em-dash separator accepted by SDD-STANDARD §3.2
+            $today = Get-Date -Format 'yyyy-MM-dd'
+            $text = Get-Content $Path -Raw
+            $text = $text -replace '\*\*Status: DRAFT\*\*', "**Status: APPROVED — matrix-approver, $today**"
+            Set-Content -Path $Path -Value $text -NoNewline
+          }
+
+          Run-Json "create-new-feature" { & "$S/create-new-feature.ps1" -Json -ShortName matrix-check "verify tri-os matrix feature" }
+          # preset provenance: the scaffolded spec must be the SDD preset template
+          if ((Get-Content $script:LastJson.SPEC_FILE -TotalCount 1) -notmatch '^# Requirements —') {
+            throw "spec.md did not come from the SDD preset"
+          }
+          Run-Json "setup-plan"          { & "$S/setup-plan.ps1" -Json }
+          if ((Get-Content $script:LastJson.IMPL_PLAN -TotalCount 1) -notmatch '^# Design —') {
+            throw "plan.md did not come from the SDD preset"
+          }
+
+          # negative probe: plan.md exists while spec.md is DRAFT — the
+          # structure gate must go red on a skipped approval
+          uv run ../ci/check_spec_structure.py --repo . 2>&1 | Out-File probe.log
+          if ($LASTEXITCODE -eq 0) {
+            Get-Content probe.log
+            throw "structure check passed on an unapproved gate order"
+          }
+          Remove-Item probe.log
+          Write-Host "negative probe OK: structure check rejects a skipped requirements gate"
+
+          Approve-Artifact $script:LastJson.FEATURE_SPEC
+          Approve-Artifact $script:LastJson.IMPL_PLAN
+
+          Run-Json "check-prerequisites" { & "$S/check-prerequisites.ps1" -Json }
+          if (-not $script:LastJson.FEATURE_DIR) { throw "check-prerequisites: FEATURE_DIR missing" }
+          Run-Json "setup-tasks"         { & "$S/setup-tasks.ps1" -Json }
+          if ($script:LastJson.TASKS_TEMPLATE -notmatch 'presets[\\/]sdd') {
+            throw "tasks-template did not resolve through the SDD preset"
+          }
+          # play the agent's role: /speckit.tasks materializes tasks.md from the template
+          $tasksPath = Join-Path $script:LastJson.FEATURE_DIR "tasks.md"
+          Copy-Item $script:LastJson.TASKS_TEMPLATE $tasksPath
+          Approve-Artifact $tasksPath
+          Run-Json "check-prereq-tasks"  { & "$S/check-prerequisites.ps1" -Json -RequireTasks -IncludeTasks }
+          Write-Host "ps variant: all scripts OK on ${{ matrix.os }} (SDD preset resolved)"
+
+      - name: Convention checks inside the bootstrapped repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run ci/check_spec_structure.py --repo target
+          uv run ci/check_convention_version.py --repo target --standard .
+          # bootstrap wrote the marker and seeded the shared constitution
+          jq -e --arg v "${{ matrix.script }}" --arg pin "$SPECKIT_PIN" \
+            '.profile=="backend-services" and .variant==$v and .speckit_pin==$pin' \
+            target/.specify/sdd.json > /dev/null \
+            || { echo "::error::sdd.json does not record the bootstrap inputs"; exit 1; }
+          grep -q 'Shared principles' target/.specify/memory/constitution.md \
+            || { echo "::error::shared constitution was not seeded"; exit 1; }
+          grep -q 'backend-services' target/.specify/memory/constitution.md \
+            || { echo "::error::profile section missing from the constitution"; exit 1; }
+          echo "convention checks OK inside the bootstrapped repo"
+
+      - name: Migration round-trip (tri-OS coverage, SDD-STANDARD §9.4)
+        shell: bash
+        run: uv run migration/convert.py --round-trip examples/sample-feature
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-${{ matrix.os }}-${{ matrix.script }}
+          path: |
+            target/specs/
+            target/.specify/feature.json
+            target/.specify/sdd.json
+          if-no-files-found: warn
