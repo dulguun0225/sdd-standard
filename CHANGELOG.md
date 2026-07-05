@@ -18,8 +18,9 @@ in `DECISIONS.md`.
 ### Added
 
 - `standard/SDD-STANDARD.md` 0.1.0-draft — the normative standard:
-  vocabulary/artifacts, gates & approver roles, EARS/R-id rules,
-  traceability & drift, size threshold (⚠ 3 SP), profile MAY/MAY-NOT,
+  vocabulary/artifacts, gates & approver roles, EARS/R-id rules (with the
+  §4.1 structured fallback, D-15),
+  traceability & drift, qualifying-item triggers (⚠, D-16), profile MAY/MAY-NOT,
   compliance checks, current-implementation clauses, the scaffold-variant
   binding record (§10), working language, data classification, and the
   standard-owner role definition (§13). With `standard/GLOSSARY.md`
@@ -43,7 +44,9 @@ in `DECISIONS.md`.
 - CI gates: `ci/check_spec_structure.py` (`--self`/`--repo` — Status lines
   with `—` or `-` accepted, gate order, R-id uniqueness, `[R-n]` validity,
   kebab-case filenames, LF endings) and `ci/check_convention_version.py`
-  (convention currency vs an sdd-standard checkout, remediation on
+  (convention currency vs an sdd-standard checkout, plus the seeded
+  constitution's shared-principles block diffed against the pinned
+  template — §2.4 machine-checked, D-17 — remediation on
   mismatch). Workflows: `checks.yml` (structure check + converter
   round-trip on every push/PR) and `verify-tri-os.yml` (full consumption
   flow on all 6 {ubuntu, windows, macos} × {sh, ps} cells, including a
@@ -101,3 +104,25 @@ below.
   pre-built. Exit trigger 5 covers upstream retiring or breaking the
   supported override points. Operative wording in `migration/PLAYBOOK.md`
   §1; rationale in the D-14 note.
+- **EARS is the requirements notation** (D-15): §4.1 binds one testable
+  behavior + a stable R-id, phrased in EARS, with a narrow
+  structured-fallback escape hatch (mathematical content, >3
+  preconditions). Rejected: stock Spec Kit user stories + Given/When/Then,
+  Gherkin-as-primary, plain ISO-29148 shall statements, Planguage, FRET.
+  Evidence, the recorded evidence gap on LLM codegen, and revisit triggers
+  in the D-15 note.
+- **Qualifying work items are defined by property triggers, not estimated
+  size** (D-16, ⚠ starting default): spec ceremony binds WHEN a change
+  creates or alters externally observable behavior or a contract, crosses a
+  repo/service/team boundary, contains a hard-to-reverse step, or
+  introduces a new capability — the "3 story points" threshold is
+  withdrawn (story points are undefined for non-estimating teams and
+  self-reported; §1 scopes estimation ceremonies out). The D-16 row is the
+  ⚠ tracker.
+- **The seeded constitution is thin context, not enforcement** (D-17): a
+  version-stamped pointer to the standard plus the generation-time
+  principles (gates are human, no silent drift, spec hygiene/language),
+  replacing the 7-principle restatement of the standard;
+  `ci/check_convention_version.py` diffs the seeded shared block against
+  the pinned template, making §2.4 machine-checkable. Rationale and
+  upstream evidence in the D-17 note.

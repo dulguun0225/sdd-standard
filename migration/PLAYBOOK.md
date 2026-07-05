@@ -53,6 +53,17 @@ Outcomes, in order of preference:
 | Gates & Status lines | No OpenSpec equivalent | The standard's §3 still applies — approvals stay Status lines inside the artifacts (preserved by the converter); `ci/check_spec_structure.py` keeps enforcing them, it reads markdown, not Spec Kit |
 | `.specify/scripts`, commands, preset, extension | Dropped | OpenSpec has its own CLI (`openspec`); the review phase becomes a documented step until an equivalent hook exists |
 
+**Known conversion gaps** (recorded 2026-07-04 against the OpenSpec
+validator at that date; SDD-STANDARD §9.4): `openspec validate` requires
+uppercase `SHALL`/`MUST` in each requirement body, at least one
+`#### Scenario:` block per requirement in change deltas, and
+`## ADDED/MODIFIED Requirements` delta sections. `convert.py` emits none of
+these — the CI round-trip proves **structural reversibility**, not
+validator-clean output. Closing the gaps (uppercasing, synthesizing
+scenario skeletons from the EARS `WHEN`/`IF` clauses, wrapping delta
+sections) is part of executing step 2 below; re-verify against the OpenSpec
+version pinned at execution time.
+
 What is deliberately **not** migrated: completed/archived features stay as
 plain markdown wherever they are — the exit-cost promise is that specs
 remain readable documentation with no tooling at all.
@@ -88,7 +99,7 @@ adopting repo), then fan out.
 
 - The convened review's outcome goes to every adopting repo's team the same
   day, with the CHANGELOG entry linked.
-- If outcome 3 is chosen: a migration window per repo (target: one sprint),
+- If outcome 3 is chosen: a migration window per repo (target: two weeks),
   the freeze rules above, and a named migration owner per adopting repo (or
   group of repos).
 - `docs/faq.md` collects migration questions; the standard owner answers

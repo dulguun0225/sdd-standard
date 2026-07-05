@@ -28,8 +28,13 @@ in-house implementation at exit review, never pre-built), stock artifact
 filenames
 (`spec.md`/`plan.md`/`tasks.md`), bash as the single scaffold variant,
 exit triggers, the abstract standard-owner role (SDD-STANDARD §13),
-org-neutrality (D-13). Decision records live
-in CHANGELOG.md and SDD-STANDARD §10, indexed with stable D-ids in
+org-neutrality (D-13), EARS as the requirements notation with the §4.1
+structured fallback (D-15), property-trigger qualifying rules instead of
+story points (D-16, ⚠), and the thin seeded constitution whose shared
+block is drift-checked by `ci/check_convention_version.py` (D-17).
+Decision records live
+in CHANGELOG.md and SDD-STANDARD sections (e.g. §4.1, §6, §10), indexed
+with stable D-ids in
 DECISIONS.md — a PR that settles, supersedes, or withdraws a decision
 updates the index in the same PR.
 

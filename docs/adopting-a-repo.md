@@ -104,7 +104,10 @@ Enforcement on CE, stated honestly:
   reviewed PRs that pass the full tri-OS matrix first; your repo picks them
   up by re-cloning at the new release tag when a new release is tagged.
 - `check_convention_version.py` in your CI tells you when your repo is
-  behind the convention release.
+  behind the convention release — and when the seeded constitution's
+  shared-principles block was edited (SDD-STANDARD §8.2 compares it
+  byte-for-byte against the pinned template; repo-specific principles go
+  under "Repo principles").
 
 ## 5. Roles before you start
 

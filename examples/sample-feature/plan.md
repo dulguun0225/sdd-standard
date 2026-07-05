@@ -14,6 +14,9 @@ sections follow the `backend-services` profile — this is what the profile's
 table shapes look like on a real feature (one synchronous operation family,
 one consumed and one produced event).
 
+> **Amendment (2026-07-04):** framework-neutral wording in §7 Risks (no
+> contract or design change) — flagged for re-approval in the amending PR.
+
 ## 1. Summary
 
 A new `alerts-service` capability: a small CRUD surface for alert
@@ -59,8 +62,8 @@ in `delivery_log` — that index IS the R-6 dedup.
 ## 7. Risks
 
 Notification-service latency spikes eat into the 60-second budget (R-5) —
-the delivery log's timestamps give the measurement; the sprint metric in
-spec §3 watches it.
+the delivery log's timestamps give the measurement; the delivery criterion
+in spec §3 watches it.
 
 ## 8. Constitution check
 

@@ -5,7 +5,9 @@
 
 Compares the repo's `.specify/sdd.json` (written by
 `bootstrap/init.py`) against a local sdd-standard checkout — its
-SDD-STANDARD.md version and speckit/PINNED-VERSION.
+SDD-STANDARD.md version and speckit/PINNED-VERSION — and the seeded
+constitution's shared-principles block against the checkout's template
+(SDD-STANDARD §2.4: seeded principles are never removed or weakened).
 
 Non-zero exit with remediation on any mismatch. Stdlib only.
 SDD-STANDARD §8.2.
@@ -20,10 +22,34 @@ import sys
 from pathlib import Path
 
 
-def fail(problem: str, remediation: str) -> None:
+def fail(problem: str, remediation: str) -> "NoReturn":  # noqa: F821
     print(f"FAIL: {problem}", file=sys.stderr)
     print(f"\nFix:\n  {remediation}", file=sys.stderr)
     sys.exit(1)
+
+
+SHARED_HEADING = "## Shared principles"
+
+
+def shared_block(text: str) -> str | None:
+    """The shared-principles block: its heading up to the next `## ` heading.
+
+    Returns None when the heading is absent. The block carries no bootstrap
+    placeholders by construction ([PROJECT NAME] and [CONVENTION VERSION]
+    live in the template's intro), so seeded copies compare byte-for-byte.
+    """
+    lines = text.splitlines()
+    start = next(
+        (i for i, line in enumerate(lines) if line.startswith(SHARED_HEADING)),
+        None,
+    )
+    if start is None:
+        return None
+    end = next(
+        (i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")),
+        len(lines),
+    )
+    return "\n".join(lines[start:end]).strip()
 
 
 def standard_version(standard: Path) -> str:
@@ -83,15 +109,57 @@ def main() -> None:
             f"speckit_pin is {marker.get('speckit_pin')!r}, the standard's "
             f"pin is {expected_pin!r}")
 
+    template_path = (standard / "speckit" / "presets" / "sdd" / "templates"
+                     / "constitution-template.md")
+    try:
+        expected_block = shared_block(
+            template_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError):
+        expected_block = None
+    if expected_block is None:
+        fail(f"{template_path.as_posix()} missing or lacks the "
+             f"'{SHARED_HEADING}' block",
+             "point --standard at a complete sdd-standard checkout")
+
+    constitution_path = repo / ".specify" / "memory" / "constitution.md"
+    if not constitution_path.is_file():
+        problems.append(
+            f"{constitution_path.as_posix()} missing - the seeded "
+            "constitution was removed")
+    else:
+        try:
+            constitution_text = constitution_path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as err:
+            constitution_text = None
+            problems.append(
+                f"{constitution_path.as_posix()} unreadable as UTF-8 "
+                f"({err}) - re-save it as UTF-8 with LF endings")
+        if constitution_text is not None:
+            found_block = shared_block(constitution_text)
+            if found_block is None:
+                problems.append(
+                    f"constitution.md lacks the '{SHARED_HEADING}' block "
+                    "seeded by bootstrap")
+            elif found_block != expected_block:
+                problems.append(
+                    "constitution.md's shared-principles block differs from "
+                    "the pinned template (SDD-STANDARD §8.2/§2.4: the seeded "
+                    "block is compared byte-for-byte; seeded principles are "
+                    "never removed or weakened)")
+
     if problems:
         fail("; ".join(problems),
              "follow the convention upgrade steps in docs/adopting-a-repo.md "
              "of the sdd-standard repository (upgrades land as reviewed PRs, "
-             "never by hand-editing .specify/)")
+             "never by hand-editing .specify/). For a drifted constitution, "
+             "restore the '## Shared principles' block from "
+             "speckit/presets/sdd/templates/constitution-template.md at the "
+             "pinned release - repo-specific principles belong under "
+             "'## Repo principles'")
 
     print(f"OK: convention {expected_version}, Spec Kit pin {expected_pin}, "
           f"profile {marker.get('profile')!r}, variant "
-          f"{marker.get('variant')!r}")
+          f"{marker.get('variant')!r}, constitution shared block intact")
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@
 | -------- | --------------------------------------------------------- |
 | Feature  | `[###-feature-name]`                                       |
 | Authored | [DATE]                                                     |
-| Approver | Requirements gate: [product authority — PO or delegate]    |
+| Approver | Requirements gate: [product authority or explicit delegate] |
 | Input    | User description: "$ARGUMENTS"                             |
 
 This is the **Requirements Document** (SDD convention). Every
@@ -23,7 +23,7 @@ summary and a link to this folder, nothing more.
 ## 1. Purpose and scope
 
 [What this feature is for, in 2–5 sentences. State what is explicitly out of
-scope — the sentence that saves a sprint of misunderstanding.]
+scope — the sentence that saves weeks of misunderstanding.]
 
 ## 2. Definitions
 
@@ -39,7 +39,11 @@ the definitions it uses.]
      State-driven:      WHILE <state>, the <system> shall <response>.
      Unwanted behavior: IF <condition>, THEN the <system> shall <response>.
      Optional feature:  WHERE <feature is included>, the <system> shall <response>.
-     One requirement = one testable behavior. -->
+     Patterns combine when needed (Complex). One requirement = one testable
+     behavior. Where an EARS sentence would distort the meaning (mathematical
+     content, more than three preconditions), SDD-STANDARD §4.1 permits a
+     structured list or table under the same R-id bullet with a one-line
+     rationale — keep it inside the bullet's two-space continuation lines. -->
 
 - **R-1** WHEN [trigger], the [system] shall [response].
 - **R-2** The [system] shall [response].

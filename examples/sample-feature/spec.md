@@ -10,9 +10,13 @@
 | Input    | User description: "notify clients when a transfer bounces off their daily limit, so they can raise it before the payroll run fails" |
 
 This is the **Requirements Document** of the convention's teaching example —
-a complete, approved spec the size a real qualifying story produces. It
+a complete, approved spec the shape a real qualifying work item produces. It
 doubles as the migration converter's CI fixture, so CI keeps it from
 rotting. Everything about the feature is fictitious.
+
+> **Amendment (2026-07-04):** framework-neutral wording in the intro and
+> success criteria (no R-n behavior changed) — flagged for re-approval in
+> the amending PR.
 
 ## 1. Purpose and scope
 
@@ -53,7 +57,7 @@ notification service already offers (sms, email).
 
 - Create-alert p95 latency ≤ 300 ms at the alerts service boundary.
 - 99% of notifications delivered within 60 seconds of the triggering event
-  (R-5), measured over a sprint.
+  (R-5), measured over a rolling two-week window.
 - Zero duplicate notifications in the at-least-once replay test (R-6),
   which redelivers a day's events against a copy of production state.
 
