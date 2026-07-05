@@ -5,9 +5,9 @@ EARS patterns; it never adds rules. If anything here appears to conflict with
 SDD-STANDARD.md or a profile, the standard wins and this file gets fixed.
 
 > **Монгол орчуулгын тухай / About the Mongolian column:** орчуулгыг
-> AI ноороглосон бөгөөд эх хэлний хянагчийн баталгаажуулалтыг хүлээж байна.
-> The Mongolian translations are machine-drafted and pending native review.
-> Improvements land by PR like any other change.
+> AI ноороглож, эх хэлтэй хянагч 2026-07-05-нд хянасан.
+> The Mongolian translations were machine-drafted and native-reviewed on
+> 2026-07-05. Improvements land by PR like any other change.
 
 ---
 
