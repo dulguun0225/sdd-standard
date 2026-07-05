@@ -9,11 +9,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-Founding content of the convention at 0.1.0-draft. It was developed and
+*(nothing yet)*
+
+## [0.1.0-draft] - 2026-07-05
+
+Founding content of the convention. It was developed and
 validated before this repository was created — full tri-OS consumption
 matrix, a live LW-1 catch on a real Windows workstation — and is being
-validated further on demo projects (D-11). Decisions carry stable D-ids
-in `DECISIONS.md`.
+validated further on demo projects (D-11, pre-declared observables in the
+D-11 note). Decisions carry stable D-ids
+in `DECISIONS.md`. Includes the founding amendment (#1): D-15 (EARS
+notation with the §4.1 structured fallback), D-16 (property-trigger
+qualifying rules), D-17 (thin seeded constitution with the shared-block
+drift check).
 
 ### Added
 
