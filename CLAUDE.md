@@ -46,7 +46,8 @@ updates the index in the same PR.
 - A change that alters behavior covered by an approved spec must update
   that spec **in the same PR**. Approved documents are never silently
   edited — add a dated amendment note and flag it for re-approval in the
-  PR.
+  PR. The change that re-approves the document removes the note; git
+  history keeps the trail.
 - R-ids and T-ids are stable: never renumbered, never reused; withdrawn
   entries stay listed as `WITHDRAWN`. Every task carries at least one
   `[R-n]`. Tick a task only when its stated evidence exists (run link,
