@@ -38,7 +38,7 @@ at the creation of this repository.
 | D-8 | The spec is the source of truth for requirements detail; work-tracker items carry a summary and a link, never duplicated acceptance criteria | 2026-07-04 | Repo owner (founding) | Starting default ⚠ — see note | [SDD-STANDARD §4](standard/SDD-STANDARD.md) |
 | D-9 | Artifact filenames follow stock Spec Kit naming (`spec.md`, `plan.md`, `tasks.md`); the standard's vocabulary lives inside the documents | 2026-07-04 | Repo owner (founding) | Settled — premise on record, see note | [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-10 | Scaffold script variant: bash (`sh`), for all adopting repos, all three OS | 2026-07-04 | Repo owner (founding) | Settled — see note | [SDD-STANDARD §10](standard/SDD-STANDARD.md) (binding record); [CHANGELOG](CHANGELOG.md) "Decided" |
-| D-11 | Validation happens on demo projects; introduction to an organization is a separate, later decision with its own approval | 2026-07-04 | Repo owner (founding) | Settled | [CHANGELOG](CHANGELOG.md) "Decided" |
+| D-11 | Validation happens on demo projects; introduction to an organization is a separate, later decision with its own approval | 2026-07-04 | Repo owner (founding) | Settled — see note | [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-12 | Decisions are indexed in this single-file registry with stable D-ids; sparse per-file records only if a future decision has no natural home | 2026-07-04 | Repo owner (founding) | Settled — see note | This file; [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-13 | The repository is organization-neutral: it contains only the standard, its tooling, and processes — no organization names, governance bodies, org structure, personnel, or org-infrastructure facts. Organization-specific bindings (standard-owner designation, approver names, policies, hosting) happen at adoption | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §13](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-14 | Exit-trigger reviews weigh two pre-declared plan-B candidates: OpenSpec (the tested exit) and chartering an in-house implementation of the standard (spec'd at review time, never pre-built). Trigger 5 covers upstream retiring or breaking the supported override points | 2026-07-04 | Repo owner (founding) | Settled — see note | [migration/PLAYBOOK.md](migration/PLAYBOOK.md) §1 (operative wording); [CHANGELOG](CHANGELOG.md) "Decided" |
@@ -61,6 +61,20 @@ at the creation of this repository.
   interpreter resolution can bake the Windows Store `python3` stub (LW-1)
   into scaffolded commands. Grounds in SDD-STANDARD §10.4's note; watch
   at future pin-forwards.
+- **D-11** (note added 2026-07-05): pre-declared demo-validation
+  observables, so validation cannot pass vacuously. Watch and note,
+  informally (CHANGELOG observations, never pilot machinery): (1) EARS
+  fit — §4.1 escape-hatch invocations, and requirements that fought the
+  notation; (2) §6.1 triggers — every qualify/exempt call that needed
+  discussion, and whether a reviewer could referee it from the change
+  itself; (3) constitution — whether plan-phase output actually engages
+  the seeded principles or rubber-stamps the constitution check;
+  (4) gates — at least one seeded-defect probe of the review phase (a
+  deliberate spec–code mismatch the review notes must catch); (5) exit —
+  one `--round-trip` on a real demo feature, not only the CI fixture.
+  Recorded honestly: single-author demos cannot surface non-native-English
+  authoring burden or approver rubber-stamping — those wait for real
+  adopting teams, a separate decision per this row.
 - **D-12**: evaluated against external practice: small standards repos
   keep rationale in the spec text and history in a changelog; per-file
   ADR directories stall at 1–5 files in roughly half of observed
