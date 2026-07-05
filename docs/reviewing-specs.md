@@ -23,7 +23,10 @@ Read this before your first approval.
 
 Approve when:
 
-- Every requirement is **one testable behavior** in an EARS pattern. Watch
+- Every requirement is **one testable behavior** in an EARS pattern — or,
+  where §4.1's narrow fallback applies (mathematical content, more than
+  three preconditions), a structured list or table with its stated
+  rationale. Watch
   for smuggled "and" — "validates and persists and notifies" is three
   requirements wearing one R-id.
 - R-ids are bare facts: never renumbered, never reused; anything removed is

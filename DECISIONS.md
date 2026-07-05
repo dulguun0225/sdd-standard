@@ -42,6 +42,9 @@ at the creation of this repository.
 | D-12 | Decisions are indexed in this single-file registry with stable D-ids; sparse per-file records only if a future decision has no natural home | 2026-07-04 | Repo owner (founding) | Settled — see note | This file; [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-13 | The repository is organization-neutral: it contains only the standard, its tooling, and processes — no organization names, governance bodies, org structure, personnel, or org-infrastructure facts. Organization-specific bindings (standard-owner designation, approver names, policies, hosting) happen at adoption | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §13](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-14 | Exit-trigger reviews weigh two pre-declared plan-B candidates: OpenSpec (the tested exit) and chartering an in-house implementation of the standard (spec'd at review time, never pre-built). Trigger 5 covers upstream retiring or breaking the supported override points | 2026-07-04 | Repo owner (founding) | Settled — see note | [migration/PLAYBOOK.md](migration/PLAYBOOK.md) §1 (operative wording); [CHANGELOG](CHANGELOG.md) "Decided" |
+| D-15 | EARS is the requirements notation: §4.1 binds one testable behavior + a stable R-id, phrased in EARS, with a narrow structured-fallback escape hatch. Rejected: stock Spec Kit user stories + Given/When/Then, Gherkin-as-primary, plain ISO-29148 shall statements, Planguage, FRET | 2026-07-04 | Repo owner (founding) | Settled — see note | [SDD-STANDARD §4.1](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
+| D-16 | Qualifying work items are defined by property triggers of the change (externally observable behavior/contract, boundary-crossing, hard-to-reverse step, new capability), never by estimated size; story points dropped as the threshold unit | 2026-07-04 | Repo owner (founding) | Starting default ⚠ — see note | [SDD-STANDARD §6](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
+| D-17 | The seeded constitution is thin context, not enforcement: a version-stamped pointer plus the generation-time principles; shared-block drift is machine-checked by `ci/check_convention_version.py` | 2026-07-04 | Repo owner (founding) | Settled — see note | [constitution-template](speckit/presets/sdd/templates/constitution-template.md); [CHANGELOG](CHANGELOG.md) "Decided" |
 
 ## Notes
 
@@ -77,3 +80,41 @@ at the creation of this repository.
   surface — so during validation, pin-forward pain and which Spec Kit
   features get exercised are noted informally (CHANGELOG observations,
   not pilot machinery).
+- **D-15**: grounds — zero machine coupling to phrasing (all converter and
+  CI enforcement rides the `- **R-n**` bullet structure, none parses EARS
+  keywords); a bounded 5-keyword English surface the glossary translates
+  once; blue-chip adoption with hours-level training (Intel's published
+  defect-density results; Airbus, Bosch, NASA, Rolls-Royce); native-EARS
+  prior art in AI spec tooling (AWS Kiro's `requirements.md`,
+  spec-workflow-mcp); and every EARS pattern already carries the `shall`
+  keyword the OpenSpec exit's validator keys on (uppercasing it is a
+  recorded conversion gap — PLAYBOOK §2). **Honest evidence gap on
+  record:** no controlled study isolates EARS's effect on LLM codegen
+  quality (nearest evidence: requirement ambiguity degrades codegen); the
+  documented AI-era failure mode is *false precision* — pattern-perfect
+  output masking an incomplete requirement set — countered by the
+  unwanted-behavior review heuristic in `docs/reviewing-specs.md`. Revisit
+  triggers: demo validation showing systematic authoring failure, or
+  plan-B promotion (OpenSpec's validator mandates scenario blocks).
+- **D-16**: this row is the ⚠ tracker for §6.1's trigger list (like D-7 and
+  D-8, nothing else tracks that the default is unconfirmed). Grounds: story
+  points are undefined for teams that do not estimate, are self-reported
+  and unverifiable at review, and would import an estimation ceremony that
+  §1 scopes out; surveyed mature-org design-doc gates (Google design docs,
+  Rust RFCs, Oxide RFDs, one-way-door analysis) all trigger on properties
+  of the change, never on estimated size. Known residual: "new capability"
+  and "hard to reverse" remain author-judged before a diff exists.
+  Amendment path if demo validation shows frequent unrefereeable trigger
+  disputes: qualitative triggers with a numeric fallback bound at adoption.
+- **D-17**: grounds — only the plan-phase constitution check and human
+  readers consume the file's content (the review command and CI never read
+  it); upstream evidence shows constitutions are context, not enforcement
+  (spec-kit issue #287: the tasks template overrode an explicit
+  constitution; discussion #1619: a 1,000-line constitution ignored); the
+  previous 7-principle version restated six SDD-STANDARD sections with no
+  drift detection and no re-seed channel. The preset templates and the
+  review command carry the operative rules at each point of use; §2.4
+  becomes machine-checkable via the shared-block diff in
+  `ci/check_convention_version.py`. The constitution is also the least
+  portable artifact at exit (OpenSpec has no equivalent; the playbook maps
+  it to a human paste step) — thinner is cheaper to carry across.

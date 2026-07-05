@@ -26,10 +26,14 @@ explains each pattern's meaning in both languages.
 | **Unwanted behavior** — response to a condition that should not happen. *Хүсээгүй нөхцөлд үзүүлэх хариу үйлдэл.* | IF `<undesired condition>`, THEN the `<system>` shall `<response>`. | IF a consumed message fails schema validation, THEN the consumer shall route it to the dead-letter subject without acknowledging success. |
 | **Optional feature** — applies only where a feature exists. *Тухайн боломж идэвхтэй үед л хамаарах шаардлага.* | WHERE `<feature is included>`, the `<system>` shall `<response>`. | WHERE a deployment enables two-factor authentication, the login service shall require a second factor for every session. |
 
-Patterns combine when needed (e.g. `WHILE <state>, WHEN <trigger>, the
-<system> shall <response>`); a requirement still expresses **one** testable
-behavior. The `<system>` slot names whoever is bound — a service, a team, a
-CI pipeline, a reviewer, a document, a PR, a tracker item.
+Patterns combine when needed — the **Complex** pattern (e.g. `WHILE
+<state>, WHEN <trigger>, the <system> shall <response>`); a requirement
+still expresses **one** testable behavior. Where an EARS sentence would
+distort a requirement's meaning (mathematical content, more than three
+preconditions), SDD-STANDARD §4.1 permits a structured list or table under
+the same R-id instead, with a one-line rationale. The `<system>` slot names
+whoever is bound — a service, a team, a CI pipeline, a reviewer, a
+document, a PR, a tracker item.
 
 ## 2. Artifact vocabulary
 
@@ -58,9 +62,9 @@ stock filenames, the standard's vocabulary inside the documents.
 | Gate | A human approval checkpoint on an artifact; passed only via an explicit Status line | Шалгах цэг (гейт) |
 | Approval | A human adding `Status: APPROVED — <name>, <date>` to an artifact; agents never write it | Баталгаажуулалт |
 | Spec drift | A merged change altering behavior covered by an approved spec without updating that spec in the same PR/MR | Тодорхойлолтын зөрүү |
-| Size threshold | The story-point line below which spec ceremony is skipped (the pressure valve) | Хэмжээний босго |
-| Qualifying work item | A work item at or above the size threshold — full gated workflow applies | Болзол хангасан ажил |
-| Emergency hotfix | A change shipped outside sprint planning to restore service; implemented first, spec updated after | Яаралтай засвар |
+| Qualifying triggers | The §6.1 list of change properties (externally observable behavior or contract, boundary-crossing, hard-to-reverse step, new capability) that require spec ceremony; items matching none are exempt (the pressure valve) | Болзол хангах шалгуурууд |
+| Qualifying work item | A work item matching at least one §6.1 trigger — full gated workflow applies | Болзол хангасан ажил |
+| Emergency hotfix | A change shipped outside the normal spec workflow to restore service; implemented first, spec updated after | Яаралтай засвар |
 
 ### Governance & tooling
 

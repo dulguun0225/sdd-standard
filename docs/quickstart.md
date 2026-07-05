@@ -132,8 +132,8 @@ approvals from §2–§4 are in place.
 
 ## Where to go next
 
-- Too small to spec? Items under the size threshold need no ceremony —
-  SDD-STANDARD §6, the pressure valve.
+- Too small to spec? An item matching none of the qualifying triggers
+  needs no ceremony — SDD-STANDARD §6, the pressure valve.
 - Reviewing someone's spec? [reviewing-specs.md](reviewing-specs.md).
 - Questions? Ask the standard owner; answers that help
   everyone land in [faq.md](faq.md).

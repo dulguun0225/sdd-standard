@@ -67,7 +67,7 @@ adoption (`docs/adopting-a-repo.md` shows how, informatively):
 
 | Gate | Approver role |
 | ---- | ------------- |
-| Requirements | The repo's product authority (PO or explicit delegate) |
+| Requirements | The repo's product authority (e.g. a product owner, or an explicit delegate) |
 | Design | The repo's technical authority (tech lead or architect) |
 | Tasks | The technical authority (may be the Design approver) |
 | Review | A code reviewer who is **not** the implementer |
@@ -79,8 +79,13 @@ implementer of the item under review.
 
 ## 4. Requirements rules
 
-4.1 Every requirement in a Requirements Document shall be phrased in an EARS
-pattern (patterns illustrated in GLOSSARY §1) and carry a stable R-id.
+4.1 Every requirement in a Requirements Document shall express **one
+testable behavior** and carry a stable R-id. Requirements shall be phrased
+in an EARS pattern (patterns illustrated in GLOSSARY §1). Where an EARS
+sentence would distort a requirement's meaning — mathematical content, or
+more than three preconditions — the requirement may instead carry a
+structured list or table under its R-id, with a one-line rationale; it
+still expresses one testable behavior. (Decision record: D-15.)
 
 4.2 R-ids shall never be renumbered or reused. Amendments supersede a
 requirement in place or append a new one; deleted requirements remain listed
@@ -99,10 +104,26 @@ a requirement it implements.
 merge unless the same PR/MR updates that spec. A merged violation is a
 spec-drift incident.
 
-## 6. Size threshold — the pressure valve
+## 6. Qualifying work items — the pressure valve
 
-6.1 A work item estimated below **3 story points** ⚠ requires no spec
-ceremony; teams may use whatever lightweight planning they prefer.
+6.1 A work item **qualifies** (full gated workflow, §3.1) WHEN it does any
+of the following ⚠:
+
+- creates or alters externally observable behavior or a contract (API,
+  CLI, schema, message, protocol);
+- crosses a repo, service, or team boundary;
+- contains a hard-to-reverse step (a data migration, a protocol or
+  data-model change);
+- introduces a new capability, rather than a localized change to an
+  existing one.
+
+A work item that does none of these requires no spec ceremony. Explicitly
+exempt, even where a trigger appears to match: bugfixes restoring
+already-specified behavior, refactorings and strict internal improvements,
+and changes with no externally observable effect. Teams may use whatever
+lightweight planning they prefer for exempt items. The triggers are
+properties of the change itself, so they bind without requiring any
+estimation practice. (Decision record: D-16.)
 
 6.2 An emergency hotfix may be implemented immediately. WHEN a hotfix alters
 behavior covered by an approved spec, the team shall update that spec within
@@ -143,7 +164,11 @@ treated as a blocker by convention.
 
 8.2 Repos shall record their consumed convention version
 (`.specify/sdd.json`, written by bootstrap); currency is checked by
-`ci/check_convention_version.py`.
+`ci/check_convention_version.py`. The same check compares the
+constitution's seeded shared-principles block byte-for-byte against the
+pinned template (§2.4): any change to the shared block lands upstream by
+PR to the standard; repo-specific tightening belongs under the
+constitution's repo-principles section.
 
 ## 9. Current implementation
 
@@ -159,7 +184,10 @@ dialects.
 the full tri-OS verification matrix before any product repo consumes it.
 
 9.4 The exit shall remain a tested capability: CI round-trips
-`examples/sample-feature` through `migration/convert.py` on every push. Exit
+`examples/sample-feature` through `migration/convert.py` on every push. The
+round-trip proves structural reversibility of the artifacts; known
+conversion gaps against the plan-B tool's own validator are recorded in the
+playbook and close as part of executing it. Exit
 triggers and the migration procedure are defined in `migration/PLAYBOOK.md`;
 trigger reviews are logged in CHANGELOG.md regardless of outcome. The
 playbook is the sole operative source of the exit triggers; their

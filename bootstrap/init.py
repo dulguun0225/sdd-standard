@@ -61,12 +61,17 @@ def read_convention_version() -> str:
     """The convention version, parsed from SDD-STANDARD.md's Version line."""
     try:
         text = STANDARD_FILE.read_text(encoding="utf-8")
-        match = re.search(r"\*\*Version:\s*([^*\s]+)\*\*", text)
-        if match:
-            return match.group(1)
     except OSError:
-        pass
-    return "0.0.0-unknown"
+        text = ""
+    match = re.search(r"\*\*Version:\s*([^*\s]+)\*\*", text)
+    if match is None:
+        fail(
+            f"cannot parse the convention version from {STANDARD_FILE}",
+            "re-clone the sdd-standard repository at the pinned release tag "
+            "(your checkout is incomplete, or SDD-STANDARD.md's Version line "
+            "changed shape)",
+        )
+    return match.group(1)
 
 
 def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
@@ -205,6 +210,7 @@ def seed_constitution(target: Path, profile: str) -> None:
 
     text = template.read_text(encoding="utf-8")
     text = text.replace("[PROJECT NAME]", target.resolve().name)
+    text = text.replace("[CONVENTION VERSION]", read_convention_version())
 
     profile_doc = PROFILES_DIR / profile / "profile.md"
     profile_text = profile_doc.read_text(encoding="utf-8")

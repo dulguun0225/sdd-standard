@@ -50,7 +50,9 @@ and keeps the tool replaceable. What it adds
   extension (`speckit.sdd.review`) compares what was built against
   the approved artifacts and writes notes for the human Review approver —
   input to the Review gate (§3), never a pass of it.
-- **A pressure valve.** Below the size threshold there is no spec
+- **A pressure valve.** A work item matching none of the qualifying
+  triggers (no contract or observable-behavior change, no boundary
+  crossed, nothing hard to reverse, no new capability) needs no spec
   ceremony, and emergency hotfixes ship first and update the spec after —
   the ceremony binds where it pays, not everywhere (§6).
 - **A tested exit.** CI round-trips the example spec through the OpenSpec
