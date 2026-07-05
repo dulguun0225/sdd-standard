@@ -1,6 +1,6 @@
 # Tasks — transfer-limit-alerts
 
-**Status: APPROVED — Tulga (tech lead), 2026-07-02**
+**Status: APPROVED — Tulga (tech lead), 2026-07-05**
 
 | Field        | Value                                    |
 | ------------ | ---------------------------------------- |
