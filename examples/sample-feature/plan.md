@@ -1,6 +1,6 @@
 # Design — transfer-limit-alerts
 
-**Status: APPROVED — Tulga (tech lead), 2026-07-02**
+**Status: APPROVED — Tulga (tech lead), 2026-07-05**
 
 | Field        | Value                                         |
 | ------------ | --------------------------------------------- |
@@ -13,9 +13,6 @@ This is the **Design Document** of the teaching example. Its two contract
 sections follow the `backend-services` profile — this is what the profile's
 table shapes look like on a real feature (one synchronous operation family,
 one consumed and one produced event).
-
-> **Amendment (2026-07-04):** framework-neutral wording in §7 Risks (no
-> contract or design change) — flagged for re-approval in the amending PR.
 
 ## 1. Summary
 

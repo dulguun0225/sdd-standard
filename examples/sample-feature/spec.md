@@ -1,6 +1,6 @@
 # Requirements — transfer-limit-alerts
 
-**Status: APPROVED — Nara (PO), 2026-07-02**
+**Status: APPROVED — Nara (PO), 2026-07-05**
 
 | Field    | Value                                                        |
 | -------- | ------------------------------------------------------------ |
@@ -13,10 +13,6 @@ This is the **Requirements Document** of the convention's teaching example —
 a complete, approved spec the shape a real qualifying work item produces. It
 doubles as the migration converter's CI fixture, so CI keeps it from
 rotting. Everything about the feature is fictitious.
-
-> **Amendment (2026-07-04):** framework-neutral wording in the intro and
-> success criteria (no R-n behavior changed) — flagged for re-approval in
-> the amending PR.
 
 ## 1. Purpose and scope
 
