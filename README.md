@@ -59,6 +59,87 @@ and keeps the tool replaceable. What it adds
   converter on every push, so leaving Spec Kit remains a capability, not
   a rewrite (§9.4).
 
+## The lifecycle in a product repo
+
+How the rules above compose, end to end, in an adopting repo. The
+normative text is [SDD-STANDARD](standard/SDD-STANDARD.md); this section
+is the map.
+
+Every work item starts at the qualification decision (§6.1): the gated
+workflow binds when a change creates or alters externally observable
+behavior or a contract (API, CLI, schema, message, protocol), crosses a
+repo, service, or team boundary, contains a hard-to-reverse step, or
+introduces a new capability — properties of the change itself, so no
+estimation practice is required. Explicitly exempt, even where a trigger
+appears to match: bugfixes restoring already-specified behavior,
+refactorings and strict internal improvements, and changes with no
+externally observable effect. An emergency hotfix ships first; when it
+alters behavior an approved spec covers, that spec is updated within
+5 working days of the fix shipping (§6.2).
+
+A qualifying item's artifacts pass their gates in order — Requirements →
+Design → Tasks before implementation starts, Review after it completes,
+before the item is marked done (§3.1). Who does what: 🤖 the agent,
+☺️ humans, 🤨 a human making the call, 🤖+☺️ both — typically the
+agent drafts and a human shapes and owns it, though the convention
+itself never requires an agent (§1, §9.1). Every gate is 🤨 alone by
+design (§3.2), and the qualification call too is a human judgment
+(§6.1). Solid edges are the gated pass; dashed edges are what makes this
+a loop rather than a waterfall — the hotfix bypass, gate rejections, the
+spike for what cannot yet be stated as testable behavior, and Done
+feeding what was learned back into the next work item:
+
+```mermaid
+flowchart TD
+    WI["Work item"] --> Q{"🤨 Qualifies? — §6.1"}
+    WI -.->|"emergency hotfix — §6.2"| HF["🤖+☺️ Ship the fix first"]
+    HF -.->|"if it altered behavior an approved spec covers"| HU["🤖+☺️ Update that spec within<br/>5 working days of shipping"]
+    Q -->|"no trigger, or exempt"| NC["No spec ceremony —<br/>the team's own lightweight planning"]
+    Q -->|"yes"| SPEC["🤖+☺️ spec.md<br/>EARS requirements, stable R-ids"]
+    SPEC -.->|"can't state testable<br/>behavior yet"| SPIKE["🤖+☺️ Spike / prototype — throwaway,<br/>no externally observable effect,<br/>exempt from ceremony (§6.1)"]
+    SPIKE -.->|"what it taught you"| SPEC
+    SPEC --> G1{"🤨 Requirements gate"}
+    G1 -->|"approved"| PLAN["🤖+☺️ plan.md<br/>design and contracts"]
+    G1 -.->|"rejected"| SPEC
+    PLAN --> G2{"🤨 Design gate"}
+    G2 -->|"approved"| TASKS["🤖+☺️ tasks.md<br/>every task cites at least one R-id"]
+    G2 -.->|"rejected"| PLAN
+    TASKS --> G3{"🤨 Tasks gate"}
+    G3 -->|"approved"| IMPL["🤖+☺️ Implementation"]
+    G3 -.->|"rejected"| TASKS
+    IMPL --> NOTES["🤖 review-notes.md<br/>the review extension's findings —<br/>input to the approver, never a pass"]
+    NOTES --> G4{"🤨 Review gate"}
+    G4 -->|"approved"| DONE["Done"]
+    G4 -.->|"rejected"| IMPL
+    DONE -.->|"reality teaches: changed intent, or the next slice —<br/>a spec amendment supersedes, appends, or withdraws (§4.2)<br/>and rides the same PR as the code change (§5.2)"| WI
+```
+
+Each artifact gate passes the same way: a human approver adds
+`Status: APPROVED — <name>, <date>` to that artifact in their own
+change — agents never write or modify approval Status lines (§3.2). The
+Review gate is passed the same human-only way by its approver, informed
+by the review notes (§3.1, §3.3). A rejected artifact is revised and
+resubmitted (§3.4). The artifacts live together in the product repo at
+`specs/<NNN>-<kebab-slug>/` (§2.2), and each adopting team binds the
+approver roles to named people at adoption:
+
+| Gate | Approves | Approver role (§3.3) |
+| ---- | -------- | -------------------- |
+| Requirements | `spec.md` | The repo's product authority |
+| Design | `plan.md` | The repo's technical authority |
+| Tasks | `tasks.md` | The technical authority — may be the Design approver |
+| Review | The implementation, against the approved artifacts | A reviewer who is **not** the implementer |
+
+Underneath every lane run the two enforcement rules from the list
+above: the same-PR spec-update rule — a merged violation is a
+spec-drift incident (§5.2) — and the merge-blocking structure check
+(§8.1), which turns the pipeline red on a `plan.md` drafted while
+`spec.md` is still `DRAFT`, before a human has to catch it. A worked
+walkthrough of one feature through all four gates is
+[docs/quickstart.md](docs/quickstart.md); working the dashed edges —
+evolving requirements, spikes, amendments — is
+[docs/evolving-requirements.md](docs/evolving-requirements.md).
+
 ## Status
 
 **Pre-1.0 (0.1.0-draft), complete and usable.** This repository is the standard

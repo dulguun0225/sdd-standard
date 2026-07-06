@@ -134,6 +134,9 @@ approvals from §2–§4 are in place.
 
 - Too small to spec? An item matching none of the qualifying triggers
   needs no ceremony — SDD-STANDARD §6, the pressure valve.
+- Requirements won't hold still? That is the expected shape of the
+  work — [evolving-requirements.md](evolving-requirements.md), the
+  spec → build → learn loop.
 - Reviewing someone's spec? [reviewing-specs.md](reviewing-specs.md).
 - Questions? Ask the standard owner; answers that help
   everyone land in [faq.md](faq.md).

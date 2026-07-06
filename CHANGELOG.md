@@ -9,7 +9,21 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-*(nothing yet)*
+### Added
+
+- README section "The lifecycle in a product repo" — the end-to-end map
+  of the normative rules in an adopting repo: the qualification
+  decision, the gate diagram with who-does-what markers, the approver
+  table, and the enforcement rules underneath. The diagram draws the
+  whole loop in one picture: alongside the hotfix bypass and
+  gate-rejection edges, a spike/prototype detour off `spec.md` (§6.1)
+  and a learning edge from Done back to the next work item (§5.2, §4.2).
+- `docs/evolving-requirements.md` — informative guide to the
+  spec → build → learn loop: testable-not-airtight (§4.1), amendments in
+  the same PR (§5.2, §4.2), spiking under the §6.1 exemption, and the
+  wrong-altitude / too-thick diagnostics. It walks the README diagram
+  rather than carrying its own. Linked from the quickstart; the question
+  that prompted it is seeded as the first FAQ entry.
 
 ## [0.1.0-draft] - 2026-07-05
 
