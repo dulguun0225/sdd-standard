@@ -40,9 +40,11 @@ updates the index in the same PR.
 
 ## Rules that bind you here (the repo dogfoods its own standard)
 
-- **Never write or modify a `Status:` line** in any artifact (SDD-STANDARD
-  §3.2). Approvals are added by human approvers in their own change. This
-  is the one rule with zero tolerance.
+- **Never write or modify an approval `Status:` line** — the
+  `APPROVED — <name>, <date>` line — in any artifact (SDD-STANDARD §3.2).
+  Writing `Status: DRAFT` on an artifact you draft is fine and expected; it
+  is the *approval* flip that is reserved for a human approver, added in
+  their own change. This is the one rule with zero tolerance.
 - A change that alters behavior covered by an approved spec must update
   that spec **in the same PR**. Approved documents are never silently
   edited — add a dated amendment note and flag it for re-approval in the
