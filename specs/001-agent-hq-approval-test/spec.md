@@ -1,16 +1,18 @@
 # Requirements — agent-hq-approval-test
 
+**Status: DRAFT**
+
 <!-- Throwaway feature for testing the Agent HQ browser-approval flow.
-     Do not merge. This branch demonstrates a reviewer approving the
-     spec via a GitHub browser commit, with no local clone.
+     Do not merge.
 
-     This document intentionally carries NO approval line: the agent that
-     drafted it must not write one (CLAUDE.md / zero-tolerance rule).
-     The human reviewer adds it in their own browser commit.
+     The drafting agent wrote `Status: DRAFT` above — allowed by §3.2
+     (only the APPROVED flip is reserved for a human). A human reviewer
+     flips DRAFT -> APPROVED in a browser commit, with no local clone.
 
-     NOTE: the body avoids the literal approval-line prefix so the
-     structure check does not mistake requirement prose for a real
-     approval line. -->
+     A DRAFT spec alone is valid (green). The sibling plan.md (also DRAFT)
+     is what makes CI red until this spec is approved: the design gate
+     stays shut until the requirements gate passes. Approving this spec
+     opens it. -->
 
 | Field    | Value                                                       |
 | -------- | ----------------------------------------------------------- |
@@ -27,18 +29,20 @@ behavior — nothing here ships.
 ## 2. Requirements
 
 - **R-1** WHEN a reviewer opens this document in the GitHub web editor and
-  adds an approval line in a browser commit, the structure check shall
-  treat the requirements gate as passed.
-- **R-2** IF this document carries no approval line, THEN the structure
-  check shall report the feature as not approved.
+  flips the draft to an approval line in a browser commit, the structure
+  check shall treat the requirements gate as passed and stop blocking the
+  sibling design document.
+- **R-2** WHILE this document remains a draft, the structure check shall
+  block any sibling `plan.md` — the design gate stays shut until the
+  requirements gate passes.
 
 ## 3. Success criteria
 
-- `uv run ci/check_spec_structure.py --self` goes from red (no approval
-  line) to green (approval line present) with only a browser commit in
+- `uv run ci/check_spec_structure.py --self` goes from red (plan present,
+  spec not approved) to green (spec approved) with only a browser commit in
   between.
 
 ## 4. Traceability
 
-No `tasks.md` in this scratch feature — the test stops at the requirements
-gate.
+`plan.md` in this folder depends on this document being approved first. No
+`tasks.md` — the test stops at the design gate.
