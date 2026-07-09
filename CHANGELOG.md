@@ -1,9 +1,8 @@
 # Changelog
 
 All notable changes to the SDD convention are documented here.
-The convention is semantically versioned; Spec Kit (the current
-implementation) is pinned separately in `speckit/PINNED-VERSION`.
-Exit-trigger reviews are logged here regardless of outcome.
+The convention is semantically versioned; Spec Kit is pinned separately in
+`speckit/PINNED-VERSION`.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
@@ -24,6 +23,33 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   wrong-altitude / too-thick diagnostics. It walks the README diagram
   rather than carrying its own. Linked from the quickstart; the question
   that prompted it is seeded as the first FAQ entry.
+
+### Changed
+
+- SDD-STANDARD §9 renamed "Current implementation" → "Implementation":
+  GitHub Spec Kit is now stated as *the* implementation of the standard,
+  not one swappable option. §9.1's tool-independence claim and §9.4 (the
+  tested-exit requirement) are removed (D-18).
+
+### Removed
+
+- The vendor-neutrality / exit apparatus (D-18): `migration/` (the OpenSpec
+  converter `convert.py` and the plan-B `PLAYBOOK.md`), the pre-declared
+  exit triggers, and the converter round-trip CI step in `checks.yml` and
+  `verify-tri-os.yml`. `examples/sample-feature` stays the teaching example,
+  no longer doubling as the converter fixture — it is kept fresh by
+  `check_spec_structure.py --self`. Org-neutrality (D-13) is unaffected.
+
+### Decided
+
+- **Vendor-neutrality abandoned for simplicity and ease** (D-18): GitHub
+  Spec Kit is the sole implementation of the standard. The tested exit
+  (converter + CI round-trip), the plan-B candidates (OpenSpec, in-house),
+  and the pre-declared exit triggers are withdrawn — superseding D-2 and
+  D-14 and simplifying D-1 and D-9's premise. The trade is explicit: no
+  tested escape hatch remains; if Spec Kit or its supported override points
+  fail, an exit is rebuilt then, not kept warm. Org-neutrality (D-13) is
+  retained. Rationale in the D-18 note.
 
 ## [0.1.0-draft] - 2026-07-05
 

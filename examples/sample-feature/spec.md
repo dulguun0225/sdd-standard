@@ -2,6 +2,10 @@
 
 **Status: APPROVED — Nara (PO), 2026-07-05**
 
+> **Amendment 2026-07-09 (pending re-approval, D-18):** the intro's
+> converter-fixture reference is removed — `migration/` was withdrawn when
+> vendor-neutrality was abandoned. Re-approve to clear this note.
+
 | Field    | Value                                                        |
 | -------- | ------------------------------------------------------------ |
 | Feature  | `007-transfer-limit-alerts` (shown here as `examples/sample-feature`) |
@@ -10,9 +14,9 @@
 | Input    | User description: "notify clients when a transfer bounces off their daily limit, so they can raise it before the payroll run fails" |
 
 This is the **Requirements Document** of the convention's teaching example —
-a complete, approved spec the shape a real qualifying work item produces. It
-doubles as the migration converter's CI fixture, so CI keeps it from
-rotting. Everything about the feature is fictitious.
+a complete, approved spec the shape a real qualifying work item produces.
+`ci/check_spec_structure.py --self` gates it on every push, so CI keeps it
+from rotting. Everything about the feature is fictitious.
 
 ## 1. Purpose and scope
 

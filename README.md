@@ -9,12 +9,9 @@ changes by PR review. Product repos consume it via a bootstrap wrapper; specs
 always live in each product repo next to the code they govern — there is
 deliberately no central specs repository.
 
-[GitHub Spec Kit](https://github.com/github/spec-kit) is the *current
-implementation* of the standard — it is not the standard itself. The
-approved version is pinned in `speckit/PINNED-VERSION`; upgrades are
-tested in this repo first. A tested migration path to
-[OpenSpec](https://github.com/Fission-AI/OpenSpec) ships with v1.0, not
-later.
+[GitHub Spec Kit](https://github.com/github/spec-kit) is the implementation
+of the standard. The approved version is pinned in `speckit/PINNED-VERSION`;
+upgrades are tested in this repo first.
 
 ## Why not stock Spec Kit?
 
@@ -55,9 +52,6 @@ and keeps the tool replaceable. What it adds
   crossed, nothing hard to reverse, no new capability) needs no spec
   ceremony, and emergency hotfixes ship first and update the spec after —
   the ceremony binds where it pays, not everywhere (§6).
-- **A tested exit.** CI round-trips the example spec through the OpenSpec
-  converter on every push, so leaving Spec Kit remains a capability, not
-  a rewrite (§9.4).
 
 ## The lifecycle in a product repo
 
@@ -160,12 +154,11 @@ it.
 | Path         | Purpose                                                        |
 | ------------ | -------------------------------------------------------------- |
 | `standard/`  | The normative documents: SDD-STANDARD.md, stack profiles, glossary |
-| `speckit/`   | Version pin, the standard's preset, extensions (current implementation layer) |
+| `speckit/`   | Version pin, the standard's preset, extensions (the implementation layer) |
 | `bootstrap/` | `init.py` — how a product repo adopts the convention (run via `uv run`) |
 | `ci/`        | Structure and version checks — same scripts locally and on CI  |
 | `docs/`      | Informative guides only — they explain, never legislate        |
-| `examples/`  | Complete exemplary spec; doubles as the converter's CI fixture |
-| `migration/` | Plan-B playbook and artifact converter (Spec Kit → OpenSpec)   |
+| `examples/`  | Complete exemplary spec — the teaching example |
 
 ## Per-OS setup notes
 

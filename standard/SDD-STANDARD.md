@@ -25,8 +25,7 @@ gets its own home.
 
 ## 2. Vocabulary and artifacts
 
-2.1 The standard names the documents; the current implementation (§9) names
-the files:
+2.1 The standard names the documents; GitHub Spec Kit (§9) names the files:
 
 | Standard term | File | Contains |
 | ------------- | ---- | -------- |
@@ -170,11 +169,10 @@ pinned template (§2.4): any change to the shared block lands upstream by
 PR to the standard; repo-specific tightening belongs under the
 constitution's repo-principles section.
 
-## 9. Current implementation
+## 9. Implementation
 
-9.1 This standard is tool-independent. **GitHub Spec Kit**, pinned to the
-exact version in `speckit/PINNED-VERSION`, is the *current implementation*
-of the standard — it is not the standard.
+9.1 **GitHub Spec Kit**, pinned to the exact version in
+`speckit/PINNED-VERSION`, is the implementation of this standard.
 
 9.2 Repos shall adopt the convention only via `bootstrap/init.py`. Manual
 copying of templates into repos is prohibited — it creates divergent
@@ -182,16 +180,6 @@ dialects.
 
 9.3 A pin change shall land as a reviewed PR to this repository that passes
 the full tri-OS verification matrix before any product repo consumes it.
-
-9.4 The exit shall remain a tested capability: CI round-trips
-`examples/sample-feature` through `migration/convert.py` on every push. The
-round-trip proves structural reversibility of the artifacts; known
-conversion gaps against the plan-B tool's own validator are recorded in the
-playbook and close as part of executing it. Exit
-triggers and the migration procedure are defined in `migration/PLAYBOOK.md`;
-trigger reviews are logged in CHANGELOG.md regardless of outcome. The
-playbook is the sole operative source of the exit triggers; their
-pre-declaration is recorded in DECISIONS.md D-2.
 
 ## 10. Scaffold script variant — binding record
 
@@ -243,10 +231,8 @@ that hosts this standard — a role, never a person. An organization adopting
 the standard designates its own standard owner at adoption and records the
 binding in its own space; this repository carries no organization-specific
 governance. The standard owner: approves changes to this document and to
-profiles (§7.6), approves version-pin changes (§9.3), decides exit-trigger
-reviews within 5 working days of a fired trigger (§9.4,
-`migration/PLAYBOOK.md`), and arbitrates standard-vs-guide conflicts (the
-standard wins and the guide gets fixed).
+profiles (§7.6), approves version-pin changes (§9.3), and arbitrates
+standard-vs-guide conflicts (the standard wins and the guide gets fixed).
 
 The convention is semantically versioned; every release has a CHANGELOG
 entry. Releases shall be 0.x pre-versions until the standard owner declares

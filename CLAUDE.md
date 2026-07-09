@@ -22,12 +22,12 @@ belong anywhere in it — organization-specific bindings (standard-owner
 designation, approver names, policies, hosting) happen at adoption. Don't
 reintroduce any.
 
-Settled decisions — do not relitigate them: GitHub Spec Kit as the current
-implementation (plan B per D-14: OpenSpec, tested — or chartering an
-in-house implementation at exit review, never pre-built), stock artifact
+Settled decisions — do not relitigate them: GitHub Spec Kit as the sole
+implementation of the standard (vendor-neutrality abandoned for simplicity,
+D-18 — no plan B, no exit triggers, no converter), stock artifact
 filenames
 (`spec.md`/`plan.md`/`tasks.md`), bash as the single scaffold variant,
-exit triggers, the abstract standard-owner role (SDD-STANDARD §13),
+the abstract standard-owner role (SDD-STANDARD §13),
 org-neutrality (D-13), EARS as the requirements notation with the §4.1
 structured fallback (D-15), property-trigger qualifying rules instead of
 story points (D-16, ⚠), and the thin seeded constitution whose shared
@@ -75,9 +75,6 @@ scripts), macOS, and Linux.
 # this repo ever grows its own feature folders again)
 uv run ci/check_spec_structure.py --self
 
-# The exit must stay tested — converter round-trip on the fixture
-uv run migration/convert.py --round-trip examples/sample-feature
-
 # Full local consumption test: bootstrap a scratch repo end-to-end
 uv run bootstrap/init.py ../scratch --integration generic --profile backend-services --ignore-agent-tools
 
@@ -86,8 +83,9 @@ uv run ci/check_spec_structure.py --repo <path>
 uv run ci/check_convention_version.py --repo <path> --standard .
 ```
 
-CI: `checks.yml` runs the first two on every push/PR. `verify-tri-os.yml`
-(PRs touching `bootstrap|speckit|ci|migration`, weekly cron, manual) runs
+CI: `checks.yml` runs the structure self-check on every push/PR.
+`verify-tri-os.yml` (PRs touching `bootstrap|speckit|ci`, weekly cron,
+manual) runs
 the full consumption flow on all 6 cells — {ubuntu, windows, macos} ×
 {sh, ps} — including a negative probe asserting the structure check goes
 red on a skipped approval. The full grid is variant-decision evidence;
@@ -102,7 +100,7 @@ speckit/extensions/sdd/         installs preset + review extension from this
 standard/profiles/<profile>/    checkout, repairs the constitution, appends
                                 the profile, writes .specify/sdd.json)
 ci/check_*.py — same scripts gate this repo (--self) and product repos (--repo)
-examples/sample-feature — teaching example AND migration/convert.py's CI fixture
+examples/sample-feature — teaching example (kept fresh by check_spec_structure.py --self)
 ```
 
 - The preset overrides four templates (all strategy **replace** — see
@@ -110,9 +108,9 @@ examples/sample-feature — teaching example AND migration/convert.py's CI fixtu
   `after_implement` hook. It prepares review notes and never writes Status
   lines. No command or script overrides — only supported upstream override
   points, which is what keeps pin-forwards cheap.
-- `examples/sample-feature` rots nowhere: any edit to it or to
-  `migration/convert.py` must keep `--round-trip` green, and the converter
-  expects `- **R-n**` bullets with two-space continuations in spec.md.
+- `examples/sample-feature` rots nowhere: `ci/check_spec_structure.py --self`
+  gates it on every push (it keys on `- **R-n**` requirement bullets), so any
+  edit must keep that check green.
 
 ## Pinned-version facts (re-verify at every pin-forward)
 

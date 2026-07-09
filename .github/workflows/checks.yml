@@ -1,7 +1,6 @@
 # Repo checks
 #
-# Every push and PR, one Linux job — the merge gate on main. The converter
-# round-trip runs here too, keeping the exit a tested capability.
+# Every push and PR, one Linux job — the merge gate on main.
 # Where the hosting plan cannot mark checks "required", a red run is
 # treated as a merge blocker by convention (README "Hosting note") —
 # recorded honestly, enforced by review.
@@ -28,6 +27,3 @@ jobs:
 
       - name: Spec structure self-check
         run: uv run ci/check_spec_structure.py --self
-
-      - name: Migration round-trip — the exit stays tested (SDD-STANDARD §9.4)
-        run: uv run migration/convert.py --round-trip examples/sample-feature
