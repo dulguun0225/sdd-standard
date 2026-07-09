@@ -21,7 +21,6 @@ on:
       - "bootstrap/**"
       - "speckit/**"
       - "ci/**"
-      - "migration/**"
       - ".github/workflows/verify-tri-os.yml"
 
 concurrency:
@@ -208,10 +207,6 @@ jobs:
           grep -q 'backend-services' target/.specify/memory/constitution.md \
             || { echo "::error::profile section missing from the constitution"; exit 1; }
           echo "convention checks OK inside the bootstrapped repo"
-
-      - name: Migration round-trip (tri-OS coverage, SDD-STANDARD §9.4)
-        shell: bash
-        run: uv run migration/convert.py --round-trip examples/sample-feature
 
       - name: Upload evidence
         if: always()

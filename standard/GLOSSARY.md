@@ -37,9 +37,9 @@ document, a PR, a tracker item.
 
 ## 2. Artifact vocabulary
 
-The standard names the *documents*; the current implementation (Spec Kit,
-pinned in `speckit/PINNED-VERSION`) names the *files*. Decided 2026-07-02:
-stock filenames, the standard's vocabulary inside the documents.
+The standard names the *documents*; GitHub Spec Kit (pinned in
+`speckit/PINNED-VERSION`) names the *files*. Decided 2026-07-02: stock
+filenames, the standard's vocabulary inside the documents.
 
 | Standard term | File on disk | Contains |
 | ------------- | ------------ | -------- |
@@ -70,13 +70,11 @@ stock filenames, the standard's vocabulary inside the documents.
 
 | Term (EN) | Definition | Монгол (ноорог) |
 | --------- | ---------- | ---------------- |
-| Standard owner | The named **role** (not person) that approves normative changes, pin-forwards, exit-trigger outcomes, and new profiles (SDD-STANDARD §13) | Стандарт эзэмшигч (үүрэг) |
+| Standard owner | The named **role** (not person) that approves normative changes, pin-forwards, and new profiles (SDD-STANDARD §13) | Стандарт эзэмшигч (үүрэг) |
 | Normative | Binding language (shall/MUST, gates) — lives only in SDD-STANDARD.md and profiles | Заавал мөрдөх |
 | Informative | Explains and demonstrates, never legislates — everything in `docs/` | Танилцуулах, мэдээллийн |
 | Stack profile | A subordinate document binding the standard's abstract slots to one stack; defaults and vocabulary only — never gates, approvals, or artifact types | Технологийн профайл |
 | Version pin | The single pinned Spec Kit version (`speckit/PINNED-VERSION`); upgrades are tested in this repo first | Бэхэлсэн хувилбар |
 | Preset | Spec Kit's supported mechanism for layering the standard's templates and terminology over stock behavior | Пресет (урьдчилсан багц) |
 | Extension | Spec Kit's supported mechanism for adding commands and workflow hooks (e.g. the review phase) | Өргөтгөл |
-| Exit trigger | A pre-declared condition that convenes a migration review | Гарах нөхцөл |
-| Migration | The tested move from Spec Kit to the plan-B tool (OpenSpec), per `migration/PLAYBOOK.md` | Шилжилт |
 | Constitution | The non-negotiable principles a repo's specs must respect | Үндсэн дүрэм |

@@ -28,8 +28,8 @@ at the creation of this repository.
 
 | ID | Decision | Date | Authority | State | Record |
 | -- | -------- | ---- | --------- | ----- | ------ |
-| D-1 | GitHub Spec Kit is the current implementation of the standard. Rejected: Kiro, OpenSpec-as-primary, BMAD, Superpowers | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §9](standard/SDD-STANDARD.md) |
-| D-2 | Exit triggers pre-declared; the exit is a tested capability (converter + CI round-trip), never an intention | 2026-07-04 | Repo owner (founding) | Settled | [migration/PLAYBOOK.md](migration/PLAYBOOK.md) (operative wording); [SDD-STANDARD §9.4](standard/SDD-STANDARD.md) |
+| D-1 | GitHub Spec Kit is the current implementation of the standard. Rejected: Kiro, OpenSpec-as-primary, BMAD, Superpowers | 2026-07-04 | Repo owner (founding) | Amended by D-18 — see note | [SDD-STANDARD §9](standard/SDD-STANDARD.md) |
+| D-2 | Exit triggers pre-declared; the exit is a tested capability (converter + CI round-trip), never an intention | 2026-07-04 | Repo owner (founding) | Withdrawn by D-18 — see note | [CHANGELOG](CHANGELOG.md) "Decided" (D-18) |
 | D-3 | The convention is a versioned shared library: semver, CHANGELOG, releases stay 0.x until the standard owner declares 1.0 | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §13](standard/SDD-STANDARD.md) |
 | D-4 | Specs live in each product repo next to the code they govern; no central specs repository | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §2](standard/SDD-STANDARD.md) |
 | D-5 | Stack profiles are subordinate to the standard: defaults and vocabulary only — never gates, approval steps, or artifact types | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §7](standard/SDD-STANDARD.md) |
@@ -41,10 +41,16 @@ at the creation of this repository.
 | D-11 | Validation happens on demo projects; introduction to an organization is a separate, later decision with its own approval | 2026-07-04 | Repo owner (founding) | Settled — see note | [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-12 | Decisions are indexed in this single-file registry with stable D-ids; sparse per-file records only if a future decision has no natural home | 2026-07-04 | Repo owner (founding) | Settled — see note | This file; [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-13 | The repository is organization-neutral: it contains only the standard, its tooling, and processes — no organization names, governance bodies, org structure, personnel, or org-infrastructure facts. Organization-specific bindings (standard-owner designation, approver names, policies, hosting) happen at adoption | 2026-07-04 | Repo owner (founding) | Settled | [SDD-STANDARD §13](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
-| D-14 | Exit-trigger reviews weigh two pre-declared plan-B candidates: OpenSpec (the tested exit) and chartering an in-house implementation of the standard (spec'd at review time, never pre-built). Trigger 5 covers upstream retiring or breaking the supported override points | 2026-07-04 | Repo owner (founding) | Settled — see note | [migration/PLAYBOOK.md](migration/PLAYBOOK.md) §1 (operative wording); [CHANGELOG](CHANGELOG.md) "Decided" |
+| D-14 | Exit-trigger reviews weigh two pre-declared plan-B candidates: OpenSpec (the tested exit) and chartering an in-house implementation of the standard (spec'd at review time, never pre-built). Trigger 5 covers upstream retiring or breaking the supported override points | 2026-07-04 | Repo owner (founding) | Withdrawn by D-18 — see note | [CHANGELOG](CHANGELOG.md) "Decided" (D-14, D-18) |
 | D-15 | EARS is the requirements notation: §4.1 binds one testable behavior + a stable R-id, phrased in EARS, with a narrow structured-fallback escape hatch. Rejected: stock Spec Kit user stories + Given/When/Then, Gherkin-as-primary, plain ISO-29148 shall statements, Planguage, FRET | 2026-07-04 | Repo owner (founding) | Settled — see note | [SDD-STANDARD §4.1](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-16 | Qualifying work items are defined by property triggers of the change (externally observable behavior/contract, boundary-crossing, hard-to-reverse step, new capability), never by estimated size; story points dropped as the threshold unit | 2026-07-04 | Repo owner (founding) | Starting default ⚠ — see note | [SDD-STANDARD §6](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) "Decided" |
 | D-17 | The seeded constitution is thin context, not enforcement: a version-stamped pointer plus the generation-time principles; shared-block drift is machine-checked by `ci/check_convention_version.py` | 2026-07-04 | Repo owner (founding) | Settled — see note | [constitution-template](speckit/presets/sdd/templates/constitution-template.md); [CHANGELOG](CHANGELOG.md) "Decided" |
+
+Decisions made after founding.
+
+| ID | Decision | Date | Authority | State | Record |
+| -- | -------- | ---- | --------- | ----- | ------ |
+| D-18 | Vendor-neutrality abandoned for simplicity: GitHub Spec Kit is the sole implementation, and the tested-exit apparatus (plan-B converter `migration/`, pre-declared exit triggers, CI round-trip) is withdrawn. Supersedes D-2 and D-14; amends D-1 and D-9's premise. Org-neutrality (D-13) unaffected | 2026-07-09 | Repo owner | Settled — see note | [CHANGELOG](CHANGELOG.md) "Decided"; [SDD-STANDARD §9](standard/SDD-STANDARD.md) |
 
 ## Notes
 
@@ -54,7 +60,9 @@ at the creation of this repository.
   unconfirmed — these rows are the tracker.
 - **D-9**: premise on record — the decision is justified by the exit
   being a *tested* capability (D-2). If `migration/` rots, the premise
-  fails and the decision must be revisited.
+  fails and the decision must be revisited. *(2026-07-09, D-18: the
+  tested-exit premise is withdrawn; D-9 now rests on the simpler ground
+  that Spec Kit is the sole implementation.)*
 - **D-10**: the pinned Spec Kit (v0.12.4) ships a `py` script type;
   evaluated 2026-07-04 and not adopted — it is one release old with no
   maturity evidence, has no cells in the verification matrix, and its
@@ -93,7 +101,7 @@ at the creation of this repository.
   if a trigger fires or demo validation shows a thin actually-used tool
   surface — so during validation, pin-forward pain and which Spec Kit
   features get exercised are noted informally (CHANGELOG observations,
-  not pilot machinery).
+  not pilot machinery). *(Withdrawn 2026-07-09 by D-18.)*
 - **D-15**: grounds — zero machine coupling to phrasing (all converter and
   CI enforcement rides the `- **R-n**` bullet structure, none parses EARS
   keywords); a bounded 5-keyword English surface the glossary translates
@@ -129,6 +137,16 @@ at the creation of this repository.
   drift detection and no re-seed channel. The preset templates and the
   review command carry the operative rules at each point of use; §2.4
   becomes machine-checkable via the shared-block diff in
-  `ci/check_convention_version.py`. The constitution is also the least
-  portable artifact at exit (OpenSpec has no equivalent; the playbook maps
-  it to a human paste step) — thinner is cheaper to carry across.
+  `ci/check_convention_version.py`.
+- **D-2, D-14** (note added 2026-07-09): withdrawn by D-18 — the tested exit
+  and the plan-B candidates are removed; `migration/` and its playbook no
+  longer exist, so their record pointers are gone. The withdrawal is
+  recorded in the D-18 note.
+- **D-18** (2026-07-09): vendor-neutrality abandoned for simplicity and
+  ease — GitHub Spec Kit becomes the *sole* implementation, not one
+  swappable option. Withdrawn: the tested exit (D-2), the plan-B candidates
+  OpenSpec and in-house (D-14), and the pre-declared exit triggers;
+  deleted: `migration/` and the round-trip CI gate. The explicit trade: no
+  tested escape hatch remains — if Spec Kit or its supported override
+  points fail, the exit is rebuilt then, not kept warm. Org-neutrality
+  (D-13) is retained. Authority: repo owner, during demo validation (D-11).
