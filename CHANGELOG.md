@@ -26,6 +26,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- `backend-services` profile 0.2.0-draft — from thin table shapes to a
+  full default set. New: the **stated-or-default reading rule** (silence
+  in a Design Document contract reads as the profile default, never as
+  implementer's choice); silence defaults for auth, pagination,
+  concurrency, atomicity, delivery semantics, ordering, dead-lettering,
+  and schema evolution; a contract vocabulary; the ten standard failure
+  cases; extended worked examples; stack-family wording widened from
+  "microservices" to any deployment shape. Grounds — adversarially
+  verified findings on AI-implementer failure modes: misreading the spec
+  and missing corner cases dominate LLM-generated bugs, models fill
+  unstated detail with the statistically common training-data pattern
+  rather than flagging the gap, and explicit contract tables target the
+  measured API-misuse defect class (arXiv:2403.08937; ACM TOSEM
+  10.1145/3728894; arXiv:2407.06153) — plus contract conventions
+  observed in a production backend codebase. `_TEMPLATE.md` gains the
+  optional "Contract vocabulary" section the profile now uses.
+- Preset 0.2.0: the plan-template's two contract-slot comments now carry
+  the profile's silence defaults at point of use (the D-17
+  point-of-use pattern — the profile file itself is not present in
+  product repos, the seeded template is).
 - SDD-STANDARD §9 renamed "Current implementation" → "Implementation":
   GitHub Spec Kit is now stated as *the* implementation of the standard,
   not one swappable option. §9.1's tool-independence claim and §9.4 (the

@@ -23,21 +23,30 @@ open. Keep it one paragraph.>
 
 <How the Design Document's sync-API contract section is written under this
 stack: the table shape, required columns, error-code conventions, idempotency
-language. Defaults only — a team may deviate with a stated reason in the
+language — and what silence means (the stated-or-default reading: an absent
+statement reads as the profile default, never as implementer's choice).
+Defaults only — a team may deviate with a stated reason in the
 Design Document.>
 
 ## 3. Asynchronous contract defaults
 
 <How the Design Document's async-message contract section is written:
 subject/topic naming default, where schemas live, how delivery semantics are
-stated. Defaults only.>
+stated — and what silence means. Defaults only.>
 
-## 4. Worked examples
+## 4. Contract vocabulary
+
+<Optional — delete if plain language covers the stack. Terms the contract
+sections depend on, each defined in one line, plus the failure cases this
+stack family routinely meets. Vocabulary only: names and meanings, never
+obligations.>
+
+## 5. Worked examples
 
 <At least one filled-in example per contract section, small enough to read
 in a minute.>
 
-## 5. Profile changelog
+## 6. Profile changelog
 
 | Version | Date | Change |
 | ------- | ---- | ------ |
