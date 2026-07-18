@@ -3,7 +3,7 @@ schema_version: "1.0"
 preset:
   id: "sdd"
   name: "SDD Standard"
-  version: "0.1.0"
+  version: "0.2.0"
   description: "The SDD convention over stock Spec Kit: Requirements/Design/Tasks vocabulary, EARS with stable R-ids, human approval gates, profile contract slots"
   author: "sdd-standard maintainers"
   repository: "https://example.com/sdd-standard"
