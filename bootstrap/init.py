@@ -6,7 +6,8 @@
 Wraps `specify init` (pinned to speckit/PINNED-VERSION, invoked through
 `uv tool run` so the pin holds by construction), layers the SDD
 preset and review extension from this checkout, seeds the shared constitution
-with the chosen stack profile, and records the consumed convention version
+with the chosen stack profile, installs the profile's full text next to it
+(`.specify/memory/profile.md`), and records the consumed convention version
 in `.specify/sdd.json`.
 
 This is the ONLY supported way to adopt the convention (SDD-STANDARD §9.2).
@@ -224,8 +225,11 @@ def seed_constitution(target: Path, profile: str) -> None:
         f"shapes; deviations carry a stated reason. The profile provides "
         f"defaults and vocabulary only — it never adds gates, approval "
         f"steps, or artifact types (SDD-STANDARD §7). Full text: "
-        f"`standard/profiles/{profile}/profile.md` in the sdd-standard "
-        f"repository at the pinned release.\n"
+        f"`.specify/memory/profile.md` — a verbatim copy of "
+        f"`standard/profiles/{profile}/profile.md` at the pinned release, "
+        f"installed by bootstrap and drift-checked by "
+        f"`ci/check_convention_version.py`; profile changes land upstream "
+        f"by PR, never by editing the copy.\n"
     )
     marker = "## Stack profile"
     head, sep, _ = text.partition(marker)
@@ -237,6 +241,26 @@ def seed_constitution(target: Path, profile: str) -> None:
 
     memory.write_text(text, encoding="utf-8", newline="\n")
     print(f"constitution seeded: {memory} (Shared principles + {profile})")
+
+
+def install_profile(target: Path, profile: str) -> None:
+    """Copy the chosen profile's full text into the product repo.
+
+    The constitution carries only a pointer (thin context, D-17); the
+    profile's defaults can steer an implementing agent only if the full
+    text is present in the repo the agent works in. The copy is verbatim —
+    `ci/check_convention_version.py` compares it against the standard's
+    profile at the pinned release, so edits to it land upstream by PR,
+    never locally.
+    """
+    source = PROFILES_DIR / profile / "profile.md"
+    dest = target / ".specify" / "memory" / "profile.md"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(
+        source.read_text(encoding="utf-8"), encoding="utf-8", newline="\n"
+    )
+    print(f"profile installed: {dest} "
+          f"(copy of standard/profiles/{profile}/profile.md)")
 
 
 def write_marker(target: Path, profile: str, variant: str, pin: str) -> None:
@@ -375,8 +399,9 @@ def main() -> None:
             "and re-run bootstrap on a fresh target",
         )
 
-    print("\n== constitution and marker ==")
+    print("\n== constitution, profile, and marker ==")
     seed_constitution(target, args.profile)
+    install_profile(target, args.profile)
     write_marker(target, args.profile, args.script, pin)
 
     print(

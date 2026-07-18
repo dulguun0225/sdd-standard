@@ -108,6 +108,11 @@ Enforcement on CE, stated honestly:
   shared-principles block was edited (SDD-STANDARD §8.2 compares it
   byte-for-byte against the pinned template; repo-specific principles go
   under "Repo principles").
+- Bootstrap also installs your profile's full text at
+  `.specify/memory/profile.md`, so its contract defaults are in the repo
+  your agents actually read. The same CI check compares that copy against
+  the standard's profile at the pinned release — a profile change lands
+  upstream by PR to sdd-standard, never by editing the copy.
 
 ## 5. Roles before you start
 
