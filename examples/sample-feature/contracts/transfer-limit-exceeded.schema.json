@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "payments.transfer.limit-exceeded",
+  "title": "transfer-limit-exceeded",
+  "description": "Published by transfer-service when a transfer is rejected by the daily-limit check. Envelope per the backend-services profile: event_id is the de-duplication key (R-6).",
+  "type": "object",
+  "required": ["event_id", "occurred_at", "correlation_id", "account_id", "attempted_amount", "limit_amount", "currency"],
+  "properties": {
+    "event_id": { "type": "string", "description": "De-duplication key; unique per event" },
+    "occurred_at": { "type": "string", "format": "date-time", "description": "UTC ISO-8601" },
+    "correlation_id": { "type": "string", "description": "Id of the rejected transfer attempt that caused this event" },
+    "account_id": { "type": "string" },
+    "attempted_amount": { "type": "string", "description": "Exact decimal as string, in `currency`" },
+    "limit_amount": { "type": "string", "description": "Exact decimal as string, in `currency`" },
+    "currency": { "type": "string", "description": "ISO-4217 code" }
+  },
+  "additionalProperties": true
+}

@@ -17,7 +17,9 @@ This is the **Task List**. Every task carries at least one `[R-n]` reference
 to a requirement it implements — a task that maps to no requirement is either
 missing a requirement or not needed. T-ids are stable like R-ids: never
 renumbered, never reused; withdrawn tasks stay listed as `WITHDRAWN`. Phases
-come from plan.md §9; a task is done when its evidence exists.
+come from plan.md §9; a task is done when its evidence exists. Prefer many
+small, independently verifiable tasks over few large ones — each completable
+and checkable in one sitting; per-step errors compound across a long task.
 
 ---
 

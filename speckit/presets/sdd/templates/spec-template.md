@@ -43,7 +43,11 @@ the definitions it uses.]
      behavior. Where an EARS sentence would distort the meaning (mathematical
      content, more than three preconditions), SDD-STANDARD §4.1 permits a
      structured list or table under the same R-id bullet with a one-line
-     rationale — keep it inside the bullet's two-space continuation lines. -->
+     rationale — keep it inside the bullet's two-space continuation lines.
+     A spec with only WHEN happy paths is half a spec: walk the profile's
+     standard failure cases (.specify/memory/profile.md §4 — duplicate,
+     replay, stale update, not-entitled, timeout, partial failure, …) and
+     write the IF/THEN unwanted-behavior rows that apply. -->
 
 - **R-1** WHEN [trigger], the [system] shall [response].
 - **R-2** The [system] shall [response].

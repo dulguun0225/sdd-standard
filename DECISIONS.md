@@ -83,6 +83,18 @@ Decisions made after founding.
   Recorded honestly: single-author demos cannot surface non-native-English
   authoring burden or approver rubber-stamping — those wait for real
   adopting teams, a separate decision per this row.
+- **D-11** (note added 2026-07-18): three further observables, from the
+  adversarially verified AI-error-reduction research behind the profile
+  0.2.0-draft — same terms as the 2026-07-05 note (watch and note
+  informally; CHANGELOG observations, never pilot machinery):
+  (6) silence-conformance — places where an implementing agent guessed a
+  contract dimension despite the stated-or-default rule (profile §1):
+  which defaults get honored, which get ignored; (7) review-notes catches
+  — whether the review phase's silence-conformance step actually surfaces
+  silence violations and empty-Idempotency-cell questions; (8) lexical
+  vagueness — EARS-well-formed but unquantified requirements
+  ("quickly"-class words) that survive the Requirements gate now that the
+  structure check warns on them.
 - **D-12**: evaluated against external practice: small standards repos
   keep rationale in the spec text and history in a changelog; per-file
   ADR directories stall at 1–5 files in roughly half of observed
@@ -118,6 +130,15 @@ Decisions made after founding.
   unwanted-behavior review heuristic in `docs/reviewing-specs.md`. Revisit
   triggers: demo validation showing systematic authoring failure, or
   plan-B promotion (OpenSpec's validator mandates scenario blocks).
+- **D-15** (note added 2026-07-18): the evidence gap narrows, not closes.
+  The deep-research run behind the profile 0.2.0-draft verified 3-0 that
+  spec misinterpretation is the dominant LLM defect class across four
+  peer-reviewed taxonomies (arXiv:2403.08937; ACM TOSEM 10.1145/3728894;
+  arXiv:2407.06153; arXiv:2404.00971) and that structurally rich specs
+  neutralize under-specification while their layers agree
+  (arXiv:2604.24712). Still missing: a controlled study isolating EARS
+  itself. The demo-validation revisit trigger stands; the plan-B trigger
+  lapsed with D-18.
 - **D-16**: this row is the ⚠ tracker for §6.1's trigger list (like D-7 and
   D-8, nothing else tracks that the default is unconfirmed). Grounds: story
   points are undefined for teams that do not estimate, are self-reported
