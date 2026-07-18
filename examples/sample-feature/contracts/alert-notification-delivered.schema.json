@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "alerts.notification.delivered",
+  "title": "alert-notification-delivered",
+  "description": "Published by alerts-service after a notification delivery attempt concludes (R-7, R-8). Envelope per the backend-services profile; consumers de-duplicate on delivery_id.",
+  "type": "object",
+  "required": ["event_id", "occurred_at", "correlation_id", "delivery_id", "alert_id", "channel", "outcome"],
+  "properties": {
+    "event_id": { "type": "string", "description": "Envelope de-duplication key; unique per event" },
+    "occurred_at": { "type": "string", "format": "date-time", "description": "UTC ISO-8601" },
+    "correlation_id": { "type": "string", "description": "event_id of the consumed transfer-limit-exceeded event" },
+    "delivery_id": { "type": "string", "description": "Stable per delivery attempt; the consumer-facing dedup key" },
+    "alert_id": { "type": "string" },
+    "channel": { "type": "string", "enum": ["sms", "email"] },
+    "outcome": { "type": "string", "enum": ["delivered", "failed"] },
+    "attempt": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": true
+}

@@ -3,8 +3,8 @@ schema_version: "1.0"
 extension:
   id: sdd
   name: "SDD Review Phase"
-  version: "0.1.0"
-  description: "The SDD review phase: checks the implementation against the approved spec/plan/tasks and prepares review notes for the human Review-gate approver; never writes Status lines"
+  version: "0.2.0"
+  description: "The SDD review phase: checks the implementation against the approved spec/plan/tasks — including silence-conformance against the profile's stated-or-default contract reading — and prepares review notes for the human Review-gate approver; never writes Status lines"
   category: "process"
   effect: "read-write"
   author: "sdd-standard maintainers"

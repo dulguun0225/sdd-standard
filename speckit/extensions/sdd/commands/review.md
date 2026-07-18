@@ -55,6 +55,33 @@ approver. The notes inform the gate; they never pass it.
    error code, event, and delivery semantic present and matching; anything
    implemented but undeclared flagged.
 
+   Then check **silence-conformance** against the repo's stack profile
+   (`.specify/memory/profile.md`). Under the profile's stated-or-default
+   reading rule (profile §1), a silent contract cell is not the
+   implementer's choice — the profile default *is* the contract. For every
+   dimension the table leaves unstated, verify the code implements the
+   default, not a guess:
+
+   - collection operation, no page statement → cursor pagination: opaque
+     `cursor` + `limit` (default 50, cap 200), response
+     `{items, next_cursor}`;
+   - update on a versioned resource, no concurrency statement →
+     compare-and-set, stale writes rejected with a stable conflict code;
+   - unstated delivery → at-least-once with **durable** de-duplication on
+     `event_id` (unique index or dedup table — not process memory);
+   - unprocessable message → parked on a dead-letter destination with its
+     error, never silently dropped;
+   - event produced as the effect of a state change → publish and state
+     change atomic, with a named mechanism (e.g. transactional outbox);
+   - authenticated-but-not-entitled access → existence-safe response
+     (indistinguishable from "does not exist").
+
+   Give each silent dimension a verdict: default honored / default violated
+   (name what the code does instead) / not applicable. Separately, flag
+   every mutating operation whose Idempotency cell is empty — that cell has
+   no safe default (profile §2); record it as a named question for the
+   approver, never as a gap to fill yourself.
+
 6. **Check the tasks.** Every task marked done has its stated evidence;
    every task carries `[R-n]`; incomplete tasks are listed.
 
@@ -74,6 +101,8 @@ approver. The notes inform the gate; they never pass it.
    ## Requirements coverage
    | R-id | Verdict | Evidence |
    ## Contract check
+   ### Silence-conformance (profile defaults)
+   ### Idempotency cells left empty
    ## Task evidence
    ## Spec-drift findings
    ## Open questions for the approver

@@ -34,6 +34,14 @@ Approve when:
 - The unwanted-behavior cases exist (`IF … THEN …`). A spec with only
   happy-path `WHEN`s is half a spec — ask what happens on the duplicate,
   the missing account, the failed delivery.
+- Ambiguity is removed here or nowhere — implementers (human or AI) cannot
+  be relied on to detect it downstream, and an AI implementer fills each
+  ambiguous spot with a silent guess. A quick checklist: unbounded
+  quantities ("large", "many", "several"); time bounds without a number
+  and a unit ("quickly", "soon", "eventually"); vague adverbs and
+  adjectives ("appropriately", "gracefully", "efficient"); terms the spec
+  uses but §2 never defines. The structure check warns on the common vague
+  words; the judgment call stays yours.
 - Success criteria are measurable after shipping, not restatements of the
   requirements.
 - Scope says what is **out**. The absent sentence is the expensive one.

@@ -10,6 +10,52 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `ci/check_spec_structure.py` grows two merge-blocking checks and one
+  advisory: **contract-link existence** (every local `contracts/…` path a
+  feature's plan.md references must exist in that feature's spec folder;
+  URLs and registry references are out of scope) — hallucinated schema
+  links are the measured API-knowledge-conflict defect class, ~20–26% of
+  hallucinations (ACM TOSEM 10.1145/3728894; arXiv:2404.00971);
+  **layer congruence** (`--self` only: the plan-template's contract-table
+  headers must match the backend-services profile's column lists —
+  multi-layer redundant specs help only while the layers agree; drifted
+  layers actively hurt, arXiv:2604.24712); and a **vague-word WARNING**
+  (never merge-blocking) on spec.md requirement bullets ("quickly",
+  "appropriate", …) — lexical vagueness survives well-formed EARS, and a
+  deterministic grep beats LLM ambiguity-flagging's ~50% precision
+  (arXiv:2604.21505); advisory output for the human Requirements
+  approver. Extending the merge gate's scope is standard-adjacent: this
+  entry plus standard-owner PR approval is its record.
+- `examples/sample-feature/contracts/` — the two event schemas the
+  example's plan.md always referenced now exist, teaching the profile's
+  default schema location (and satisfying the new contract-link check).
+- Review extension 0.2.0: the review command's contract check gains a
+  **silence-conformance** step — where a contract cell is silent, it
+  verifies the code implements the profile default (cursor pagination,
+  compare-and-set, durable dedup on `event_id`, dead-letter never drop,
+  atomic publish-with-state-change, existence-safe not-entitled) rather
+  than a guess, and flags every mutating operation whose Idempotency cell
+  is empty (no safe default — profile §2) as a named question. Findings
+  land in review-notes.md; zero new gates — the command still only
+  informs the human Review approver and never writes Status lines.
+  Ground: agents violate explicit constraints in 40.4% of confirmed
+  real-world failures (arXiv:2605.30777) — verification, not document
+  volume, secures compliance.
+- Preset 0.3.0 — point-of-use nudges (the D-17 pattern): the
+  spec-template's §3 comment sends the drafting agent through the
+  profile's standard failure cases for the IF/THEN rows (missing corner
+  cases are the #2 LLM bug pattern at 15.27%, #1 for the strongest model
+  studied — arXiv:2403.08937); the tasks-template favors many small,
+  independently verifiable tasks over few large ones (per-step errors
+  compound; smallest-verifiable-subtask decomposition with independent
+  verification approaches zero error at scale — arXiv:2511.09030).
+  `docs/reviewing-specs.md` (informative) gains the Requirements
+  approver's ambiguity checklist — ambiguity is removed upstream by
+  humans or nowhere (arXiv:2604.21505; arXiv:2607.00711).
+- D-11 note (2026-07-18): three research-informed demo-validation
+  observables — silence-conformance, review-notes catches, lexical
+  vagueness.
+
 - README section "The lifecycle in a product repo" — the end-to-end map
   of the normative rules in an adopting repo: the qualification
   decision, the gate diagram with who-does-what markers, the approver
