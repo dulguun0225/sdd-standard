@@ -130,6 +130,15 @@ Decisions made after founding.
   unwanted-behavior review heuristic in `docs/reviewing-specs.md`. Revisit
   triggers: demo validation showing systematic authoring failure, or
   plan-B promotion (OpenSpec's validator mandates scenario blocks).
+- **D-15** (note added 2026-07-18): the evidence gap narrows, not closes.
+  The deep-research run behind the profile 0.2.0-draft verified 3-0 that
+  spec misinterpretation is the dominant LLM defect class across four
+  peer-reviewed taxonomies (arXiv:2403.08937; ACM TOSEM 10.1145/3728894;
+  arXiv:2407.06153; arXiv:2404.00971) and that structurally rich specs
+  neutralize under-specification while their layers agree
+  (arXiv:2604.24712). Still missing: a controlled study isolating EARS
+  itself. The demo-validation revisit trigger stands; the plan-B trigger
+  lapsed with D-18.
 - **D-16**: this row is the ⚠ tracker for §6.1's trigger list (like D-7 and
   D-8, nothing else tracks that the default is unconfirmed). Grounds: story
   points are undefined for teams that do not estimate, are self-reported

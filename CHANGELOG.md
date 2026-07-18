@@ -54,7 +54,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   humans or nowhere (arXiv:2604.21505; arXiv:2607.00711).
 - D-11 note (2026-07-18): three research-informed demo-validation
   observables — silence-conformance, review-notes catches, lexical
-  vagueness.
+  vagueness. D-15 note (2026-07-18): the honest evidence gap narrows
+  (spec misinterpretation confirmed as the dominant LLM defect class
+  across four peer-reviewed taxonomies), not closes — no controlled
+  study isolating EARS itself yet.
 
 - README section "The lifecycle in a product repo" — the end-to-end map
   of the normative rules in an adopting repo: the qualification
