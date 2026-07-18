@@ -62,6 +62,11 @@ Column conventions:
   dates are named `*_date`; money and other exact decimals travel as
   strings with an explicit currency or unit — a bare float on a money
   field is a defect, not a style choice.
+- Time is numeric: a stated timeout, latency budget, retry count, or
+  delivery window carries a number and a unit. "Quickly", "soon", and
+  "eventually" are not contract language — they survive even
+  well-formed EARS phrasing and leave the implementer to pick the
+  number.
 
 How silence reads (the §1 reading rule applied to this table):
 
