@@ -165,9 +165,12 @@ treated as a blocker by convention.
 (`.specify/sdd.json`, written by bootstrap); currency is checked by
 `ci/check_convention_version.py`. The same check compares the
 constitution's seeded shared-principles block byte-for-byte against the
-pinned template (§2.4): any change to the shared block lands upstream by
-PR to the standard; repo-specific tightening belongs under the
-constitution's repo-principles section.
+pinned template (§2.4), and the repo's profile copy
+(`.specify/memory/profile.md`, installed by bootstrap so the profile's
+defaults are present in the repo agents work in) byte-for-byte against the
+standard's profile (§7) at the pinned release: any change to the shared
+block or to a profile lands upstream by PR to the standard; repo-specific
+tightening belongs under the constitution's repo-principles section.
 
 ## 9. Implementation
 

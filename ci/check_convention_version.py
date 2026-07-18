@@ -5,9 +5,12 @@
 
 Compares the repo's `.specify/sdd.json` (written by
 `bootstrap/init.py`) against a local sdd-standard checkout — its
-SDD-STANDARD.md version and speckit/PINNED-VERSION — and the seeded
+SDD-STANDARD.md version and speckit/PINNED-VERSION — the seeded
 constitution's shared-principles block against the checkout's template
-(SDD-STANDARD §2.4: seeded principles are never removed or weakened).
+(SDD-STANDARD §2.4: seeded principles are never removed or weakened), and
+the profile copy installed by bootstrap (`.specify/memory/profile.md`)
+against the checkout's profile (SDD-STANDARD §8.2: profile changes land
+upstream by PR, never by editing the copy).
 
 Non-zero exit with remediation on any mismatch. Stdlib only.
 SDD-STANDARD §8.2.
@@ -147,7 +150,47 @@ def main() -> None:
                     "block is compared byte-for-byte; seeded principles are "
                     "never removed or weakened)")
 
+    profile_name = marker.get("profile")
+    if not isinstance(profile_name, str) or not profile_name:
+        problems.append(
+            f"{marker_path.as_posix()} lacks a 'profile' entry - "
+            "re-run bootstrap/init.py to regenerate it")
+    else:
+        source_path = (standard / "standard" / "profiles" / profile_name
+                       / "profile.md")
+        try:
+            expected_profile = source_path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            expected_profile = None
+        if expected_profile is None:
+            fail(f"{source_path.as_posix()} missing - the checkout has no "
+                 f"{profile_name!r} profile",
+                 "point --standard at a complete sdd-standard checkout at "
+                 "the standard's current release")
+        copy_path = repo / ".specify" / "memory" / "profile.md"
+        if not copy_path.is_file():
+            problems.append(
+                f"{copy_path.as_posix()} missing - the profile copy "
+                "installed by bootstrap was removed, or this repo was "
+                "bootstrapped before the standard shipped profile copies")
+        else:
+            try:
+                found_profile = copy_path.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError) as err:
+                found_profile = None
+                problems.append(
+                    f"{copy_path.as_posix()} unreadable as UTF-8 ({err}) - "
+                    "re-save it as UTF-8 with LF endings")
+            if found_profile is not None and found_profile != expected_profile:
+                problems.append(
+                    f"profile.md differs from the standard's {profile_name!r} "
+                    "profile (SDD-STANDARD §8.2: the copy is compared "
+                    "byte-for-byte; profile changes land upstream by PR, "
+                    "never by editing the copy)")
+
     if problems:
+        profile_hint = profile_name if isinstance(profile_name, str) \
+            and profile_name else "<profile>"
         fail("; ".join(problems),
              "follow the convention upgrade steps in docs/adopting-a-repo.md "
              "of the sdd-standard repository (upgrades land as reviewed PRs, "
@@ -155,11 +198,15 @@ def main() -> None:
              "restore the '## Shared principles' block from "
              "speckit/presets/sdd/templates/constitution-template.md at the "
              "pinned release - repo-specific principles belong under "
-             "'## Repo principles'")
+             "'## Repo principles'. For a drifted or missing profile copy, "
+             "restore .specify/memory/profile.md from "
+             f"standard/profiles/{profile_hint}/profile.md at the pinned "
+             "release")
 
     print(f"OK: convention {expected_version}, Spec Kit pin {expected_pin}, "
           f"profile {marker.get('profile')!r}, variant "
-          f"{marker.get('variant')!r}, constitution shared block intact")
+          f"{marker.get('variant')!r}, constitution shared block and "
+          f"profile copy intact")
 
 
 if __name__ == "__main__":

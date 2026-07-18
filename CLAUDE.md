@@ -99,8 +99,9 @@ never add `fail-fast`.
 speckit/PINNED-VERSION ──► bootstrap/init.py ──► product repo
 speckit/presets/sdd/           (wraps pinned `specify init` via uv tool run,
 speckit/extensions/sdd/         installs preset + review extension from this
-standard/profiles/<profile>/    checkout, repairs the constitution, appends
-                                the profile, writes .specify/sdd.json)
+standard/profiles/<profile>/    checkout, repairs the constitution, copies
+                                the profile to .specify/memory/profile.md,
+                                writes .specify/sdd.json)
 ci/check_*.py — same scripts gate this repo (--self) and product repos (--repo)
 examples/sample-feature — teaching example (kept fresh by check_spec_structure.py --self)
 ```

@@ -31,9 +31,10 @@ what already exists vs. what this feature adds.]
 
 ## 3. Synchronous contracts
 
-<!-- Profile slot. Table shape per the repo's stack profile (default:
-     backend-services profile §2 — operation, method & path, auth, request,
-     responses, errors with stable codes, idempotency).
+<!-- Profile slot. Table shape per the repo's stack profile — full text at
+     `.specify/memory/profile.md` (default: backend-services profile §2 —
+     operation, method & path, auth, request, responses, errors with
+     stable codes, idempotency).
      Silence reads as the profile default, never implementer's choice:
      empty Auth = authenticated + named permission; collection = cursor
      pages; versioned update = compare-and-set; multi-store mutation =
@@ -48,9 +49,10 @@ what already exists vs. what this feature adds.]
 
 ## 4. Asynchronous contracts
 
-<!-- Profile slot. Table shape per the repo's stack profile (default:
-     backend-services profile §3 — event, subject/topic, schema, producer,
-     delivery semantics, consumers).
+<!-- Profile slot. Table shape per the repo's stack profile — full text at
+     `.specify/memory/profile.md` (default: backend-services profile §3 —
+     event, subject/topic, schema, producer, delivery semantics,
+     consumers).
      Silence reads as the profile default: at-least-once + durable dedup
      on event_id; no ordering guarantee; unprocessable messages
      dead-letter, never drop; publish + state change are atomic (name the

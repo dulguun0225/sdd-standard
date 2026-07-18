@@ -26,6 +26,21 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- `bootstrap/init.py` installs the chosen profile's full text into the
+  product repo (`.specify/memory/profile.md`, next to the constitution),
+  and the constitution's stack-profile block now points at that local
+  copy. This closes the gap noted in the preset 0.2.0 entry below — the
+  profile file itself was absent from product repos, so its silence
+  defaults never reached an implementing agent's context beyond the
+  compressed template comments; embedding the relevant knowledge in the
+  generation context is the strongest measured hallucination mitigation
+  (arXiv:2404.00971). `ci/check_convention_version.py` keeps the copy
+  honest: compared byte-for-byte against the standard's profile at the
+  pinned release, same mechanism as the constitution's shared-block
+  check (D-17 precedent) — profile changes land upstream by PR, never by
+  editing the copy. SDD-STANDARD §8.2 amended accordingly; the tri-OS
+  matrix gains a drifted-profile-copy negative probe. Preset 0.2.1: the
+  plan-template's contract-slot comments point at the local profile copy.
 - `backend-services` profile 0.2.0-draft — from thin table shapes to a
   full default set. New: the **stated-or-default reading rule** (silence
   in a Design Document contract reads as the profile default, never as

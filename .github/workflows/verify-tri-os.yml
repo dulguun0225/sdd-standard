@@ -5,8 +5,9 @@
 # review extension from this checkout), exercise all five scaffolded
 # workflow scripts asserting template provenance through the preset
 # resolution stack, then run both ci/ checks inside the bootstrapped repo —
-# including a negative probe that the structure gate goes red on a skipped
-# approval. The full grid (fail-fast: false) is the evidence for the
+# including negative probes that the structure gate goes red on a skipped
+# approval and the currency check goes red on a drifted profile copy.
+# The full grid (fail-fast: false) is the evidence for the
 # scaffold variant decision (SDD-STANDARD §10); it is not a
 # normal red/green gate.
 
@@ -206,6 +207,18 @@ jobs:
             || { echo "::error::shared constitution was not seeded"; exit 1; }
           grep -q 'backend-services' target/.specify/memory/constitution.md \
             || { echo "::error::profile section missing from the constitution"; exit 1; }
+          # negative probe: an edited profile copy must turn the currency check red
+          cp target/.specify/memory/profile.md profile.bak
+          printf '\ndrift\n' >> target/.specify/memory/profile.md
+          if uv run ci/check_convention_version.py --repo target --standard . > probe.log 2>&1; then
+            cat probe.log
+            echo "::error::currency check passed on a drifted profile copy"
+            exit 1
+          fi
+          mv profile.bak target/.specify/memory/profile.md
+          rm -f probe.log
+          uv run ci/check_convention_version.py --repo target --standard .
+          echo "negative probe OK: currency check rejects a drifted profile copy"
           echo "convention checks OK inside the bootstrapped repo"
 
       - name: Upload evidence
