@@ -68,7 +68,13 @@ Decisions made after founding.
   maturity evidence, has no cells in the verification matrix, and its
   interpreter resolution can bake the Windows Store `python3` stub (LW-1)
   into scaffolded commands. Grounds in SDD-STANDARD §10.4's note; watch
-  at future pin-forwards.
+  at future pin-forwards. *(2026-07-20, v0.13.0 pin-forward: re-evaluated
+  per §10.4 — `py` matured upstream (#3385 fixed the stub-baking
+  interpreter resolution; `py:` template lines; Python script ports) and
+  stays not adopted: no verification-matrix cells, single-variant rule
+  (§10.1). Same PR: LW-1's scaffold-runtime leg was fixed upstream
+  (spec-kit#3304 via #3312/#3320), so §10.3 relaxed from a
+  preflight-enforced gate to a recommendation.)*
 - **D-11** (note added 2026-07-05): pre-declared demo-validation
   observables, so validation cannot pass vacuously. Watch and note,
   informally (CHANGELOG observations, never pilot machinery): (1) EARS

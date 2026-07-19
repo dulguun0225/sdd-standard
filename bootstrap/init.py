@@ -150,10 +150,15 @@ def preflight(pin: str, variant: str) -> None:
     else:
         print(f"   specify  : not installed - using pinned {pin} via uv tool run")
 
-    # Finding LW-1: the scaffolded bash scripts read JSON through a
-    # jq -> python3 fallback chain; on stock Windows, `python3` resolves to
-    # the WindowsApps Store stub, which EXISTS but fails at RUNTIME, and the
-    # chain silently breaks. So we must *execute* the parser, not locate it.
+    # Finding LW-1: on stock Windows, `python3` in Git Bash resolves to the
+    # WindowsApps Store stub, which EXISTS but fails at RUNTIME — so the
+    # probe *executes* the parser rather than locating it. At the pinned
+    # version this no longer breaks the scaffold: upstream #3312/#3320
+    # (fixing spec-kit#3304, in by v0.12.9) fall through to grep/sed/awk on
+    # parse failure, and template resolution degrades to path-convention
+    # replace-only — exactly what the all-replace SDD preset needs. A
+    # working parser still buys manifest-aware template resolution and
+    # robust JSON parsing, so the probe stays as a WARNING, not a gate.
     if variant == "sh" and platform.system() == "Windows":
         bash = find_git_bash()
         if bash is None:
@@ -172,15 +177,17 @@ def preflight(pin: str, variant: str) -> None:
             [str(bash), "-c", probe], capture_output=True, timeout=60
         )
         if result.returncode != 0:
-            fail(
-                "no working JSON parser in Git Bash: jq is absent and "
-                "`python3` is absent or is the broken Microsoft-Store stub "
-                "(spec-kit#3304). The scaffolded workflow scripts will fail "
-                "silently without one.",
-                "uv python install --default   (or: install jq, or disable "
-                "the python3 App Execution Alias and put a real Python on PATH)",
+            print(
+                "   json     : WARNING - no working jq or python3 in Git "
+                "Bash (spec-kit#3304 territory). The scaffold scripts "
+                "fall back to text parsing at the pinned version, but a "
+                "real parser is recommended:\n"
+                "              uv python install --default   (or: install "
+                "jq, or disable the python3 App Execution Alias and put a "
+                "real Python on PATH)"
             )
-        print("   json     : working jq or python3 available in Git Bash")
+        else:
+            print("   json     : working jq or python3 available in Git Bash")
 
     print("preflight OK\n")
 
@@ -198,12 +205,17 @@ def specify(pin: str, args: list[str], cwd: Path | None = None) -> None:
 
 
 def seed_constitution(target: Path, profile: str) -> None:
-    """Overwrite the stock-seeded constitution with the shared one + profile.
+    """Overwrite the init-seeded constitution with the filled-in shared one.
 
-    At the pinned version, `specify init` copies the STOCK constitution
-    template into .specify/memory/constitution.md BEFORE the preset installs
-    (verified in the v0.12.4 source), so the shared constitution must be
-    materialized here. Re-verify at every pin-forward.
+    At the pinned version, `specify init` seeds
+    .specify/memory/constitution.md AFTER the preset installs, from the
+    preset's own constitution-template (verified in the v0.13.0 source:
+    commands/init.py `ensure_constitution_from_template`, upstream #3276) —
+    so the file already holds our template text, with its placeholders
+    unfilled. This overwrite fills [PROJECT NAME] / [CONVENTION VERSION]
+    and appends the stack-profile block, and stays correct even if a
+    future version reverts to stock-first seeding. Re-verify at every
+    pin-forward.
     """
     template = PRESET_DIR / "templates" / "constitution-template.md"
     memory = target / ".specify" / "memory" / "constitution.md"

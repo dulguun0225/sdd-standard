@@ -169,13 +169,15 @@ Every OS needs [uv](https://docs.astral.sh/uv/) and git; Spec Kit itself is
 installed pinned by `bootstrap/init.py` — never install it by hand.
 
 - **Windows**: Git Bash ships with Git for Windows — no extra shell needed.
-  One pitfall: the scaffold scripts need a **working** `python3` or `jq` in
-  Git Bash, and stock Windows only has the Microsoft-Store `python3` stub,
-  which breaks them silently
-  ([spec-kit#3304](https://github.com/github/spec-kit/issues/3304)). Fix
-  once per machine: `uv python install --default` (or install jq, or disable
-  the `python3` App Execution Alias and put a real Python on PATH).
-  Bootstrap's preflight checks this and tells you exactly what to run.
+  One (now historical) pitfall: stock Windows only has the Microsoft-Store
+  `python3` stub in Git Bash, which used to break the scaffold scripts
+  silently ([spec-kit#3304](https://github.com/github/spec-kit/issues/3304)
+  — fixed upstream by v0.12.9; at the pinned version the scripts fall back
+  to text parsing). A working parser is still recommended for
+  full-fidelity template resolution. Once per machine:
+  `uv python install --default` (or install jq, or disable the `python3`
+  App Execution Alias and put a real Python on PATH). Bootstrap's
+  preflight probes this and warns with the exact command.
 - **macOS**: nothing extra — the scripts run on the system bash 3.2
   (verified on the matrix's macOS runners).
 - **Linux**: nothing extra.

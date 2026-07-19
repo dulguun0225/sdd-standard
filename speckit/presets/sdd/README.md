@@ -13,10 +13,12 @@ SDD-STANDARD §9.2).
 | `tasks-template` | replace | Task List — `[R-n]` traceability, tasks gate |
 
 `tasks-template` is a full replace rather than the originally designed
-append addendum: at Spec Kit v0.12.4 the scaffolded workflow scripts resolve
-templates by path convention and never apply composition strategies, so an
-append-strategy file would be invisible to the agent workflow (verified
-in the v0.12.4 source).
+append addendum: the scaffolded workflow scripts honor composition
+strategies only when a working python3 + PyYAML are present at scaffold
+time and fall back to path-convention replace-only resolution without
+them (verified in the v0.13.0 source, common.sh resolve_template), so an
+append-strategy file would silently vanish on degraded machines.
+All-replace behaves identically at every degradation level.
 
 The review phase lives in the companion extension at
 `speckit/extensions/sdd/`.

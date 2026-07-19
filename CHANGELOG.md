@@ -10,6 +10,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Spec Kit pin v0.12.4 → v0.13.0 (per SDD-STANDARD §9.3: reviewed PR
+  plus the full tri-OS matrix). Pinned-version facts re-verified against
+  the v0.13.0 source: `specify init` now seeds the constitution *after*
+  preset install from the preset's own constitution-template (upstream
+  #3276) — bootstrap's `seed_constitution` remains as the
+  placeholder-filling overwrite; scaffold template resolution is now
+  layered and manifest-aware, degrading to path-convention replace-only
+  without a working python3 + PyYAML — the preset stays all-replace
+  deliberately; `--integration generic` still requires `--commands-dir`.
+  LW-1's scaffold-runtime leg is fixed upstream (spec-kit#3304 via
+  #3312/#3320, in by v0.12.9): the scripts fall through to grep/sed/awk
+  on parser failure, so bootstrap's Windows JSON-parser preflight
+  downgrades from a hard failure to a warning and SDD-STANDARD §10.3 is
+  amended from a preflight-enforced gate ("shall") to a recommendation
+  (dated amendment in §10.3). The §10.4 `py` script-type record is
+  re-evaluated (D-10 note): matured upstream (#3385 fixed the
+  stub-baking interpreter resolution) yet still not adopted — no
+  verification-matrix cells, single-variant rule. Preset 0.3.1 and
+  review extension 0.2.1: `requires.speckit_version` widened to
+  `<0.14.0`, which the previous bound excluded.
 - GLOSSARY.md: the Mongolian translations are native-reviewed and
   approved (2026-07-20). The machine-draft caveat is resolved — the
   provenance note now records the review, and the "(ноорог)" draft

@@ -198,21 +198,32 @@ PowerShell passes"* — no such cell exists: a full tri-OS matrix run (6/6
 cells green, both variants; the `verify-tri-os.yml` workflow reproduces
 it on demand) plus a real-workstation Windows/Git Bash leg.
 
-10.3 Windows workstations shall have a **working** `python3` or `jq`
-available in Git Bash before scaffold use (finding LW-1: the WindowsApps
-`python3` stub defeats the implementation's JSON parser chain — upstream
+10.3 A working `python3` or `jq` in Git Bash is recommended — no longer
+required — on Windows workstations (finding LW-1: the WindowsApps
+`python3` stub *exists but fails at runtime* — upstream
 [github/spec-kit#3304](https://github.com/github/spec-kit/issues/3304)).
-Bootstrap's preflight enforces this; remediation rides the existing uv
-prerequisite (see README per-OS notes).
+Bootstrap's preflight probes the parser by execution and warns with the
+remediation (see README per-OS notes). *(Amended 2026-07-20 at the
+v0.13.0 pin-forward: this clause was a gate — "shall … before scaffold
+use", preflight-enforced — while the stub silently broke the scaffold
+scripts' JSON parsing. Upstream fixed #3304 by v0.12.9 (#3312, #3320):
+the scripts now fall through to text parsing on parser failure and
+degrade to path-convention replace-only template resolution, which the
+all-replace SDD preset is deliberately immune to.)*
 
 10.4 This record shall be re-evaluated at any pin-forward that materially
-changes the script-type offering. *(The pinned v0.12.4 ships a `py`
-script type; evaluated 2026-07-04 and **not adopted**. Grounds: `py` is
-one release old with no maturity evidence and no cells in the
-verification matrix, and its interpreter resolution can select the
+changes the script-type offering. *(v0.12.4, pinned at the time, shipped
+a `py` script type; evaluated 2026-07-04 and **not adopted**. Grounds:
+`py` was one release old with no maturity evidence and no cells in the
+verification matrix, and its interpreter resolution could select the
 Windows Store `python3` stub at scaffold time — the LW-1 failure §10.3
-exists to prevent. Watch `py` at future pin-forwards; adopt it only by
-amending this record with matrix evidence.)*
+existed to prevent.)* *(Re-evaluated 2026-07-20 at the v0.13.0
+pin-forward: `py` matured — upstream #3385 fixed the stub-selecting
+interpreter resolution, command templates carry `py:` script lines, and
+core and extension scripts gained Python ports — and remains **not
+adopted**: it still has no cells in the verification matrix, and §10.1's
+single-variant rule stands (D-10). Watch again at the next pin-forward;
+adopt only by amending this record with matrix evidence.)*
 
 ## 11. Working language
 
