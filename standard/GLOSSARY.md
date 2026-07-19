@@ -5,9 +5,10 @@ EARS patterns; it never adds rules. If anything here appears to conflict with
 SDD-STANDARD.md or a profile, the standard wins and this file gets fixed.
 
 > **Монгол орчуулгын тухай / About the Mongolian column:** орчуулгыг
-> AI ноороглож, эх хэлтэй хянагч 2026-07-05-нд хянасан.
-> The Mongolian translations were machine-drafted and native-reviewed on
-> 2026-07-05. Improvements land by PR like any other change.
+> AI ноороглож, эх хэлтэй хянагч 2026-07-20-нд хянаж баталсан.
+> The Mongolian translations were machine-drafted, then native-reviewed
+> and approved on 2026-07-20. Improvements land by PR like any other
+> change.
 
 ---
 
@@ -52,7 +53,7 @@ filenames, the standard's vocabulary inside the documents.
 
 ### SDD core
 
-| Term (EN) | Definition | Монгол (ноорог) |
+| Term (EN) | Definition | Монгол |
 | --------- | ---------- | ---------------- |
 | Spec-driven development (SDD) | Working method where an approved specification precedes and governs implementation | Тодорхойлолтод суурилсан хөгжүүлэлт |
 | Specification (spec) | The set of artifacts (requirements, design, tasks) governing one feature | Техникийн тодорхойлолт (спек) |
@@ -68,7 +69,7 @@ filenames, the standard's vocabulary inside the documents.
 
 ### Governance & tooling
 
-| Term (EN) | Definition | Монгол (ноорог) |
+| Term (EN) | Definition | Монгол |
 | --------- | ---------- | ---------------- |
 | Standard owner | The named **role** (not person) that approves normative changes, pin-forwards, and new profiles (SDD-STANDARD §13) | Стандарт эзэмшигч (үүрэг) |
 | Normative | Binding language (shall/MUST, gates) — lives only in SDD-STANDARD.md and profiles | Заавал мөрдөх |
