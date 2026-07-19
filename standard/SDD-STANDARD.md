@@ -1,6 +1,6 @@
 # Spec-Driven Development Standard
 
-**Version: 0.1.0-draft** (pre-release — binding for a repository from the
+**Version: 0.2.0-draft** (pre-release — binding for a repository from the
 moment that repository adopts the convention) · Owner: the **standard
 owner** — a role, not a person, defined in §13 · Changes land by reviewed
 PR and a CHANGELOG entry.

@@ -8,6 +8,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+*(nothing yet)*
+
+## [0.2.0-draft] - 2026-07-20
+
+Developed during demo validation (D-11). Two threads: vendor-neutrality
+abandoned for simplicity — GitHub Spec Kit is the sole implementation of
+the standard (D-18) — and research-grounded hardening against
+AI-implementer failure modes: the backend-services profile's
+stated-or-default contract reading, the review extension's
+silence-conformance step, deterministic structure checks, point-of-use
+template nudges, and the profile's full text shipped into product repos.
+
 ### Added
 
 - `ci/check_spec_structure.py` grows two merge-blocking checks and one
@@ -58,6 +70,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (spec misinterpretation confirmed as the dominant LLM defect class
   across four peer-reviewed taxonomies), not closes — no controlled
   study isolating EARS itself yet.
+- D-11 note (2026-07-20): observable (5) of the 2026-07-05 note — one
+  converter `--round-trip` on a real demo feature — recorded as lapsed
+  with D-18, which withdrew `migration/` and the converter but did not
+  amend the observable list. Observables (1)–(4) and (6)–(8) stand.
 
 - README section "The lifecycle in a product repo" — the end-to-end map
   of the normative rules in an adopting repo: the qualification
