@@ -152,7 +152,7 @@ casually.
 
 ## Status and governance
 
-The standard is complete at 0.1.0-draft and being validated on demo projects
+The standard is complete at 0.2.0-draft and being validated on demo projects
 (separate repos, bootstrapped from this one). Owner: the standard owner —
 the repo maintainer(s), a role defined in SDD-STANDARD §13; an adopting
 organization designates its own owner at adoption. Convention changes

@@ -95,6 +95,13 @@ Decisions made after founding.
   vagueness — EARS-well-formed but unquantified requirements
   ("quickly"-class words) that survive the Requirements gate now that the
   structure check warns on them.
+- **D-11** (note added 2026-07-20): observable (5) of the 2026-07-05 note
+  — one converter `--round-trip` on a real demo feature — lapsed with
+  D-18 (2026-07-09): `migration/` and the converter were withdrawn, so
+  the observable can no longer be performed and validation is not gated
+  on it. Observables (1)–(4) and (6)–(8) stand. The D-18 withdrawal note
+  amended the D-2/D-14 record pointers but missed this list; this note
+  closes that gap.
 - **D-12**: evaluated against external practice: small standards repos
   keep rationale in the spec text and history in a changelog; per-file
   ADR directories stall at 1–5 files in roughly half of observed
