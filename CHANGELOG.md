@@ -8,7 +8,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-*(nothing yet)*
+### Changed
+
+- GLOSSARY.md: the Mongolian translations are native-reviewed and
+  approved (2026-07-20). The machine-draft caveat is resolved — the
+  provenance note now records the review, and the "(ноорог)" draft
+  markers on the Mongolian term columns are removed. This closes the
+  "machine-drafted MN pending native review" note from the 0.1.0-draft
+  entry; the note's earlier 2026-07-05 review date was premature and is
+  corrected.
 
 ## [0.2.0-draft] - 2026-07-20
 
