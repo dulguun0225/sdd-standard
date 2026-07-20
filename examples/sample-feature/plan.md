@@ -2,11 +2,15 @@
 
 **Status: APPROVED — Tulga (tech lead), 2026-07-05**
 
+> **Amendment 2026-07-20 (pending re-approval):** the Requirements
+> cross-reference date below is corrected to 2026-07-05 to match
+> `spec.md`'s approval. Re-approve to clear this note.
+
 | Field        | Value                                         |
 | ------------ | --------------------------------------------- |
 | Feature      | `007-transfer-limit-alerts`                    |
 | Authored     | 2026-07-02                                     |
-| Requirements | [spec.md](spec.md) — approved 2026-07-02       |
+| Requirements | [spec.md](spec.md) — approved 2026-07-05       |
 | Approver     | Design gate: alerts-service technical authority |
 
 This is the **Design Document** of the teaching example. Its two contract

@@ -82,12 +82,13 @@ draft, are [writing-requirements.md](writing-requirements.md).
 `Status: DRAFT` stays exactly as scaffolded. He opens the PR and
 requests Nara's review.
 
-**What CI says:** green — DRAFT is allowed. Plus one advisory line the
+**What CI says:** green — DRAFT is allowed. Plus one advisory finding the
 humans will use tomorrow:
 
 ```
-WARNING: spec.md: R-5 says "quickly" - replace it with a number and a
-unit; advisory for the Requirements approver, never merge-blocking
+WARNING: 1 advisory finding(s) - informative for the human approver, never merge-blocking:
+
+  specs/007-transfer-limit-alerts/spec.md: R-5 says "quickly" - replace it with a number and a unit; advisory for the Requirements approver, never merge-blocking
 ```
 
 ## Day 2 — rejection, the normal kind
@@ -173,9 +174,10 @@ actually delivers exactly once — not when the code "looks done".
 is one the notification service does not offer. That is new externally
 observable behavior, so §5.2 applies. The PR that ships the behavior
 must also update the spec, or it does not merge. Bilguun appends
-**R-9** — never renumber, never reuse (§4.2). The agent updates code
-and tests. The spec diff goes back before **Nara**, who re-approves it
-as a diff inside this PR. Minutes, not a ceremony —
+**R-9** — never renumber, never reuse (§4.2). He also appends **T-7**
+for the new rejection: work discovered mid-implementation takes the next
+free T-id. The agent updates code and tests. The spec diff goes back
+before **Nara**, who re-approves it as a diff inside this PR. Minutes, not a ceremony —
 [evolving-requirements.md](evolving-requirements.md) is the long form
 of this move. *(The example's frozen snapshot ends at R-8; the R-9 turn
 here is the story continuing past it.)*

@@ -2,12 +2,16 @@
 
 **Status: APPROVED — Tulga (tech lead), 2026-07-05**
 
+> **Amendment 2026-07-20 (pending re-approval):** the Requirements and
+> Design cross-reference dates below are corrected to 2026-07-05 to match
+> the `spec.md` and `plan.md` approvals. Re-approve to clear this note.
+
 | Field        | Value                                    |
 | ------------ | ---------------------------------------- |
 | Feature      | `007-transfer-limit-alerts`               |
 | Authored     | 2026-07-02                                |
-| Requirements | [spec.md](spec.md) — approved 2026-07-02  |
-| Design       | [plan.md](plan.md) — approved 2026-07-02  |
+| Requirements | [spec.md](spec.md) — approved 2026-07-05  |
+| Design       | [plan.md](plan.md) — approved 2026-07-05  |
 | Approver     | Tasks gate: alerts-service technical authority |
 
 This is the **Task List** of the teaching example. Every task carries at

@@ -81,7 +81,7 @@ The whole pass, in one table:
 | Draft line | Defect | Shaped into |
 | ---------- | ------ | ----------- |
 | T-1 "implement the alerts API" | a whole phase labeled as one T-id — nothing can verify it in a single work session | T-1, T-2, T-3, each with its own evidence |
-| T-2 no `[R-n]` | unmapped work; the merge gate goes red | T-4, T-5 citing [R-5] [R-6] [R-7] [R-8] |
+| T-2 no `[R-n]` | unmapped work; the merge gate goes red | T-4, T-5, T-6 citing [R-5] [R-6] [R-7] [R-8] |
 | T-3 "testing and cleanup" | evidence hidden in a catch-all task; "cleanup" maps to no requirement | dissolved — every task carries its own evidence; exempt tidying needs no task (§6.1) |
 
 ## Before you request the gate

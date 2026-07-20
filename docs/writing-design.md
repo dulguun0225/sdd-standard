@@ -89,8 +89,9 @@ element satisfies is a gap in the design. Your approver does this check in two
 minutes ([reviewing-specs.md](reviewing-specs.md)). Do it first.
 
 **7. Decisions carry the rejected alternative.** "D1: dedup by unique
-index" is a preference until the rationale names what was rejected and
-why. Here: an in-memory cache, rejected because it dies on restart and
+index" is a preference until it names what was rejected and why. The
+sample's D1 does both: the decision line rejects an in-memory cache, and
+the rationale says why the index wins — it survives restarts and
 scale-out. Decisions with alternatives survive re-reading months later.
 Preferences get argued again.
 

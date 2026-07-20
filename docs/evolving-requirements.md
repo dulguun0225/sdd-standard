@@ -229,7 +229,7 @@ four small PRs: spec, plan, tasks, implementation.
 - **What, in `tasks.md`:** an appended task; T-ids are as stable as
   R-ids:
 
-  > **T-7** Suppress delivery when the alert's most recent delivery
+  > **T-8** Suppress delivery when the alert's most recent delivery
   > is under 10 minutes old; record the suppressed event in
   > `delivery_log`. Depends: T-5. [R-5] [R-10]
   > *Evidence: burst-replay test — 40 events in one minute produce 40
@@ -244,6 +244,10 @@ four small PRs: spec, plan, tasks, implementation.
 - **Why:** implementation may not start before the Tasks gate passes
   (§3.1). Tulga checks what he always checks: every task carries an
   `[R-n]` (§5.1), states its evidence, and names its dependencies.
+- **Why T-8, not T-7:** T-7 is taken — the walkthrough's R-9 turn
+  appended it mid-implementation for the unsupported-channel rejection.
+  T-ids take the next free number and are never reused, like R-ids: the
+  frozen snapshot ended at T-6, R-9 added T-7, coalescing adds T-8.
 
 ### Step 7 — implement (PR 4)
 
@@ -251,9 +255,9 @@ four small PRs: spec, plan, tasks, implementation.
 - **Who:** Bilguun and the agent, task by task.
 - **What:** the window check in the delivery path, the
   suppressed-event log write, and the burst-replay test named by
-  T-7's evidence line.
+  T-8's evidence line.
 - **Where:** PR 4 — alerts-service code and tests.
-- **How:** `/speckit.implement`; T-7's box is ticked when the
+- **How:** `/speckit.implement`; T-8's box is ticked when the
   burst-replay evidence exists, not before.
 - **Why §5.2 still matters:** passing the gates first does not
   suspend the same-PR rule. If implementation surfaces another
@@ -297,7 +301,7 @@ place again — the window clause comes out — and withdraws R-10:
 > event hid a genuine second limit breach.
 
 The entry stays in the list, and the next appended requirement is
-R-11, not a recycled R-10. Deletion would leave T-7's `[R-10]` unresolvable and
+R-11, not a recycled R-10. Deletion would leave T-8's `[R-10]` unresolvable and
 every reference in merged PRs; WITHDRAWN keeps them all resolvable.
 The spec keeps the record of what was tried and abandoned — exactly
 what the next person proposing suppression needs to find.
