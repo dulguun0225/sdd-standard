@@ -16,6 +16,7 @@ This is the **Design Document**: how the approved requirements get built.
 Design elements cite the requirements they satisfy as `[R-n]`. The two
 contract sections follow the repo's stack profile. The profile provides
 the table shape and vocabulary. Deviations carry a stated reason.
+Write plainly: short sentences, everyday words, one idea per sentence.
 
 ---
 

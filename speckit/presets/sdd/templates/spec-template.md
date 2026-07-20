@@ -17,6 +17,7 @@ requirement is phrased in an EARS pattern and carries a stable R-id.
 R-ids are never renumbered and never reused. Withdrawn requirements stay
 listed as `WITHDRAWN`. Acceptance criteria live here and only here. The
 tracker item carries a summary and a link to this folder, nothing more.
+Write plainly: short sentences, everyday words, one idea per sentence.
 
 ---
 
