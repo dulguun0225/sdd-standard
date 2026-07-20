@@ -179,3 +179,21 @@ The author's pass over the approver's checklist
 Then request the review. Rejection is normal and cheap (§3.4). But a
 draft that survived this list usually passes on the first cycle. The
 gate stays what it should be: minutes, not a meeting.
+
+## The author's turn, step by step
+
+The moves above, placed on the walkthrough's timeline.
+[feature-walkthrough.md](feature-walkthrough.md) tells the whole week;
+this table replays its first three days from the author's chair. The
+people and gate bindings are the walkthrough's; everything is
+fictitious. Each row is one step. The six fields — when, who, what,
+where, how, why — are the columns.
+
+| When | Who | What | Where | How | Why |
+| ---- | --- | ---- | ----- | --- | --- |
+| **Day 1, afternoon** | **Bilguun** (developer, the author) + agent | The raw material: the five-line draft this guide opened with. `Status: DRAFT` stays as scaffolded | The feature branch and folder the scaffold created | `/speckit.specify alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails` | The draft is not a spec. The known failures — happy path only, vague filler, packed "and"s — are all in it |
+| **Day 1, afternoon** | **Bilguun** + agent | The shaping pass, in one sitting: draft R-1 split three ways; "the system" named as the alerts service, every response made observable; IF/THEN rows written for the profile's failure cases; the trigger rewritten to the event the service consumes; "preferred channel" replaced by a channel chosen per alert; "log alert activity" pinned to named transitions in the audit log | `spec.md`, edited directly | Moves 1–7; the defect table above is this step's summary | Write so the approver finds nothing — a defect caught here costs minutes; the same defect at the gate costs a review cycle |
+| **Day 1, before pushing** | **Bilguun** | The author's checks: the structure check locally, then the checklist above. One finding stands — R-5 still says "quickly" | The local checkout, then a PR requesting Nara's review | Quickstart §6's command; the vague-word warning is advisory, never merge-blocking | The warning is for the author first. What survives his pass, the gate exists to catch |
+| **Day 2** | **Nara** (Requirements approver) | Three comments, no Status flip: "quickly" is not a number (60 s or 6?); what happens when the same alert is registered twice; does scope cover *changing* limits? | The same PR | Comments only (§3.4); the Status line stays as it is | Rejection is normal and cheap. Even a careful pass leaves defects; the gate is the second net |
+| **Day 2, same day** | **Bilguun** + agent | The revision: R-5 gets "within 60 seconds"; a new R-3 covers the duplicate (`409 ALERT_EXISTS`); §1 gains its out-list — changing limits, limit-raise approvals, channels beyond sms and email | The same PR, revised and resubmitted | Each comment answered in the document, not in the comment thread | If the document does not say it, it is not agreed |
+| **Day 3, morning** | **Nara** | The gate passes: `Status: APPROVED — Nara (PO), <date>`. The PR merges | Inside the PR, in a change she authors herself | She re-reads the diff, then rewrites the Status line (§3.2). The author never writes it | Only now may `plan.md` be drafted (§3.1) — [writing-design.md](writing-design.md) continues from here |

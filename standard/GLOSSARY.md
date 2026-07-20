@@ -36,6 +36,22 @@ the same R-id instead, with a one-line rationale. The `<system>` slot names
 whoever is bound — a service, a team, a CI pipeline, a reviewer, a
 document, a PR, a tracker item.
 
+The fallback, worked — mathematical content, where one EARS sentence per
+tier would bury the boundaries:
+
+> - **R-4** The transfer service shall apply the per-transfer fee by
+>   tier, on the transfer amount in the account's currency:
+>
+>   | Tier | Fee |
+>   | ---- | --- |
+>   | up to and including 1 000 000 | 0.10 % |
+>   | above 1 000 000, up to and including 10 000 000 | 0.07 % |
+>   | above 10 000 000 | 0.05 % |
+>
+>   *Table under one R-id per SDD-STANDARD §4.1 — mathematical content;
+>   the fee schedule is one testable behavior, and this line is its
+>   rationale.*
+
 ## 2. Artifact vocabulary
 
 The standard names the *documents*; GitHub Spec Kit (pinned in

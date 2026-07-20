@@ -101,3 +101,21 @@ After the gate, the list is live. Tick a box only when its evidence
 exists. Append new T-ids as new work appears. And remember the
 same-PR rule: the Task List is the first place spec drift shows, one
 unticked box at a time.
+
+## The author's turn, step by step
+
+The moves above, placed on the walkthrough's timeline.
+[feature-walkthrough.md](feature-walkthrough.md) compresses this phase
+into one Day 4 row; this table replays it step by step from the
+author's chair, plus the Day 5 step that shows the list staying live.
+The people and gate bindings are the walkthrough's; everything is
+fictitious. Each row is one step. The six fields — when, who, what,
+where, how, why — are the columns.
+
+| When | Who | What | Where | How | Why |
+| ---- | --- | ---- | ----- | --- | --- |
+| **Day 4**, after the plan PR merges | **Bilguun** (developer, the author) + agent | The raw material: the weak three-line draft this guide opened with | A new PR touching `tasks.md`, on the same feature branch | `/speckit.tasks` | Gates pass in order (§3.1): the plan this list traces was approved the day before |
+| **Day 4** | **Bilguun** + agent | The slicing pass: draft T-1 becomes T-1 (migration + repository), T-2 (the POST endpoint), T-3 (the GET endpoint); phases copied from `plan.md` §9 — Phase 1 registration, Phase 2 consumption and delivery | `tasks.md`, edited directly | Moves 1 and 4 | Each slice has its own check that can fail, completable in a single work session |
+| **Day 4** | **Bilguun** + agent | Mapping and evidence: draft T-2's unmapped work becomes T-4, T-5, T-6 citing [R-5]–[R-8]; every task gets its Evidence line before any code exists — T-4's is "at-least-once replay test delivers exactly once"; dependencies written out (`Depends: T-1`, `Depends: T-4`); draft T-3's catch-all dissolves | `tasks.md` | Moves 2 and 3, then the reverse check: R-1…R-8 each covered by at least one task | The Evidence line decides what "truthfully done" will mean; "cleanup" maps to no requirement and needs no task (§6.1) |
+| **Day 4** | **Tulga** (tech lead — holds this gate too, §3.3) | The gate: every task carries `[R-n]` and R-1…R-8 are all covered; every Evidence line names something checkable; phases match `plan.md` §9. `Status: APPROVED — Tulga (tech lead), <date>` in his own change; the PR merges | The same PR | [reviewing-specs.md](reviewing-specs.md) is his side; §3.2 the mechanics | The fastest gate of the four — the plan it traces is a day old. Implementation may start now, and not before (§3.1) |
+| **Day 5**, mid-implementation | **Bilguun** + agent | The list is live: an unsupported `channel` value turns out to have no specified behavior. The spec is amended — R-9 appended, back to Nara as a diff — and **T-7** takes the next free T-id, citing [R-9]. Its box is ticked only when its evidence exists | The implementation PR — code, the amended spec, T-7, Nara's re-approval | Append, never renumber; the spec amendment is included in the same PR (§5.2) | T-ids are stable like R-ids; the Task List is the first place spec drift shows |

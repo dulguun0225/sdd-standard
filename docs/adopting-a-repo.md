@@ -202,3 +202,23 @@ is never the implementer. Approvers read
 [reviewing-specs.md](reviewing-specs.md) before their first gate.
 [feature-walkthrough.md](feature-walkthrough.md) shows the whole team
 around one feature: who acts at each step, in which PR, on which day.
+
+## 6. One adoption, step by step
+
+The steps above, on one fictitious morning. The cast is the
+walkthrough's ([feature-walkthrough.md](feature-walkthrough.md)):
+Tulga, the tech lead, adopts his team's service repo. The platform is
+GitLab CE self-hosted — the least-enforcing platform this guide covers,
+so the honest-fallback notes of §3 get exercised; on GitHub Actions or
+Jenkins only the §3 snippet differs. Each row is one step. The six
+fields — when, who, what, where, how, why — are the columns.
+
+| When | Who | What | Where | How | Why |
+| ---- | --- | ---- | ----- | --- | --- |
+| **Monday, 09:00** | **Tulga** (tech lead) | Tells the standard owner his team is adopting, and gets the current release tag back | A message to the standard owner (§13's role, bound at his organization) | One question: "which tag do we pin?" | The convention is pre-1.0; coordinating first means pin-forwards do not surprise the repo (top of this guide) |
+| **Monday, 09:15** | **Tulga** | Clones sdd-standard at that pinned tag and runs bootstrap against the team repo. The preflight checks uv, git, and the Git Bash parser, and prints the exact fix for anything missing | His workstation | `git clone --depth 1 --branch <PINNED-RELEASE-TAG> https://<the-org-mirror>/sdd-standard`, then `uv run bootstrap/init.py ../alerts-service --integration claude --profile backend-services` | Bootstrap is the only adoption path (§9.2) — hand-copied templates are how silent divergence starts |
+| **Monday, 09:40** | **Tulga** | Commits the scaffold as its own commit and opens the adoption MR: `.specify/` (constitution, profile copy, scripts, `sdd.json`) and the agent command files, nothing else | The team repo, a fresh branch | One commit, no code mixed in | Existing code and specs are untouched by bootstrap; a clean scaffold commit is easy to review and easy to revert |
+| **Monday, 10:00** | **Tulga** | Wires the merge gate: both checks on every push/MR, cloning sdd-standard at the same pin | `.gitlab-ci.yml`, from §3's CE snippet; one Linux runner a project Maintainer registered | `check_spec_structure.py --repo .` and `check_convention_version.py --repo . --standard sdd-standard` | The gate goes red on a skipped approval before any human has to catch it (§8.1) |
+| **Monday, 10:30** | **Tulga** | Turns on "Pipelines must succeed", protects the default branch, and records the CE gap honestly: CODEOWNERS approval is Premium, so on CE reviewer discipline enforces what the platform will not | GitLab settings; the team working agreement | §3's CE notes, verbatim | Red has to mean "does not merge"; where the platform cannot hard-block, the fallback is named in writing (§8.1) rather than pretended away |
+| **Monday, 11:00** | The team, fifteen minutes | Binds the four gate roles to people and records them: Nara — Requirements; Tulga — Design and Tasks; Sarnai — Review, never the implementer | The repo README | §3.3's table, with names in it; the approvers read [reviewing-specs.md](reviewing-specs.md) before their first gate | An unbound gate is a stalled gate; the binding is what turns "your product authority" from a phrase into a person |
+| **Monday, afternoon** | **Bilguun** (developer) | Picks up the team's next qualifying work item — the first feature under the convention | The work tracker; a new feature branch | The lifecycle [feature-walkthrough.md](feature-walkthrough.md) replays, from its Day 1 | Adoption ends where the walkthrough begins |

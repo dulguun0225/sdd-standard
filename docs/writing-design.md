@@ -137,3 +137,20 @@ The author's pass over the approver's checklist
   R-ids between them.
 
 Then request the review. The design gate is where the reviewer asks about empty cells. Cheaper to answer them now than during an outage.
+
+## The author's turn, step by step
+
+The moves above, placed on the walkthrough's timeline.
+[feature-walkthrough.md](feature-walkthrough.md) compresses this phase
+into one Day 3 row; this table replays it step by step from the
+author's chair. The people and gate bindings are the walkthrough's;
+everything is fictitious. Each row is one step. The six fields — when,
+who, what, where, how, why — are the columns.
+
+| When | Who | What | Where | How | Why |
+| ---- | --- | ---- | ----- | --- | --- |
+| **Day 3**, after the spec PR merges | **Bilguun** (developer, the author) + agent | The raw material: a drafted `plan.md` — serviceable architecture prose, and the vague contract rows this guide opened with | A new PR touching `plan.md`, on the same feature branch | `/speckit.plan` | The order is binding (§3.1): a `plan.md` pushed next to a DRAFT spec is a red build on every push (§8.1). That is why this step waits for Day 3 |
+| **Day 3** | **Bilguun** + agent | The synchronous row, filled like its caller: Request `{account_id, threshold, channel}`; Responses `201` created alert; Errors from the spec's IF/THEN rows as stable codes — `400 VALIDATION_FAILED` [R-2], `404 ACCOUNT_NOT_FOUND` [R-4], `409 ALERT_EXISTS` [R-3]; Auth `alerts:write`; Idempotency natural key `(account_id, threshold, channel)` | `plan.md` §3 | Moves 1–4 | Neither reader can ask questions. The finished-row test: the client could be implemented from the row alone |
+| **Day 3** | **Bilguun** + agent | The asynchronous row: event `transfer-limit-exceeded`, subject `payments.transfer.limit-exceeded`, producer transfer-service; Delivery states the profile default — at-least-once, de-duplicate on `event_id` [R-6] — and §5 makes it real: consumed `event_id`s unique-indexed in `delivery_log` | `plan.md` §4 and §5; the schema file created at `contracts/transfer-limit-exceeded.schema.json` | Moves 3–5; the structure check verifies the `contracts/` path resolves | An empty Delivery cell would assert the same default (profile §1); either way the design has to make it real — the unique index IS the R-6 dedup |
+| **Day 3** | **Bilguun** + agent | Coverage and decisions: every element cites `[R-n]`; the reverse pass finds each of R-1…R-8 satisfied somewhere; D1 written with its rejected alternative — dedup by unique index, not an in-memory cache, because the index survives restarts and scale-out | `plan.md` §6; the checklist above, as the author's pass | Moves 6–7 | An R-id no element satisfies is a gap found now, not at the gate; a decision without a rejected alternative gets argued again |
+| **Day 3** | **Tulga** (tech lead, Design approver) | The gate: `[R-n]` coverage checked both ways (two minutes), the empty-cell questions asked, a push for D1's rejected alternative — then `Status: APPROVED — Tulga (tech lead), <date>` in his own change. The PR merges | The same PR | [reviewing-specs.md](reviewing-specs.md) is his side; §3.2 the mechanics | Cheaper to answer the empty-cell questions now than during an outage. Only now may `tasks.md` be drafted — [writing-tasks.md](writing-tasks.md) continues from here |

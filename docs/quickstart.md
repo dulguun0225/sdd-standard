@@ -149,6 +149,8 @@ is hooked after implement) or on demand. It compares the code against
 the approved spec/plan/tasks and writes `review-notes.md` for the human
 Review approver — who must not be the implementer. The approver passes
 the Review gate; the notes and the agent never do.
+[examples/sample-feature/review-notes.md](../examples/sample-feature/review-notes.md)
+shows a filled one.
 
 One rule to internalize now: **if your change alters behavior an approved
 spec covers, the same PR updates that spec.** The CI gate

@@ -85,3 +85,26 @@ that loop.
 - **Too uncertain to spec** (§6.1): spike first — throwaway by intent,
   exempt from ceremony. Then spec what the spike taught you and enter
   the walkthrough at Day 1.
+
+## The qualification call, on harder items
+
+Day 1's call was easy — three triggers matched. The §6.1 list is short.
+A change qualifies when it creates or alters externally observable
+behavior or a contract, crosses a repo, service, or team boundary,
+contains a hard-to-reverse step, or introduces a new capability.
+Explicitly exempt, even where a trigger appears to match: bugfixes
+restoring already-specified behavior, refactorings and strict internal
+improvements, and changes with no externally observable effect. The
+same judgment applied to items where the call is less obvious — all on
+the alerts service:
+
+| Work item | Call | Why |
+| --------- | ---- | --- |
+| Reword the `400 VALIDATION_FAILED` error *message* | exempt | The stable code is the contract; the message prose is not something a caller may rely on. Changing the *code* would alter a contract — that qualifies |
+| Add an optional `status=` filter to `GET /transfer-limit-alerts` | qualifies | Alters a contract — a compatible addition still changes what callers may rely on, and plan.md §3's row is where they read it |
+| Extract the delivery retry loop into its own module, behavior identical | exempt | A refactoring, strictly internal — explicitly exempt |
+| Notifications arrive after ~90 s because a retry timer misfires; fix it | exempt | A bugfix restoring already-specified behavior (R-5 says 60 s) — exempt even though delivery timing is externally observable |
+| The service crashes on a `channel` value the spec never mentions; fix it | qualifies | There is no specified behavior to restore — the fix *decides* observable behavior, so the spec is amended in the same PR. Day 5 above is this case, caught mid-implementation |
+| Split the `alerts.channel` column in two, with a backfill and a dropped column | qualifies | A hard-to-reverse step (data-model change and migration), even with every API unchanged |
+| Change the delivery-log line format that the operations team's dashboards parse | qualifies | Crosses a team boundary: a consumer exists, so the format is a contract in practice, declared or not |
+| Raise the event consumer's retry budget from 3 to 5 attempts | genuinely unclear | Downstream load and delivery timing shift, but no contract names them. Ask — the answer lands in [faq.md](faq.md), so it is asked once |

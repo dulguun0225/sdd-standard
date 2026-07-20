@@ -5,6 +5,12 @@
 > **Amendment 2026-07-20 (pending re-approval):** the Requirements and
 > Design cross-reference dates below are corrected to 2026-07-05 to match
 > the `spec.md` and `plan.md` approvals. Re-approve to clear this note.
+>
+> **Amendment 2026-07-21 (pending re-approval):** the six task boxes are
+> ticked and `review-notes.md` now sits beside this file — the teaching
+> snapshot moves from "gates passed, implementation not started" to
+> "implementation complete, Review gate pending". Re-approve to clear
+> this note.
 
 | Field        | Value                                    |
 | ------------ | ---------------------------------------- |
@@ -20,29 +26,29 @@ exists. Phases come from plan.md §9.
 
 ## Phase 1 — alert registration API
 
-- [ ] **T-1** Create the `alerts` table migration and repository
+- [x] **T-1** Create the `alerts` table migration and repository
   (id, account_id, threshold, channel, state). [R-1]
   *Evidence: migration applied in CI; repository round-trip test green.*
-- [ ] **T-2** Implement `POST /transfer-limit-alerts`: entitlement check,
+- [x] **T-2** Implement `POST /transfer-limit-alerts`: entitlement check,
   currency-aware threshold validation, natural-key conflict handling.
   Depends: T-1. [R-1] [R-2] [R-3] [R-4]
   *Evidence: contract tests cover 201/400/404/409 per plan.md §3.*
-- [ ] **T-3** Implement `GET /transfer-limit-alerts?account_id=`.
+- [x] **T-3** Implement `GET /transfer-limit-alerts?account_id=`.
   Depends: T-1. [R-1]
   *Evidence: contract test green.*
 
 ## Phase 2 — event consumption and delivery
 
-- [ ] **T-4** Consume `payments.transfer.limit-exceeded`: match active
+- [x] **T-4** Consume `payments.transfer.limit-exceeded`: match active
   alerts, unique-index dedup on `event_id` in `delivery_log`.
   Depends: T-1. [R-5] [R-6]
   *Evidence: at-least-once replay test delivers exactly once.*
-- [ ] **T-5** Deliver through notification-service with per-channel retry;
+- [x] **T-5** Deliver through notification-service with per-channel retry;
   record every attempt in `delivery_log`; publish
   `alerts.notification.delivered`. Depends: T-4. [R-5] [R-7] [R-8]
   *Evidence: delivery within 60 s in the integration run; failed-attempt
   rows visible.*
-- [ ] **T-6** Audit every alert state transition (created, triggered,
+- [x] **T-6** Audit every alert state transition (created, triggered,
   delivered, failed). Depends: T-2, T-5. [R-8]
   *Evidence: audit entries asserted in the integration run.*
 

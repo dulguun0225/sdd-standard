@@ -16,9 +16,9 @@ because intent changes.
 spec and the code together, in the same PR (§5.2). Three moves keep the
 record honest: supersede a requirement in place, append a new R-id, or
 mark a dead one `WITHDRAWN` — never renumber, never delete (§4.2). The
-rest of this guide walks the loop stage by stage, then two full worked
-turns. Read a worked turn when you reach it; you do not need both on a
-first pass.
+rest of this guide walks the loop stage by stage, then three full worked
+turns. Read a worked turn when you reach it; you do not need them all on
+a first pass.
 
 ## The cycle this replaces
 
@@ -47,10 +47,12 @@ guide's subject:
   covers, the amendment is included in the same PR as the code (§5.2).
 
 Read around the circle and it says: spec → build → learn → spec. The
-rest of this guide covers those stages one by one, then two full
+rest of this guide covers those stages one by one, then three full
 turns, step by step: [a turn that amends the
-spec](#a-turn-that-amends-the-spec-step-by-step) and [a turn that
-opens a new one](#a-turn-that-opens-a-new-spec-step-by-step).
+spec](#a-turn-that-amends-the-spec-step-by-step), [a turn that
+opens a new one](#a-turn-that-opens-a-new-spec-step-by-step), and
+[a turn that starts with the
+hotfix](#a-turn-that-starts-with-the-hotfix).
 
 ## The loop, stage by stage
 
@@ -165,6 +167,30 @@ turn above.
 The two turns are the same loop with different entry points:
 learning that changes covered behavior re-enters its own spec;
 learning that adds a capability enters a new one.
+
+## A turn that starts with the hotfix
+
+The third entry point is the one where code moves first. §6.2 permits
+it: an emergency hotfix ships immediately, and where it alters behavior
+an approved spec covers, the team updates that spec within 5 working
+days of the fix shipping. The turn below is that rule played out —
+fictitious, like the turns above, and continuing the same feature.
+
+| When | Who | What | Where | How | Why |
+| ---- | --- | ---- | ----- | --- | --- |
+| **2026-09-08, 02:10** | The sms provider, then **Bilguun** (on call) | The provider starts hanging on every request: delivery attempts time out, the retries hang the same way, and sms-channel alerts stop arriving — clients are missing the alerts the feature exists for. Bilguun ships a hotfix within the hour: while the sms provider is down, sms-configured alerts are delivered by email, and the substitution is recorded in the delivery log | Production; a hotfix PR merged under the team's incident process | Fix first, no gate (§6.2). One note before he closes the incident: delivering on a different channel alters behavior R-5 covers ("on the configured channel") | The 5-working-day clock starts when the fix ships — deadline 2026-09-15. §6.2 buys time, never silence |
+| **2026-09-08**, morning | **Nara** (PO) with support | The intent question the night could not wait for: is a wrong-channel notification better than none? Support's ticket sample says yes — clients want the fallback kept | The incident review; then a tracker item, summary + link to the 007 folder | Nara decides the fallback stays, as permanent behavior | The hotfix settled the outage; only the product authority settles the intent. Had she chosen revert instead, restoring R-5's behavior inside the window would have squared the record the other way |
+| **2026-09-09** | **Bilguun** + agent | The catch-up, drafted as direct edits.<br>`spec.md` appends **R-11** — "IF the configured channel is unavailable, THEN the alerts service shall deliver the notification on the other offered channel and record the substitution in the delivery log" — under a dated amendment note.<br>`plan.md`'s delivery flow gains the provider-availability check, cited `[R-11]`.<br>`tasks.md` appends **T-9** for the shipped work plus the drill that proves it. Evidence: provider-outage drill — sms circuit forced open, delivery lands on email, substitution rows present | One catch-up PR touching all three artifacts | No `/speckit.*` command — an amendment is a diff (the rule the first turn stated). **R-11 and T-9** — R-9/R-10 and T-7/T-8 are taken by the earlier turns; ids are never reused (§4.2) | The code is already live; the record is what is behind. T-9's box is ticked only when the drill evidence exists — shipped work is still evidence-gated |
+| **2026-09-10** | **Nara**, then **Tulga**; **Sarnai** last | Re-approvals read as diffs, each in the approver's own change: Nara the spec diff, Tulga the plan and tasks diffs. `speckit.sdd.review` rewrites the notes; Sarnai passes the Review gate. The PR merges | Inside the catch-up PR | The same gates as any turn, scoped to small diffs (§3.2, §3.4) | Two working days after shipping — inside the window with three to spare. A missed window is a **spec-drift incident** (§5.2) |
+
+**What §6.2 changes, and what it does not.** The hotfix reorders the
+loop — code before record — and nothing else. The gates still pass, the
+ids still append, the approvers still re-agree; only later, and on a
+clock. A team that ships the fix and skips the catch-up has not used
+§6.2; it has a spec-drift incident with a grace period. And the
+amendment is where the intent question lands on record: R-5 still
+promises the configured channel; R-11 now says what happens while that
+channel is down.
 
 ## When you cannot even spec a slice
 
