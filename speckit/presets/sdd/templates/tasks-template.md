@@ -21,7 +21,9 @@ listed as `WITHDRAWN`. Phases come from plan.md §9. A task is done when
 its evidence exists. Prefer many small, independently verifiable tasks
 over few large ones. Each task should be completable and checkable in
 one sitting. Per-step errors compound across a long task.
-Write plainly: short sentences, everyday words, one idea per sentence.
+Be precise first, simple second: keep exact technical terms even when
+an everyday word is close; everywhere else, use short sentences,
+everyday words, one idea per sentence.
 
 ---
 
