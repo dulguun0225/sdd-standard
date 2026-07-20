@@ -19,9 +19,10 @@ Format per entry:
 
 The bar is **testable**, not airtight (SDD-STANDARD §4.1), and the loop
 is the expected shape of the work, not a failure of it. The standard's
-job is to make each turn recorded instead of silent: amend the spec in
-the same PR as the code change (§5.2), superseding in place, appending a
-new R-id, or marking `WITHDRAWN` (§4.2). Too uncertain to spec at all?
+job is to make each turn recorded instead of silent. Each turn amends
+the spec in the same PR as the code change (§5.2). An amendment
+supersedes in place, appends a new R-id, or marks one `WITHDRAWN`
+(§4.2). Too uncertain to spec at all?
 Spike first under the §6.1 exemption, then spec what the spike taught
 you. The loop is drawn in the README's lifecycle diagram (the dashed
 edges); the full explanation is

@@ -18,9 +18,9 @@ upgrades are tested in this repo first.
 Stock Spec Kit is a workflow tool: it walks an AI agent from spec through
 plan and tasks to implementation. Nothing in it says who approves an
 artifact, how requirement ids stay stable over time, or what happens when
-code drifts from an approved spec. The convention layers those rules on top —
-through Spec Kit's supported preset and extension mechanisms, no forks —
-and keeps the tool replaceable. What it adds
+code drifts from an approved spec. The convention adds those rules on
+top. It uses only Spec Kit's supported preset and extension points,
+never a fork, so the tool stays replaceable. What it adds
 ([SDD-STANDARD](standard/SDD-STANDARD.md), § references below):
 
 - **Human gates.** Artifacts pass Requirements → Design → Tasks gates
@@ -32,26 +32,26 @@ and keeps the tool replaceable. What it adds
   behavior with a stable R-id: never renumbered, never reused; withdrawn
   ones stay listed. Acceptance criteria live in the spec alone. Tracker
   items carry a summary and a link (§4).
-- **Traceability with teeth.** Every task carries at least one `[R-n]`
-  reference, and a change that alters spec-covered behavior updates that
-  spec in the same PR. `ci/check_spec_structure.py` enforces the
-  structure as merge-blocking CI. An artifact that outruns its
-  approvals — a plan without an APPROVED spec, tasks without an APPROVED
-  plan, a missing Status line — turns the pipeline red (§5, §8).
+- **Traceability that blocks merges.** Every task carries at least one
+  `[R-n]` reference. A change that alters spec-covered behavior updates
+  that spec in the same PR. `ci/check_spec_structure.py` enforces the
+  structure as merge-blocking CI. A plan without an APPROVED spec turns
+  the pipeline red. So do tasks without an APPROVED plan, and a missing
+  Status line (§5, §8).
 - **One dialect, not one per team.** Repos adopt only via
-  `bootstrap/init.py` at the pinned, tri-OS-tested version: shared
-  constitution seeded (repos append principles, never weaken them), stack
-  profile appended, no hand-copied templates quietly diverging (§2.4, §7,
-  §9).
+  `bootstrap/init.py`, at the pinned and tri-OS-tested version. It seeds
+  the shared constitution (repos may append principles, never weaken
+  them) and appends the stack profile. No hand-copied templates, so no
+  quiet divergence (§2.4, §7, §9).
 - **A review phase.** After implementation, the review
   extension (`speckit.sdd.review`) compares what was built against
   the approved artifacts and writes notes for the human Review approver —
   input to the Review gate (§3), never a pass of it.
-- **A pressure valve.** A work item matching none of the qualifying
-  triggers (no contract or observable-behavior change, no boundary
-  crossed, nothing hard to reverse, no new capability) needs no spec
-  ceremony. Emergency hotfixes ship first and update the spec after.
-  The ceremony binds where it pays, not everywhere (§6).
+- **Ceremony only where it pays.** A work item that matches none of the
+  qualifying triggers needs no spec ceremony. The triggers: a contract
+  or observable-behavior change, a crossed boundary, a hard-to-reverse
+  step, a new capability. Emergency hotfixes ship first and update the
+  spec after (§6).
 
 ## The lifecycle in a product repo
 
@@ -60,14 +60,23 @@ normative text is [SDD-STANDARD](standard/SDD-STANDARD.md); this section
 is the map.
 
 Every work item starts at the qualification decision (§6.1). The gated
-workflow binds when a change creates or alters externally observable
-behavior or a contract (API, CLI, schema, message, protocol), crosses a
-repo, service, or team boundary, contains a hard-to-reverse step, or
-introduces a new capability. These are properties of the change itself,
-so no estimation practice is required. Explicitly exempt, even where a
-trigger appears to match: bugfixes restoring already-specified
-behavior, refactorings and strict internal improvements, and changes
-with no externally observable effect. An emergency hotfix ships first.
+workflow binds when any of these holds:
+
+- the change creates or alters externally observable behavior or a
+  contract (API, CLI, schema, message, protocol)
+- it crosses a repo, service, or team boundary
+- it contains a hard-to-reverse step
+- it introduces a new capability
+
+These are properties of the change itself, so no estimation practice is
+required. Three kinds of change are exempt even when a trigger appears
+to match:
+
+- bugfixes that restore already-specified behavior
+- refactorings and strict internal improvements
+- changes with no externally observable effect
+
+An emergency hotfix ships first.
 When it alters behavior an approved spec covers, that spec is updated
 within 5 working days of the fix shipping (§6.2).
 
@@ -78,10 +87,10 @@ before the item is marked done (§3.1). Who does what: 🤖 the agent,
 drafts and a human shapes and owns it — though the convention itself
 never requires an agent (§1, §9.1). Every gate is 🤨 alone by design
 (§3.2). The qualification call too is a human judgment (§6.1). Solid
-edges are the gated pass. Dashed edges make this a loop rather than a
-waterfall: the hotfix bypass, gate rejections, the spike for what
-cannot yet be stated as testable behavior, and Done feeding what was
-learned back into the next work item:
+edges are the gated pass. Dashed edges make this a loop, not a
+waterfall. They cover the hotfix bypass, gate rejections, the spike for
+behavior you cannot state as testable yet, and Done feeding lessons
+into the next work item:
 
 ```mermaid
 flowchart TD
@@ -124,7 +133,7 @@ approver roles to named people at adoption:
 | Tasks | `tasks.md` | The technical authority — may be the Design approver |
 | Review | The implementation, against the approved artifacts | A reviewer who is **not** the implementer |
 
-Two enforcement rules from the list above run underneath every lane.
+Two enforcement rules from the list above apply at every step.
 The same-PR spec-update rule: a merged violation is a spec-drift
 incident (§5.2). And the merge-blocking structure check (§8.1), which
 turns the pipeline red on a `plan.md` drafted while `spec.md` is still

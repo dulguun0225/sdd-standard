@@ -69,6 +69,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   §8.1, §8.2, §13 — long clauses broken at existing dashes and
   semicolons, wording untouched). The §10 decision records and all
   dated amendment notes remain verbatim.
+- Second editorial pass, same rules, no normative or behavioral change.
+  The README lifecycle section, `docs/feature-walkthrough.md`, and
+  `docs/faq.md` get their remaining long stacked sentences split. The
+  distributed prose is included this time: the preset README, the
+  `speckit.sdd.review` command text, and the guidance prose of the four
+  seeded templates. The constitution template's drift-checked "Shared
+  principles" block stays byte-identical; only its intro is reworded.
+  The approved teaching example (`examples/sample-feature`) is left
+  verbatim — approved artifacts are never silently edited.
 
 ## [0.3.0-draft] - 2026-07-20
 

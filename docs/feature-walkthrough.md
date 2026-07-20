@@ -41,9 +41,9 @@ implementation, Review after it (§3.1). It binds the approval mechanics
 **one PR per artifact**, all from the feature branch the scaffold
 created, merged in sequence. Each gate is passed inside its PR, before
 merge. A single long-running feature PR is just as legal. The same
-caution applies either way: the merge-blocking structure check (§8.1)
-goes red the moment an artifact outruns its predecessor's gate on a
-pushed branch. A `plan.md` next to a `spec.md` still in DRAFT is a
+caution applies either way. The merge-blocking structure check (§8.1)
+goes red the moment a pushed branch holds an artifact whose
+predecessor is not approved yet. A `plan.md` next to a `spec.md` still in DRAFT is a
 violation, whatever the PR shape.
 
 ## Day 1 — the work item, and the qualification call
@@ -171,8 +171,8 @@ actually delivers exactly once — not when the code "looks done".
 **Day 5, reality arrives.** The create-alert endpoint accepts a
 `channel` value. Nothing in the approved spec says what happens when it
 is one the notification service does not offer. That is new externally
-observable behavior, so §5.2 applies: the PR that ships the behavior
-updates the spec, same PR, or it does not merge. Bilguun appends
+observable behavior, so §5.2 applies. The PR that ships the behavior
+must also update the spec, or it does not merge. Bilguun appends
 **R-9** — never renumber, never reuse (§4.2). The agent updates code
 and tests. The spec diff goes back before **Nara**, who re-approves it
 as a diff inside this PR. Minutes, not a ceremony —
@@ -188,9 +188,9 @@ silent drift" means in practice.
 
 **First the agent.** When implementation completes, the review
 extension runs (`speckit.sdd.review`, hooked after implement; it also
-runs on demand). It writes `review-notes.md` into the feature folder: a
-gate check, a verdict per R-id with evidence, the contract check, task
-evidence, and spec-drift findings. The contract check includes
+runs on demand). It writes `review-notes.md` into the feature folder.
+The notes hold a gate check, a verdict per R-id with evidence, the
+contract check, task evidence, and spec-drift findings. The contract check includes
 silence-conformance: for every dimension the tables left unstated, did
 the code implement the profile default — or a guess? The notes
 **inform** the gate. They cannot pass it; the extension's first hard

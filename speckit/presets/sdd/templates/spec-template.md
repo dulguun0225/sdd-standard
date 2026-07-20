@@ -13,17 +13,17 @@
 | Input    | User description: "$ARGUMENTS"                             |
 
 This is the **Requirements Document** (SDD convention). Every
-requirement is phrased in an EARS pattern and carries a stable R-id: never
-renumbered, never reused; withdrawn requirements stay listed as `WITHDRAWN`.
-Acceptance criteria live here and only here — the tracker item carries a
-summary and a link to this folder, nothing more.
+requirement is phrased in an EARS pattern and carries a stable R-id.
+R-ids are never renumbered and never reused. Withdrawn requirements stay
+listed as `WITHDRAWN`. Acceptance criteria live here and only here. The
+tracker item carries a summary and a link to this folder, nothing more.
 
 ---
 
 ## 1. Purpose and scope
 
-[What this feature is for, in 2–5 sentences. State what is explicitly out of
-scope — the sentence that saves weeks of misunderstanding.]
+[What this feature is for, in 2–5 sentences. State what is explicitly out
+of scope — skipping that costs weeks of misunderstanding later.]
 
 ## 2. Definitions
 
@@ -40,14 +40,15 @@ the definitions it uses.]
      Unwanted behavior: IF <condition>, THEN the <system> shall <response>.
      Optional feature:  WHERE <feature is included>, the <system> shall <response>.
      Patterns combine when needed (Complex). One requirement = one testable
-     behavior. Where an EARS sentence would distort the meaning (mathematical
-     content, more than three preconditions), SDD-STANDARD §4.1 permits a
-     structured list or table under the same R-id bullet with a one-line
-     rationale — keep it inside the bullet's two-space continuation lines.
-     A spec with only WHEN happy paths is half a spec: walk the profile's
-     standard failure cases (.specify/memory/profile.md §4 — duplicate,
-     replay, stale update, not-entitled, timeout, partial failure, …) and
-     write the IF/THEN unwanted-behavior rows that apply. -->
+     behavior. Sometimes an EARS sentence would distort the meaning
+     (mathematical content, more than three preconditions). SDD-STANDARD
+     §4.1 then permits a structured list or table under the same R-id
+     bullet, with a one-line rationale. Keep it inside the bullet's
+     two-space continuation lines.
+     A spec with only WHEN happy paths is incomplete. Walk the profile's
+     standard failure cases (.specify/memory/profile.md §4: duplicate,
+     replay, stale update, not-entitled, timeout, partial failure, …).
+     Write the IF/THEN unwanted-behavior rows that apply. -->
 
 - **R-1** WHEN [trigger], the [system] shall [response].
 - **R-2** The [system] shall [response].
