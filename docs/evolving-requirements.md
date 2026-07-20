@@ -95,8 +95,7 @@ the people and gate bindings are the walkthrough's
 ([feature-walkthrough.md](feature-walkthrough.md)). Like the
 walkthrough's R-9 turn, this continues the story past the example's
 frozen snapshot — the files under `examples/` end at R-8 and stay
-there. Everything here is fictitious. Each step answers who, what,
-when, where, why, and how.
+there. Everything here is fictitious.
 
 One timing difference matters before the steps. In the walkthrough,
 the learning arrived mid-implementation (Day 5), so the amendment was included in
@@ -109,186 +108,157 @@ four small PRs: spec, plan, tasks, implementation.
 
 ### Step 1 — learn
 
-- **When:** 2026-07-17, nine days after transfer-limit-alerts merged.
-- **Who:** a payroll client, then support, then Nara — product owner
-  of the alerts domain, holder of the Requirements gate.
-- **What:** the client's payroll run submitted 40 transfers in one
-  minute. Each was rejected by the limit, each fired an event, and the
-  client got 40 identical sms — then turned the alert off and told
-  support why.
-- **Where:** a support ticket, checked against the `delivery_log`
-  table — the data R-5's success criterion is measured over.
-- **How:** Nara queries the log for the account: 40 deliveries in one
-  minute, every one within R-5's 60 seconds. No defect anywhere.
-- **Why this is spec work:** the service does exactly what the
-  approved spec says, so no bug report can capture the problem. The
-  intent is what changed: from "notify on every event" to "one
-  notification per burst".
+On **2026-07-17**, nine days after transfer-limit-alerts merged, a
+payroll client's run submitted 40 transfers in one minute. Each was
+rejected by the limit, each fired an event, and the client got 40
+identical sms — then turned the alert off and told support why. The
+ticket reaches **Nara**, product owner of the alerts domain and holder
+of the Requirements gate. She checks it against the `delivery_log`
+table — the data R-5's success criterion is measured over — and finds
+40 deliveries in one minute, every one inside R-5's 60 seconds. **No
+defect anywhere.** The service does exactly what the approved spec
+says, so no bug report can capture the problem. The intent is what
+changed: from "notify on every event" to "one notification per burst".
 
 ### Step 2 — re-enter as a work item
 
-- **When:** the same day, 2026-07-17.
-- **Who:** Nara. Changing intent is the product owner's call.
-- **What:** a tracker item carrying a summary and a link, nothing
-  else:
+The same day, **Nara** files a work item — changing intent is the
+product owner's call. It carries a summary and a link, nothing else:
 
-  > Payroll bursts fire one sms per transfer; clients disable the
-  > alert. Coalesce notifications per alert.
-  > → `specs/007-transfer-limit-alerts/`
+> Payroll bursts fire one sms per transfer; clients disable the
+> alert. Coalesce notifications per alert.
+> → `specs/007-transfer-limit-alerts/`
 
-- **Where:** the team's work tracker, pointing at the **existing**
-  spec folder. Coalescing changes how the alerts capability behaves;
-  it is not a new capability, so no new `008-` folder is created.
-- **Why so short:** acceptance criteria live in the Requirements
-  Document and nowhere else (§4.3). The tracker never holds a second
-  copy that can drift.
-- **How:** summary plus link is the whole item.
+The link points at the **existing** spec folder. Coalescing changes
+how the alerts capability behaves; it is not a new capability, so no
+new `008-` folder is created. Summary plus link is the whole item,
+because acceptance criteria live in the Requirements Document and
+nowhere else (§4.3) — the tracker never holds a second copy that can
+drift.
 
 ### Step 3 — qualify
 
-- **When:** 2026-07-18, the moment Bilguun picks the item up.
-- **Who:** Bilguun, the implementer. The qualification call is the
-  developer's (walkthrough, Day 1).
-- **What:** the §6.1 call — does the change match a trigger?
-- **Where:** noted on the tracker item.
-- **How:** judgment against the §6.1 trigger list. The triggers are
-  properties of the change itself; nothing is estimated.
-- **Why it qualifies:** it alters externally observable behavior —
-  events that today produce a notification will deliberately produce
-  none. And it is not exempt: not a bugfix, because current behavior
-  is exactly what R-5 specifies. A change of intent is never a
-  bugfix.
+On **2026-07-18**, **Bilguun** picks the item up and makes the §6.1
+qualification call — the developer's, as in the walkthrough (Day 1).
+He judges the change against the §6.1 trigger list, noted on the
+tracker item; the triggers are properties of the change itself, so
+nothing is estimated. It qualifies: it alters externally observable
+behavior — events that today produce a notification will deliberately
+produce none. And it is not exempt — not a bugfix, because current
+behavior is exactly what R-5 specifies. **A change of intent is never
+a bugfix.**
 
 ### Step 4 — amend the spec (PR 1 of 4)
 
-- **When:** 2026-07-18.
-- **Who:** Bilguun and the agent draft. The agent may edit
-  requirement text; it never touches a Status line (§3.2).
-- **Where:** a PR touching `specs/007-transfer-limit-alerts/spec.md`
-  — the approved, merged original. No copy, no v2 file: an amendment
-  is a diff to the document itself.
-- **What:** two of §4.2's three moves, in one diff.
+Still **2026-07-18**. **Bilguun** and the agent draft the amendment in
+a PR touching `specs/007-transfer-limit-alerts/spec.md` — the
+approved, merged original. No copy, no v2 file: an amendment is a diff
+to the document itself. The agent may edit requirement text; it never
+touches a Status line (§3.2).
 
-  *Supersede R-5 in place.* The id keeps its number; the text
-  changes:
+The diff makes two of §4.2's three moves. First it **supersedes R-5 in
+place** — the id keeps its number, the text changes:
 
-  > **R-5** WHEN the alerts service consumes a
-  > `transfer-limit-exceeded` event for an account with an active
-  > matching alert **and no notification for that alert was delivered
-  > in the preceding 10 minutes**, the alerts service shall deliver a
-  > notification on the configured channel within 60 seconds.
+> **R-5** WHEN the alerts service consumes a `transfer-limit-exceeded`
+> event for an account with an active matching alert **and no
+> notification for that alert was delivered in the preceding 10
+> minutes**, the alerts service shall deliver a notification on the
+> configured channel within 60 seconds.
 
-  *Append R-10.* The suppressed case is new behavior, so it gets a
-  new id:
+Then it **appends R-10** — the suppressed case is new behavior, so it
+gets a new id:
 
-  > **R-10** WHEN the alerts service consumes a
-  > `transfer-limit-exceeded` event for an account with an active
-  > matching alert whose most recent delivery is less than 10 minutes
-  > old, the alerts service shall record the event in the delivery
-  > log and shall not deliver a notification.
+> **R-10** WHEN the alerts service consumes a `transfer-limit-exceeded`
+> event for an account with an active matching alert whose most recent
+> delivery is less than 10 minutes old, the alerts service shall record
+> the event in the delivery log and shall not deliver a notification.
 
-  Bilguun makes the matching edit to the R-5 success criterion: 99%
-  within 60 seconds now measures the first event in each window. And
-  because `Status: APPROVED — Nara (PO), 2026-07-05` is now a stale
-  claim, he adds a dated amendment note under the Status line:
+Bilguun makes the matching edit to the R-5 success criterion: 99%
+within 60 seconds now measures the first event in each window. And
+because `Status: APPROVED — Nara (PO), 2026-07-05` is now a stale
+claim, he adds a dated amendment note under the Status line:
 
-  > **Amendment 2026-07-18 (pending re-approval):** R-5 superseded —
-  > delivery now applies only outside a 10-minute window; R-10
-  > appended (suppression). Re-approve to clear this note.
+> **Amendment 2026-07-18 (pending re-approval):** R-5 superseded —
+> delivery now applies only outside a 10-minute window; R-10 appended
+> (suppression). Re-approve to clear this note.
 
-- **How:** edit the superseded requirement's text in place; append
-  the new id after the highest ever used; add the note. Bilguun does
-  not touch the Status line itself. He never does.
-- **Why R-10, not R-9:** R-9 is taken — the unsupported-channel case
-  appended mid-implementation (walkthrough, Day 5). Ids are never
-  reused (§4.2).
-- **Why nothing renumbers:** R-1–R-4 and R-6–R-8 keep their ids, so
-  every `[R-n]` in `plan.md`, `tasks.md`, and merged history still
-  points where it pointed yesterday.
+He edits the superseded text in place, appends the new id after the
+highest ever used, and adds the note — but he does not touch the
+Status line itself. He never does. **Why R-10, not R-9:** R-9 is
+taken, the unsupported-channel case appended mid-implementation
+(walkthrough, Day 5), and ids are never reused (§4.2). And nothing
+renumbers: R-1–R-4 and R-6–R-8 keep their ids, so every `[R-n]` in
+`plan.md`, `tasks.md`, and merged history still points where it
+pointed yesterday.
 
 ### Step 5 — the Requirements gate, again (still PR 1)
 
-- **When:** 2026-07-19.
-- **Who:** Nara — the same gate, the same approver as the original
-  document.
-- **What:** a re-approval read as a diff: two requirements and one
-  criterion, not a 70-line document.
-- **Where:** inside PR 1, in a change she authors herself (§3.2) — a
-  suggestion she writes or a commit she pushes.
-- **How:** she removes the amendment note and rewrites the Status
-  line to `Status: APPROVED — Nara (PO), 2026-07-19`. PR 1 merges.
-- **Why a human, again:** the gate's two questions, scoped to the
-  diff — testable, and wanted today? She pushes back once: does
-  suppression hide a second, larger breach inside the window? R-10
-  keeps suppressed events in the delivery log, so they stay visible;
-  she accepts. A document nobody re-agreed to is not an agreement.
-  Minutes, not a ceremony.
+On **2026-07-19**, **Nara** re-approves — the same gate, the same
+approver as the original document. She reads it as a diff: two
+requirements and one criterion, not a 70-line document. The gate's two
+questions, scoped to the diff: is each line testable, and is it wanted
+today? She pushes back once — does suppression hide a second, larger
+breach inside the window? R-10 keeps suppressed events in the delivery
+log, so they stay visible; she accepts. Then, in a change she authors
+herself (§3.2) — a suggestion she writes or a commit she pushes — she
+removes the amendment note and rewrites the Status line to `Status:
+APPROVED — Nara (PO), 2026-07-19`. PR 1 merges. A document nobody
+re-agreed to is not an agreement. Minutes, not a ceremony.
 
 ### Step 6 — amend design and tasks (PRs 2 and 3)
 
-- **When:** 2026-07-19, after PR 1 merges — gates pass in order
-  (§3.1).
-- **Who:** Bilguun and the agent draft; Tulga — tech lead, holder of
-  the Design and Tasks gates — approves each in his own change.
-- **What, in `plan.md`:** one new clause in §2's delivery flow —
-  before calling notification-service, check `delivery_log` for a
-  delivery under 10 minutes old — cited as `[R-10]`. Same
-  amendment-note mechanics as the spec.
-- **What, in `tasks.md`:** an appended task; T-ids are as stable as
-  R-ids:
+Later on **2026-07-19**, after PR 1 merges — gates pass in order
+(§3.1) — **Bilguun** and the agent amend the design and the task list.
+**Tulga**, tech lead and holder of both the Design and Tasks gates,
+approves each in his own change. In `plan.md` (PR 2), one new clause in
+§2's delivery flow: before calling notification-service, check
+`delivery_log` for a delivery under 10 minutes old, cited as `[R-10]`.
+The amendment-note mechanics are the same as the spec's. In `tasks.md`
+(PR 3), an appended task — T-ids are as stable as R-ids:
 
-  > **T-8** Suppress delivery when the alert's most recent delivery
-  > is under 10 minutes old; record the suppressed event in
-  > `delivery_log`. Depends: T-5. [R-5] [R-10]
-  > *Evidence: burst-replay test — 40 events in one minute produce 40
-  > delivery-log rows and exactly one notification.*
+> **T-8** Suppress delivery when the alert's most recent delivery is
+> under 10 minutes old; record the suppressed event in `delivery_log`.
+> Depends: T-5. [R-5] [R-10]
+> *Evidence: burst-replay test — 40 events in one minute produce 40
+> delivery-log rows and exactly one notification.*
 
-- **Where:** PR 2 touches `plan.md`; PR 3 touches `tasks.md`.
-- **How:** direct edits. No `/speckit.*` command amends: each one
-  drafts a whole document, so re-running one over an approved
-  artifact would replace it wholesale — the amendment note and the
-  ticked, stable T-ids with it. The agent re-checks R-id coverage in
-  both directions.
-- **Why:** implementation may not start before the Tasks gate passes
-  (§3.1). Tulga checks what he always checks: every task carries an
-  `[R-n]` (§5.1), states its evidence, and names its dependencies.
-- **Why T-8, not T-7:** T-7 is taken — the walkthrough's R-9 turn
-  appended it mid-implementation for the unsupported-channel rejection.
-  T-ids take the next free number and are never reused, like R-ids: the
-  frozen snapshot ended at T-6, R-9 added T-7, coalescing adds T-8.
+Both are direct edits. **No `/speckit.*` command amends:** each one
+drafts a whole document, so re-running one over an approved artifact
+would replace it wholesale — the amendment note and the ticked, stable
+T-ids with it. The agent re-checks R-id coverage in both directions,
+and Tulga checks what he always checks: every task carries an `[R-n]`
+(§5.1), states its evidence, and names its dependencies. Implementation
+may not start before this gate passes (§3.1). **Why T-8, not T-7:**
+T-7 is taken, appended in the walkthrough's R-9 turn for the
+unsupported-channel rejection. T-ids take the next free number and are
+never reused, like R-ids: the frozen snapshot ended at T-6, R-9 added
+T-7, coalescing adds T-8.
 
 ### Step 7 — implement (PR 4)
 
-- **When:** 2026-07-20 to 2026-07-21.
-- **Who:** Bilguun and the agent, task by task.
-- **What:** the window check in the delivery path, the
-  suppressed-event log write, and the burst-replay test named by
-  T-8's evidence line.
-- **Where:** PR 4 — alerts-service code and tests.
-- **How:** `/speckit.implement`; T-8's box is ticked when the
-  burst-replay evidence exists, not before.
-- **Why §5.2 still matters:** passing the gates first does not
-  suspend the same-PR rule. If implementation surfaces another
-  unspecified case, that amendment is included in this same PR — the
-  walkthrough's Day-5 move.
+On **2026-07-20** to **2026-07-21**, **Bilguun** and the agent
+implement task by task in PR 4 — alerts-service code and tests. The
+work is the window check in the delivery path, the suppressed-event
+log write, and the burst-replay test named by T-8's evidence line.
+They run `/speckit.implement`; T-8's box is ticked when the
+burst-replay evidence exists, not before. Passing the gates first does
+not suspend §5.2: if implementation surfaces another unspecified case,
+that amendment is included in this same PR — the walkthrough's Day-5
+move.
 
 ### Step 8 — the Review gate, and done (still PR 4)
 
-- **When:** 2026-07-22.
-- **Who:** the agent writes the notes; Sarnai — who implemented none
-  of this — holds the gate (§3.3).
-- **What:** `review-notes.md`, rewritten by `speckit.sdd.review`
-  after implementation: a verdict per R-id, contract and
-  task-evidence checks, and a drift section that comes back empty for
-  the right reason — the behavior change went through the spec, not
-  around it.
-- **Where:** the feature folder, inside PR 4.
-- **How:** Sarnai spot-checks the R-5 and R-10 verdicts into code and
-  tests, then passes the gate in her own change, at the top of
-  `review-notes.md` per the team's working agreement:
-  `Status: APPROVED — Sarnai (reviewer), 2026-07-22`. PR 4 merges.
-- **Why:** the notes inform the gate; they cannot pass it. A human
-  who is not the implementer does (§3.2, §3.3).
+On **2026-07-22**, the agent writes `review-notes.md`, rewritten by
+`speckit.sdd.review` after implementation: a verdict per R-id,
+contract and task-evidence checks, and a drift section that comes back
+empty for the right reason — the behavior change went through the
+spec, not around it. Then **Sarnai**, who implemented none of this,
+holds the gate (§3.3). She spot-checks the R-5 and R-10 verdicts into
+code and tests, then passes the gate in her own change, at the top of
+`review-notes.md` per the team's working agreement: `Status: APPROVED
+— Sarnai (reviewer), 2026-07-22`. PR 4 merges. The notes inform the
+gate; they cannot pass it. A human who is not the implementer does
+(§3.2, §3.3).
 
 **What the record now shows.** A reader opening `spec.md` sees
 current intent: R-5 with its window, R-9's unsupported-channel
@@ -296,6 +266,19 @@ rejection, R-10's suppression. Git shows what changed, when, and who
 agreed. The item is done — and the delivery log is already collecting
 the data for the next turn. Turn N+1 starts from this record, not
 from what anyone remembers.
+
+### The amendment turn, in one page
+
+| When | Who | Does what | How | Rule |
+| ---- | --- | --------- | --- | ---- |
+| 2026-07-17 | Nara | sees the alert misfire on a payroll burst — no defect, intent changed | reads the ticket against `delivery_log` | §4.1 |
+| 2026-07-17 | Nara | files the work item: coalesce per alert | summary + link to the existing 007 folder | §4.3 |
+| 2026-07-18 | Bilguun | qualifies the change — alters observable behavior, not a bugfix | the §6.1 trigger list | §6.1 |
+| 2026-07-18 | Bilguun + agent | amend `spec.md` (PR 1): supersede R-5, append R-10, add the note | a direct diff to the approved file | §4.2, §5.2 |
+| 2026-07-19 | Nara | re-approves the diff | own change flips the Status line | §3.2 |
+| 2026-07-19 | Bilguun + agent, then Tulga | amend `plan.md` (PR 2) and `tasks.md` (PR 3); Tulga approves each | direct edits, never `/speckit.*` | §3.1, §5.1 |
+| 2026-07-20–21 | Bilguun + agent | implement suppression + the burst-replay test (PR 4) | `/speckit.implement`; tick T-8 on evidence | §3.1 |
+| 2026-07-22 | Sarnai | Review gate: spot-check verdicts, approve | own change; notes inform, never pass | §3.2, §3.3 |
 
 ### The third move — withdrawing a requirement
 
@@ -327,83 +310,68 @@ turn above.
 
 ### Step 1 — learn
 
-- **When:** 2026-08-03, twelve days after the coalescing turn merged.
-- **Who:** treasury clients holding dozens of accounts, their account
-  managers, then Nara.
-- **What:** an ask for a new thing, not a complaint about an existing
-  one: a single daily email summarizing limit events across all of a
-  client's accounts. Per-event alerts stay wanted where they fit —
-  payroll accounts keep them.
-- **Where:** account-manager feedback, checked against the delivery
-  log: one client's accounts fired 60 separate notifications in a
-  week.
-- **How:** Nara reads the feedback against the delivery log's volume
-  numbers, the same instrumentation the amendment turn used.
-- **Why this is not an amendment:** nothing 007 covers changes.
-  Every R-id in 007 stays true word for word, and 007 §1's purpose —
-  register an alert on an account, get notified per event — does not
-  cover a cross-account daily summary. That is §6.1's fourth
-  trigger: a new capability.
+On **2026-08-03**, twelve days after the coalescing turn merged,
+treasury clients holding dozens of accounts — through their account
+managers — ask **Nara** for a new thing, not a complaint about an
+existing one: a single daily email summarizing limit events across all
+of a client's accounts. Per-event alerts stay wanted where they fit;
+payroll accounts keep them. Nara reads the feedback against the
+delivery log's volume numbers, the same instrumentation the amendment
+turn used: one client's accounts fired 60 separate notifications in a
+week. This is not an amendment. Nothing 007 covers changes — every
+R-id in 007 stays true word for word, and 007 §1's purpose, register
+an alert on an account and get notified per event, does not cover a
+cross-account daily summary. That is §6.1's fourth trigger: a new
+capability.
 
 ### Step 2 — the folder call
 
-- **When:** 2026-08-04, when Bilguun picks the item up.
-- **Who:** Bilguun — the same developer judgment as the
-  qualification call.
-- **What:** two decisions. The item qualifies (new capability, new
-  externally observable output). And it opens a new spec folder
-  instead of amending 007.
-- **Where:** noted on the tracker item.
-- **How:** ask the boundary question of the approved spec: does the
-  change alter or extend behavior this document covers? R-9 and
-  R-10 did — new cases of the same capability — so they amended 007.
-  The digest does not, so it gets its own folder.
-- **Why the call matters both ways:** combined into 007, one spec
-  carries two capabilities, and every future approval re-reads both.
-  Split out when covered behavior *did* change, 007 keeps claiming
-  behavior that is no longer true — the silent drift the standard
-  exists to prevent.
+On **2026-08-04**, **Bilguun** picks the item up — the same developer
+judgment as the qualification call — and makes two decisions, noted on
+the tracker item. The item qualifies: a new capability, a new
+externally observable output. And it opens a new spec folder instead
+of amending 007. He asks the boundary question of the approved spec:
+does the change alter or extend behavior this document covers? R-9 and
+R-10 did — new cases of the same capability — so they amended 007. The
+digest does not, so it gets its own folder. The call matters both
+ways. Combined into 007, one spec would carry two capabilities, and
+every future approval would re-read both. Split out when covered
+behavior *did* change, and 007 would keep claiming behavior that is no
+longer true — the silent drift the standard exists to prevent.
 
 ### Step 3 — scaffold with the command
 
-- **When:** 2026-08-04.
-- **Who:** Bilguun and the agent.
-- **What:** a new feature branch and folder,
-  `specs/008-limit-event-digest/`, holding a drafted `spec.md` with
-  `Status: DRAFT`.
-- **Where:** the product repo; the command creates the branch and
-  numbers the folder.
-- **How:**
+Still **2026-08-04**. **Bilguun** and the agent scaffold a new feature
+branch and folder, `specs/008-limit-event-digest/`, holding a drafted
+`spec.md` with `Status: DRAFT`. The command creates the branch and
+numbers the folder:
 
-  ```
-  /speckit.specify daily digest email of transfer-limit events across all of a client's accounts, sent once per day at a client-chosen hour
-  ```
+```
+/speckit.specify daily digest email of transfer-limit events across all of a client's accounts, sent once per day at a client-chosen hour
+```
 
-  Numbering, branch, folder, template — scaffolding is what the
-  commands are for, and none of it exists in an amendment. This is
-  the case where the command is the right tool.
-- **Why R-ids restart:** the 008 draft opens at its own R-1. R-ids
-  are scoped to their document (§4.1); 008's R-1 has nothing to do
-  with 007's. A spec that must reference another names the folder:
-  "007's R-5".
+Numbering, branch, folder, template — scaffolding is what the commands
+are for, and none of it exists in an amendment. This is the case where
+the command is the right tool. The 008 draft opens at its own R-1:
+R-ids are scoped to their document (§4.1), so 008's R-1 has nothing to
+do with 007's. A spec that must reference another names the folder —
+"007's R-5".
 
 ### Step 4 — the normal lifecycle, plus one cross-reference
 
-- **When:** 2026-08-04 onward.
-- **Who:** the full cast; the same four gates.
-- **What:** from here, 008 is an ordinary new feature — draft,
-  Requirements gate, plan, tasks, implementation, Review.
-  [feature-walkthrough.md](feature-walkthrough.md) is that story.
-- **Where:** 008 §1 states the boundary in writing: "Out of scope:
-  per-event alert behavior (`specs/007-transfer-limit-alerts/`)."
-- **How:** the same commands as the walkthrough — `/speckit.plan`,
-  `/speckit.tasks`, `/speckit.implement` — because everything in 008
-  is a first draft, not an amendment.
-- **Why 007 can still be amended by this work:** if implementing the
-  digest alters behavior 007 covers — say the digest sender changes
-  the retry policy that per-event delivery also uses — that PR
-  amends 007's spec too, in the same PR (§5.2). The rule binds the
-  change, not the folder the developer happens to be working in.
+From **2026-08-04** onward, the full cast runs 008 through the same
+four gates. It is an ordinary new feature — draft, Requirements gate,
+plan, tasks, implementation, Review — and
+[feature-walkthrough.md](feature-walkthrough.md) is that story. The
+same commands apply, `/speckit.plan`, `/speckit.tasks`,
+`/speckit.implement`, because everything in 008 is a first draft, not
+an amendment. 008 §1 states the boundary in writing: "Out of scope:
+per-event alert behavior (`specs/007-transfer-limit-alerts/`)." And 007
+can still be amended by this work: if implementing the digest alters
+behavior 007 covers — say the digest sender changes the retry policy
+that per-event delivery also uses — that PR amends 007's spec too, in
+the same PR (§5.2). The rule binds the change, not the folder the
+developer happens to be working in.
 
 The two turns are the same loop with different entry points:
 learning that changes covered behavior re-enters its own spec;

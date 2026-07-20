@@ -67,7 +67,7 @@ judgment. When it is genuinely unclear, ask — the answer lands in
 
 ## Day 1, afternoon — drafting the Requirements Document
 
-**Who:** Bilguun and the agent. **How:**
+**Bilguun** and the agent draft it:
 
 ```
 /speckit.specify alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails
@@ -123,8 +123,8 @@ next to a DRAFT spec, is a red build on every push (§8.1).
 
 ## Day 3 — the Design Document
 
-**Who:** Bilguun and the agent draft; **Tulga** holds the gate.
-**How:** `/speckit.plan`, then judgment where the agent cannot be
+**Bilguun** and the agent draft; **Tulga** holds the gate. They run
+`/speckit.plan`, then apply judgment where the agent cannot be
 trusted alone:
 
 - every design element cites the requirement it satisfies as `[R-n]`,
@@ -151,7 +151,7 @@ alternative before approving. Then his own change:
 
 ## Day 4 — the Task List
 
-**Who:** the same pair drafts with `/speckit.tasks` (the authoring
+The same pair drafts with `/speckit.tasks` (the authoring
 pass — slicing, evidence lines — is
 [writing-tasks.md](writing-tasks.md)). **Tulga** holds this gate too,
 in the other role (§3.3 allows it). He checks three things. Every
@@ -167,7 +167,7 @@ pushed next to an unapproved plan is another red build.
 
 ## Days 4–6 — implementation
 
-**Who:** Bilguun and the agent, task by task, with
+**Bilguun** and the agent implement task by task, with
 `/speckit.implement`. A task is ticked only when its stated evidence
 exists. T-4's box stays open until the at-least-once replay test
 actually delivers exactly once — not when the code "looks done".
