@@ -136,7 +136,7 @@ evolving requirements, spikes, amendments — is
 
 ## Status
 
-**Pre-1.0 (0.2.0-draft), complete and usable.** This repository is the standard
+**Pre-1.0 (0.3.0-draft), complete and usable.** This repository is the standard
 and its tooling — nothing else. It is being validated on demo projects;
 adoption of the convention by real teams is a separate, later decision with
 its own approval. Settled decisions are indexed with stable D-ids in
