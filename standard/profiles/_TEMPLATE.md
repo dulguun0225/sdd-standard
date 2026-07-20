@@ -12,7 +12,7 @@
 > provides **defaults, vocabulary, and worked examples only**. It shall not
 > add gates, approval steps, artifact types, or workflow steps, and shall
 > not override the standard. If something here appears to conflict with
-> SDD-STANDARD.md, the standard wins and this profile gets fixed.
+> SDD-STANDARD.md, the standard takes precedence and this profile gets fixed.
 
 ## 1. Scope
 

@@ -2,7 +2,7 @@
 
 **Informative.** This guide teaches the craft. The rules live in
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md) §4. In any conflict, the
-standard wins.
+standard takes precedence.
 
 You are the author when you draft a Requirements Document and shape it
 for its gate. On most teams that is a developer working with an agent.
@@ -18,7 +18,7 @@ they don't know a detail, they write vague filler instead of flagging
 the gap. And they pack several behaviors into one sentence.
 
 Here is a realistic draft for the teaching example's intent — "alert
-clients when a transfer bounces off their daily limit". Every one of
+clients when a transfer is rejected by their daily limit". Every one of
 those failures is in it:
 
 > - **R-1** The system shall allow clients to create transfer-limit
@@ -72,7 +72,7 @@ can fire it. Rewriting it (final R-5) also surfaces the real contract
 question: which event, from which producer? That question belongs in
 `plan.md`'s asynchronous contracts table.
 
-**5. Watch undefined terms — they hide features.** Draft R-3 says
+**5. Watch undefined terms — they conceal unplanned features.** Draft R-3 says
 "preferred channel". That quietly assumes a client preference store
 nobody planned to build. The actual design: a channel chosen per alert,
 at registration. Define the terms your requirements lean on (the
@@ -91,9 +91,9 @@ and R-2 and you get the final spec's R-2 (invalid threshold →
 `400 VALIDATION_FAILED`), R-3 (duplicate registration →
 `409 ALERT_EXISTS`), R-4 (missing or unentitled account →
 `404 ACCOUNT_NOT_FOUND`), and R-7 (delivery failure → retry, every
-attempt logged). A spec with only WHEN rows is half a spec.
+attempt logged). A spec with only WHEN rows is incomplete.
 
-**7. Vague nouns hide as well as vague adverbs.** "Log alert activity."
+**7. Vague nouns are as ambiguous as vague adverbs.** "Log alert activity."
 Which activity? Into which log? The shaped version names both: every
 alert state transition (created, triggered, delivered, failed), in the
 audit log (final R-8).
@@ -128,13 +128,13 @@ would distort the meaning — mathematical content, more than three
 preconditions — §4.1 permits a structured list or table under the same
 R-id, with a one-line rationale.
 
-## The bar is testable, not airtight
+## The bar is testable, not complete and unambiguous
 
 A requirement is testable when a reader can tell whether an
 implementation satisfies it. The practical test: could you write the
 failing test from the sentence alone? Testable but later proven wrong
 is fine. That is what amendments are for;
-[evolving-requirements.md](evolving-requirements.md) walks that loop.
+[evolving-requirements.md](evolving-requirements.md) covers that loop.
 What you do not yet know, leave out. A missing requirement is honest; a
 vague one is not. When the answer arrives, it takes the next free R-id
 (§4.2 makes appending safe — no other id changes).
@@ -143,8 +143,8 @@ vague one is not. When the answer arrives, it takes the next free R-id
 
 - **Design.** Requirements state observable behavior at the system's
   boundary. Algorithms, storage layouts, and module shapes belong in
-  `plan.md`. A requirement that pins internals is at the wrong
-  altitude — [evolving-requirements.md](evolving-requirements.md) has
+  `plan.md`. A requirement that pins internals is at the wrong level of
+  detail — [evolving-requirements.md](evolving-requirements.md) has
   the diagnostic.
 - **Acceptance criteria anywhere else.** They live here and only here.
   The tracker item carries a summary and a link (§4.3).
@@ -165,7 +165,7 @@ The author's pass over the approver's checklist
 - the structure check ran locally (quickstart §6 has the command) —
   its vague-word warning is for you first, not your approver;
 - the IF/THEN rows cover the profile failure cases that apply;
-- every load-bearing term is defined or plain;
+- every essential term is defined or plain;
 - scope says what is out; success criteria are measurable after
   shipping;
 - new requirements took the next free R-id; nothing was renumbered.

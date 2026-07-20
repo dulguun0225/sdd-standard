@@ -1,8 +1,8 @@
 # Reviewing specs — the approver's guide
 
-**Informative.** This guide shows what good looks like at each gate.
+**Informative.** This guide shows what a good artifact is at each gate.
 The binding rules live in [SDD-STANDARD.md](../standard/SDD-STANDARD.md)
-§3. In any conflict, the standard wins.
+§3. In any conflict, the standard takes precedence.
 
 You are a gate approver if your team bound one of the §3.3 roles to
 you. Read this before your first approval.
@@ -35,11 +35,11 @@ Approve when:
   The §4.1 fallback (mathematical content, more than three
   preconditions) permits a structured list or table instead, with its
   stated rationale. Watch for a hidden "and" — "validates and persists
-  and notifies" is three requirements wearing one R-id.
+  and notifies" is three requirements under one R-id.
 - R-ids are permanent: never renumbered, never reused. Anything
   removed is listed `WITHDRAWN`, not deleted.
 - The unwanted-behavior cases exist (`IF … THEN …`). A spec with only
-  happy-path `WHEN`s is half a spec. Ask what happens on the
+  happy-path `WHEN`s is incomplete. Ask what happens on the
   duplicate, the missing account, the failed delivery.
 - Ambiguity is removed here or nowhere. Implementers, human or AI,
   cannot be relied on to catch it downstream. An AI implementer fills
@@ -64,7 +64,7 @@ The author's side of this gate is
 Approve when:
 
 - Every design element cites the requirement it satisfies as `[R-n]`,
-  and every R-id is somewhere satisfied. Walk the list; it takes two
+  and every R-id is somewhere satisfied. Check the list; it takes two
   minutes.
 - The contract sections follow the repo's stack profile shapes.
   Mutating sync operations state their idempotency. Every business
@@ -73,8 +73,7 @@ Approve when:
   question you ask now, not in the incident review.
 - Decisions carry rationale including what was rejected. "We chose X"
   with no alternative considered is a preference, not a decision.
-- The constitution check is done honestly — tension named, not waved
-  off.
+- The constitution check is done honestly — tension named, not dismissed.
 
 ## Tasks gate (technical authority)
 
@@ -103,9 +102,9 @@ Approve when:
   same-PR update), not around it.
 - No spec drift: nothing in the delta changes behavior the approved
   spec covers without the spec changing in the same PR. This finding
-  matters most. Drift is how specs die.
+  matters most. Drift is how specs stop matching the code.
 - Done tasks have their stated evidence.
 
 You must not be the implementer of the item under review. If the team
-is small enough that this pinches, that is a staffing conversation,
-not a rule to bend.
+is small enough that this is hard to staff, that is a staffing conversation,
+not a rule to waive.

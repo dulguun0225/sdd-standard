@@ -20,7 +20,7 @@ stable like R-ids: never renumbered, never reused. Withdrawn tasks stay
 listed as `WITHDRAWN`. Phases come from plan.md §9. A task is done when
 its evidence exists. Prefer many small, independently verifiable tasks
 over few large ones. Each task should be completable and checkable in
-one sitting. Per-step errors compound across a long task.
+a single work session. Per-step errors compound across a long task.
 Be precise first, simple second: say exactly what is true, no
 ambiguity. Keep technical terms when the everyday word is less exact.
 Within that: short sentences, everyday words, one idea per sentence.

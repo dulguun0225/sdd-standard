@@ -15,7 +15,7 @@ upgrades are tested in this repo first.
 
 ## Why not stock Spec Kit?
 
-Stock Spec Kit is a workflow tool: it walks an AI agent from spec through
+Stock Spec Kit is a workflow tool: it guides an AI agent from spec through
 plan and tasks to implementation. Nothing in it says who approves an
 artifact, how requirement ids stay stable over time, or what happens when
 code drifts from an approved spec. The convention adds those rules on
@@ -28,7 +28,7 @@ never a fork, so the tool stays replaceable. What it adds
   passes a gate, by adding the `Status: APPROVED` line in their own
   change. Agents never write Status lines, and the Review approver is
   never the implementer (§3).
-- **Requirements that stay put.** Every requirement is one testable EARS
+- **Requirements that never change.** Every requirement is one testable EARS
   behavior with a stable R-id: never renumbered, never reused; withdrawn
   ones stay listed. Acceptance criteria live in the spec alone. Tracker
   items carry a summary and a link (§4).
@@ -38,7 +38,7 @@ never a fork, so the tool stays replaceable. What it adds
   structure as merge-blocking CI. A plan without an APPROVED spec turns
   the pipeline red. So do tasks without an APPROVED plan, and a missing
   Status line (§5, §8).
-- **One dialect, not one per team.** Repos adopt only via
+- **One shared version, not one per team.** Repos adopt only via
   `bootstrap/init.py`, at the pinned and tri-OS-tested version. It seeds
   the shared constitution (repos may append principles, never weaken
   them) and appends the stack profile. No hand-copied templates, so no
@@ -47,7 +47,7 @@ never a fork, so the tool stays replaceable. What it adds
   extension (`speckit.sdd.review`) compares what was built against
   the approved artifacts and writes notes for the human Review approver —
   input to the Review gate (§3), never a pass of it.
-- **Ceremony only where it pays.** A work item that matches none of the
+- **Ceremony only where it is worthwhile.** A work item that matches none of the
   qualifying triggers needs no spec ceremony. The triggers: a contract
   or observable-behavior change, a crossed boundary, a hard-to-reverse
   step, a new capability. Emergency hotfixes ship first and update the
@@ -57,7 +57,7 @@ never a fork, so the tool stays replaceable. What it adds
 
 How the rules above compose, end to end, in an adopting repo. The
 normative text is [SDD-STANDARD](standard/SDD-STANDARD.md); this section
-is the map.
+is the overview.
 
 Every work item starts at the qualification decision (§6.1). The gated
 workflow binds when any of these holds:
@@ -84,13 +84,12 @@ A qualifying item's artifacts pass their gates in order: Requirements →
 Design → Tasks before implementation starts, Review after it completes,
 before the item is marked done (§3.1). Who does what: 🤖 the agent,
 ☺️ humans, 🤨 a human making the call, 🤖+☺️ both. Typically the agent
-drafts and a human shapes and owns it — though the convention itself
+drafts and a human refines and owns it — though the convention itself
 never requires an agent (§1, §9.1). Every gate is 🤨 alone by design
 (§3.2). The qualification call too is a human judgment (§6.1). Solid
 edges are the gated pass. Dashed edges make this a loop, not a
 waterfall. They cover the hotfix bypass, gate rejections, the spike for
-behavior you cannot state as testable yet, and Done feeding lessons
-into the next work item:
+behavior you cannot state as testable yet, and Done passing what was learned to the next work item:
 
 ```mermaid
 flowchart TD
@@ -114,7 +113,7 @@ flowchart TD
     NOTES --> G4{"🤨 Review gate"}
     G4 -->|"approved"| DONE["Done"]
     G4 -.->|"rejected"| IMPL
-    DONE -.->|"reality teaches: changed intent, or the next slice —<br/>a spec amendment supersedes, appends, or withdraws (§4.2)<br/>and rides the same PR as the code change (§5.2)"| WI
+    DONE -.->|"what practice shows: changed intent, or the next slice —<br/>a spec amendment supersedes, appends, or withdraws (§4.2)<br/>and is included in the same PR as the code change (§5.2)"| WI
 ```
 
 Each artifact gate passes the same way: a human approver adds
@@ -137,14 +136,14 @@ Two enforcement rules from the list above apply at every step.
 The same-PR spec-update rule: a merged violation is a spec-drift
 incident (§5.2). And the merge-blocking structure check (§8.1), which
 turns the pipeline red on a `plan.md` drafted while `spec.md` is still
-`DRAFT` — before a human has to catch it. A hands-on
+`DRAFT` — before a human has to catch it. A practical
 walkthrough of the artifacts is
 [docs/quickstart.md](docs/quickstart.md). Who does what, when, as a
 team runs it: [docs/feature-walkthrough.md](docs/feature-walkthrough.md).
 The dashed edges — evolving requirements, spikes, amendments:
 [docs/evolving-requirements.md](docs/evolving-requirements.md). The
 writing guides for each artifact and the approver's guide are indexed
-in [docs/README.md](docs/README.md), with reading paths per seat.
+in [docs/README.md](docs/README.md), with reading paths per role.
 
 ## Status
 
@@ -158,7 +157,7 @@ approval. Settled decisions are indexed with stable D-ids in
 person, defined in
 [SDD-STANDARD §13](standard/SDD-STANDARD.md#13-ownership-and-versioning-of-this-standard).
 An organization adopting the standard designates its own standard owner at
-adoption. v1.0 is declared by the standard owner when real usage has earned
+adoption. v1.0 is declared by the standard owner when real usage justifies
 it.
 
 ## Layout

@@ -2,7 +2,7 @@
 
 **Reference material — informative.** This document defines terms and shows
 EARS patterns; it never adds rules. If anything here appears to conflict with
-SDD-STANDARD.md or a profile, the standard wins and this file gets fixed.
+SDD-STANDARD.md or a profile, the standard takes precedence and this file gets fixed.
 
 > **Монгол орчуулгын тухай / About the Mongolian column:** орчуулгыг
 > AI ноороглож, эх хэлтэй хянагч 2026-07-20-нд хянаж баталсан.
@@ -63,7 +63,7 @@ filenames, the standard's vocabulary inside the documents.
 | Gate | A human approval checkpoint on an artifact; passed only via an explicit Status line | Шалгах цэг (гейт) |
 | Approval | A human adding `Status: APPROVED — <name>, <date>` to an artifact; agents never write it | Баталгаажуулалт |
 | Spec drift | A merged change altering behavior covered by an approved spec without updating that spec in the same PR/MR | Тодорхойлолтын зөрүү |
-| Qualifying triggers | The §6.1 list of change properties (externally observable behavior or contract, boundary-crossing, hard-to-reverse step, new capability) that require spec ceremony; items matching none are exempt (the pressure valve) | Болзол хангах шалгуурууд |
+| Qualifying triggers | The §6.1 list of change properties (externally observable behavior or contract, boundary-crossing, hard-to-reverse step, new capability) that require spec ceremony; items matching none are exempt (the exemption) | Болзол хангах шалгуурууд |
 | Qualifying work item | A work item matching at least one §6.1 trigger — full gated workflow applies | Болзол хангасан ажил |
 | Emergency hotfix | A change shipped outside the normal spec workflow to restore service; implemented first, spec updated after | Яаралтай засвар |
 

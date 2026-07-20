@@ -15,9 +15,9 @@ Format per entry:
 
 ## Workflow
 
-### Nobody can write airtight requirements — won't we just loop vague requirement → implement → refine → re-implement? How do we work?
+### Nobody can write complete, unambiguous requirements — won't we just loop vague requirement → implement → refine → re-implement? How do we work?
 
-The bar is **testable**, not airtight (SDD-STANDARD §4.1), and the loop
+The bar is **testable**, not complete and unambiguous (SDD-STANDARD §4.1), and the loop
 is the expected shape of the work, not a failure of it. The standard's
 job is to make each turn recorded instead of silent. Each turn amends
 the spec in the same PR as the code change (§5.2). An amendment

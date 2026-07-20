@@ -2,10 +2,10 @@
 
 **Informative.** This guide teaches the craft. The rules live in
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md) §5. In any conflict, the
-standard wins.
+standard takes precedence.
 
 You are the author when you draft the Task List, after the design gate
-passed (§3.1). The Task List is the bridge from approved intent to
+passed (§3.1). The Task List connects approved intent to
 evidence. It is the implementer's work order — often an agent's. After
 implementation it becomes the Review approver's record of what "done"
 claimed. The approver's side is
@@ -25,13 +25,13 @@ the approved [sample task list](../examples/sample-feature/tasks.md).
 
 ## The shaping moves
 
-**1. Slice until one sitting can verify it.** Draft T-1 is a phase
-wearing a T-id. "The alerts API" is a migration, a repository, two
+**1. Slice until a single work session can verify it.** Draft T-1 is a whole phase
+labeled as one T-id. "The alerts API" is a migration, a repository, two
 endpoints, validation, and conflict handling. Days of work, and nothing
 can check it until all of it exists. The tasks-template
 states the rule at the point of use: prefer many small, independently
 verifiable tasks over few large ones. Each is completable and checkable
-in one sitting; per-step errors compound across a long task. Draft T-1
+in a single work session; per-step errors compound across a long task. Draft T-1
 becomes the sample's T-1 (migration + repository, round-trip test),
 T-2 (the POST endpoint, contract tests), and T-3 (the GET endpoint,
 contract test). Each has its own check that can fail.
@@ -41,7 +41,7 @@ carries no reference. The merge gate goes red on exactly this
 (`T-2 carries no [R-n] reference`). The mapping is the point, not the
 formatting. A task that maps to no requirement is either not needed —
 or it just discovered a missing requirement. In that case amend
-`spec.md` first (next free R-id, §4.2), then cite it. Then walk the
+`spec.md` first (next free R-id, §4.2), then cite it. Then check the
 other direction. An R-id no task implements is an unbuilt requirement,
 and the tasks gate checklist looks for it.
 
@@ -60,7 +60,7 @@ That is where you decide what "truthfully done" will mean:
 
 The Review approver later spot-checks these lines
 ([reviewing-specs.md](reviewing-specs.md)). Write them so the
-spot-check is a click, not a dig through history. And "cleanup" maps
+spot-check is a click, not a search through history. And "cleanup" maps
 to no requirement: internal tidying with no observable effect needs no
 task here at all (§6.1).
 
@@ -74,22 +74,22 @@ caught.
 task that is no longer needed stays listed as `WITHDRAWN`. Work
 discovered mid-implementation appends the next free T-id. When that
 work changes behavior the approved spec covers, the spec amendment
-rides the same PR (§5.2).
+is included in the same PR (§5.2).
 
 The whole pass, in one table:
 
 | Draft line | Defect | Shaped into |
 | ---------- | ------ | ----------- |
-| T-1 "implement the alerts API" | a phase wearing a T-id — nothing can verify it in one sitting | T-1, T-2, T-3, each with its own evidence |
+| T-1 "implement the alerts API" | a whole phase labeled as one T-id — nothing can verify it in a single work session | T-1, T-2, T-3, each with its own evidence |
 | T-2 no `[R-n]` | unmapped work; the merge gate goes red | T-4, T-5 citing [R-5] [R-6] [R-7] [R-8] |
-| T-3 "testing and cleanup" | evidence smuggled into a bucket task; "cleanup" maps to no requirement | dissolved — every task carries its own evidence; exempt tidying needs no task (§6.1) |
+| T-3 "testing and cleanup" | evidence hidden in a catch-all task; "cleanup" maps to no requirement | dissolved — every task carries its own evidence; exempt tidying needs no task (§6.1) |
 
 ## Before you request the gate
 
 The author's pass over the approver's checklist
 ([reviewing-specs.md](reviewing-specs.md)):
 
-- every task states one verifiable outcome, sized to a sitting;
+- every task states one verifiable outcome, sized to a single work session;
 - every task carries at least one `[R-n]`; every R-id is covered by at
   least one task;
 - every task has an Evidence line naming a check, a run link, or an
@@ -98,6 +98,6 @@ The author's pass over the approver's checklist
 - T-ids take the next free number; nothing renumbered, nothing reused.
 
 After the gate, the list is live. Tick a box only when its evidence
-exists. Append new T-ids as reality adds work. And remember the
+exists. Append new T-ids as new work appears. And remember the
 same-PR rule: the Task List is the first place spec drift shows, one
 unticked box at a time.

@@ -2,13 +2,13 @@
 
 **Informative.** This guide explains and demonstrates; the rules live in
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md). In any conflict, the
-standard wins.
+standard takes precedence.
 
-Nobody writes airtight requirements. The standard does not ask for
-them. The bar is **testable** (§4.1), not airtight. A requirement is
+Nobody writes complete, unambiguous requirements. The standard does not ask for
+them. The bar is **testable** (§4.1), not complete and unambiguous. A requirement is
 testable when a reader can tell whether an implementation satisfies it.
 It can still be narrow, incomplete, or later proven wrong. A spec is
-the team's *current intent in checkable form*. The machinery around
+the team's *current intent in checkable form*. The rules around
 it — stable R-ids, amendments, the same-PR rule — exists precisely
 because intent changes.
 
@@ -16,9 +16,8 @@ because intent changes.
 
 Vague requirement → implement → "that's not what I meant" → refine →
 re-implement. That loop exists under every methodology. The damage is
-not the iteration; it is the **silence**. Each turn churns code while
-the document, if one exists, quietly rots. Eventually the spec is
-fiction, and the third iteration starts from what people remember of
+not the iteration; it is the **silence**. Each turn rewrites code while
+the document, if one exists, quietly goes out of date. Eventually the spec no longer matches the code, and the third iteration starts from what people remember of
 the first two.
 
 The standard keeps the loop and removes the silence.
@@ -27,17 +26,17 @@ The standard keeps the loop and removes the silence.
 
 The whole shape is one diagram: the
 [README's lifecycle diagram](../README.md#the-lifecycle-in-a-product-repo).
-Gates run down the solid spine. Dashed edges appear everywhere the
-lifecycle bends back on itself. Three of those dashed edges are this
+Gates run down the solid main path. Dashed edges appear everywhere the
+lifecycle loops back on itself. Three of those dashed edges are this
 guide's subject:
 
 - **spec ⇢ spike ⇢ spec** — what you cannot yet state as testable
   behavior, you prototype first, exempt from ceremony (§6.1);
 - **gate ⇢ artifact** — rejection: revised and resubmitted (§3.4),
   before any code is written;
-- **Done ⇢ Work item** — reality teaches. The learning re-enters as
+- **Done ⇢ Work item** — you learn from what shipped. The learning re-enters as
   the next work item. Where it changes behavior an approved spec
-  covers, the amendment rides the same PR as the code (§5.2).
+  covers, the amendment is included in the same PR as the code (§5.2).
 
 Read around the circle and it says: spec → build → learn → spec. The
 rest of this guide covers those stages one by one, then two full
@@ -55,12 +54,12 @@ are never renumbered, so nothing downstream shifts.
 
 **Gates approve current intent.** The Requirements approver answers
 two questions. Is each line testable? Is this what we want *today*?
-Not: will this survive contact with reality unchanged. Rejection is
+Not: will this stay correct once implemented. Rejection is
 normal and cheap (§3.4, [reviewing-specs.md](reviewing-specs.md)). So
 is amendment. A team whose specs never change is not writing great
 specs; it has stopped updating them.
 
-**Build against the approved artifacts.** The solid spine of the
+**Build against the approved artifacts.** The solid main path of the
 diagram — gates before implementation, the review phase after.
 
 **Learn.** The review notes, the failing contract test, the user who
@@ -70,7 +69,7 @@ next slice is now visible: spec it and go around again. The last two
 are the same dashed edge out of Done.
 
 **Amend in the same PR as the code it explains.** This edge is the
-whole trick, and it is binding (§5.2). A change that alters behavior
+key rule, and it is binding (§5.2). A change that alters behavior
 an approved spec covers does not merge unless the same PR updates that
 spec. Mechanics per §4.2: supersede the requirement in place, append a
 new R-id, or mark a dead one `WITHDRAWN`. Never renumber, never
@@ -92,8 +91,8 @@ there. Everything here is fictitious. Each step answers who, what,
 when, where, why, and how.
 
 One timing difference matters before the steps. In the walkthrough,
-the learning arrived mid-implementation (Day 5), so the amendment rode
-the implementation PR — §5.2's same-PR rule doing its job. Here the
+the learning arrived mid-implementation (Day 5), so the amendment was included in
+the implementation PR — §5.2's same-PR rule applying as intended. Here the
 learning arrives after Done, so the turn starts at the gates: the
 amendment passes the Requirements gate **before** any code (§3.1).
 Same mechanics, different entry point. The team keeps the
@@ -106,7 +105,7 @@ four small PRs: spec, plan, tasks, implementation.
 - **Who:** a payroll client, then support, then Nara — product owner
   of the alerts domain, holder of the Requirements gate.
 - **What:** the client's payroll run submitted 40 transfers in one
-  minute. Each bounced off the limit, each fired an event, and the
+  minute. Each was rejected by the limit, each fired an event, and the
   client got 40 identical sms — then turned the alert off and told
   support why.
 - **Where:** a support ticket, checked against the `delivery_log`
@@ -114,7 +113,7 @@ four small PRs: spec, plan, tasks, implementation.
 - **How:** Nara queries the log for the account: 40 deliveries in one
   minute, every one within R-5's 60 seconds. No defect anywhere.
 - **Why this is spec work:** the service does exactly what the
-  approved spec says, so no bug report can carry the problem. The
+  approved spec says, so no bug report can capture the problem. The
   intent is what changed: from "notify on every event" to "one
   notification per burst".
 
@@ -258,7 +257,7 @@ four small PRs: spec, plan, tasks, implementation.
   burst-replay evidence exists, not before.
 - **Why §5.2 still matters:** passing the gates first does not
   suspend the same-PR rule. If implementation surfaces another
-  unspecified case, that amendment rides this same PR — the
+  unspecified case, that amendment is included in this same PR — the
   walkthrough's Day-5 move.
 
 ### Step 8 — the Review gate, and done (still PR 4)
@@ -298,7 +297,7 @@ place again — the window clause comes out — and withdraws R-10:
 > event hid a genuine second limit breach.
 
 The entry stays in the list, and the next appended requirement is
-R-11, not a recycled R-10. Deletion would strand T-7's `[R-10]` and
+R-11, not a recycled R-10. Deletion would leave T-7's `[R-10]` unresolvable and
 every reference in merged PRs; WITHDRAWN keeps them all resolvable.
 The spec keeps the record of what was tried and abandoned — exactly
 what the next person proposing suppression needs to find.
@@ -347,7 +346,7 @@ turn above.
   change alter or extend behavior this document covers? R-9 and
   R-10 did — new cases of the same capability — so they amended 007.
   The digest does not, so it gets its own folder.
-- **Why the call matters both ways:** crammed into 007, one spec
+- **Why the call matters both ways:** combined into 007, one spec
   carries two capabilities, and every future approval re-reads both.
   Split out when covered behavior *did* change, 007 keeps claiming
   behavior that is no longer true — the silent drift the standard
@@ -404,21 +403,21 @@ Prototype first. A spike with no externally observable effect matches
 no qualifying trigger, so §6.1 exempts it from all ceremony. Keep it
 throwaway by intent. Spec-driven does not mean spec-first-always. It
 means the qualifying change that **ships** is spec'd. Learn from the
-prototype. Write the requirements from what it taught you. Then walk
+prototype. Write the requirements from what it taught you. Then go through
 the loop with them.
 
 ## If every PR amends the spec
 
-That is a signal, not a sin — usually one of two:
+That is a signal, not a failure — usually one of two:
 
-- **Wrong altitude.** The spec pins internals that should stay free:
+- **Wrong level of detail.** The spec pins internals that should stay free:
   algorithms, data shapes, module layout. The §6.1 triggers name what
   a spec is for — contracts, externally observable behavior,
   boundaries, hard-to-reverse steps. Those are the things other people
   depend on. They are also the things teams *can* commit to. Pin the
   contract surface. Leave everything underneath undecided; design
   freedom belongs to `plan.md`, at most.
-- **Slice too thick.** If the requirements will not hold still, the
+- **Slice too thick.** If the requirements keep changing, the
   item is usually too big. Spec a slice thin enough to be sure of,
   ship it, learn, spec the next one. The loop turns faster and each
   turn costs less.
