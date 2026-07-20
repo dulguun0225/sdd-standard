@@ -83,9 +83,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   exactly what is true, no ambiguity. Keep technical terms when the
   everyday word is less exact. Within that: short sentences, everyday
   words, one idea per sentence. No business-speak or figurative
-  filler." Precision protects EARS keywords, R-id/T-id references, and
-  profile vocabulary. Product repos inherit the style at the point of
-  drafting. Guidance only, never a gate.
+  filler. The style limits wording, not coverage: stay complete, keep
+  every edge case." Precision protects EARS keywords, R-id/T-id
+  references, and profile vocabulary. Product repos inherit the style
+  at the point of drafting. Guidance only, never a gate.
 
 ## [0.3.0-draft] - 2026-07-20
 

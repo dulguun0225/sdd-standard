@@ -72,6 +72,14 @@ Be precise first, simple second: say exactly what is true, no
 ambiguity. Keep technical terms when the everyday word is less exact.
 Within that: short sentences, everyday words, one idea per sentence.
 No business-speak or figurative filler.
+The style limits wording, not coverage: stay complete, keep every
+edge case.
+
+This style applies to any text with a human reader — chat replies,
+documents, specs, plans, comments, reports — even if agents read it
+too. Only text no human reads (command definitions, agent
+instructions) is exempt; there, repeat key constraints and list every
+case when that helps reliability.
 
 ## Behavior
 

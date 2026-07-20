@@ -25,6 +25,8 @@ Be precise first, simple second: say exactly what is true, no
 ambiguity. Keep technical terms when the everyday word is less exact.
 Within that: short sentences, everyday words, one idea per sentence.
 No business-speak or figurative filler.
+The style limits wording, not coverage: stay complete, keep every
+edge case.
 
 ---
 
