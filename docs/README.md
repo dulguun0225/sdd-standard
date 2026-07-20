@@ -2,13 +2,13 @@
 
 **Informative.** Everything in `docs/` explains and demonstrates; the
 binding rules live in [SDD-STANDARD.md](../standard/SDD-STANDARD.md)
-and the stack profiles. In any conflict, the standard wins and the
+and the stack profiles. In any conflict, the standard takes precedence and the
 guide gets fixed.
 
 | You want to… | Read |
 | ------------ | ---- |
-| understand what this convention is, and why | the [repo README](../README.md) — its lifecycle section is the map |
-| run your first spec'd feature, hands-on | [quickstart.md](quickstart.md) (~20 minutes, scratch repo) |
+| understand what this convention is, and why | the [repo README](../README.md) — its lifecycle section is the overview |
+| run your first spec'd feature yourself | [quickstart.md](quickstart.md) (~20 minutes, scratch repo) |
 | see who does what, when, on a real team | [feature-walkthrough.md](feature-walkthrough.md) |
 | write a Requirements Document that passes its gate | [writing-requirements.md](writing-requirements.md) |
 | write a Design Document | [writing-design.md](writing-design.md) |
@@ -19,16 +19,16 @@ guide gets fixed.
 | adopt the convention in a repo | [adopting-a-repo.md](adopting-a-repo.md) |
 | ask a question | [faq.md](faq.md) — real questions and answers collect there |
 
-Reading paths, by seat:
+Reading paths, by role:
 
 - **Everyone, once:** the README's lifecycle section, then the
-  quickstart with your own hands.
+  quickstart done yourself.
 - **Authors** (usually a developer working with an agent): the three
   writing guides, in artifact order. Each takes a realistic weak draft
   and shapes it into the approved
   [teaching example](../examples/sample-feature/spec.md). Add
-  [evolving-requirements.md](evolving-requirements.md) for when reality
-  moves, and the walkthrough to see the whole week around you.
+  [evolving-requirements.md](evolving-requirements.md) for when requirements
+  change, and the walkthrough to see the whole week of work.
 - **Approvers:** [reviewing-specs.md](reviewing-specs.md) before your
   first gate, plus the writing guide of the artifact you approve — it
   is your checklist, read from the author's side.

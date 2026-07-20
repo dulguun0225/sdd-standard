@@ -2,7 +2,7 @@
 
 **Informative.** This guide explains how adoption works; the binding rules
 live in [SDD-STANDARD.md](../standard/SDD-STANDARD.md). In any conflict,
-the standard wins.
+the standard takes precedence.
 
 The convention is pre-1.0 and still being validated on demo projects.
 Coordinate with the standard owner (SDD-STANDARD §13) before adopting a
@@ -24,9 +24,9 @@ Bitbucket, or Jenkins-backed setups included:
   (§3.3).
 - **One CI job on every push/PR.** This is the merge gate (§8.1).
   `check_spec_structure.py --repo .` turns the pipeline red when an
-  artifact outruns its gate — a `plan.md` next to a DRAFT `spec.md` —
+  artifact appears before passing its gate — a `plan.md` next to a DRAFT `spec.md` —
   before a human has to catch it. `check_convention_version.py` reports
-  when the repo falls behind the pinned convention, or when the seeded
+  when the repo is older than the pinned convention, or when the seeded
   constitution/profile copies were edited locally (§8.2). The job is
   one Linux container or shell with git and uv. Stdlib Python, no
   services, seconds to run. Any runner works: GitHub Actions,
@@ -41,7 +41,7 @@ Bitbucket, or Jenkins-backed setups included:
   fallback is §8.1's own wording.
 - **uv and git on every developer machine.** All convention tooling is
   one cross-platform Python implementation run via `uv run`. No local
-  Python to manage, no `.sh`/`.ps1` twins to drift apart. Bootstrap
+  Python to manage, no `.sh`/`.ps1` duplicates to drift apart. Bootstrap
   installs the pinned Spec Kit itself via `uv tool run` — nobody ever
   installs Spec Kit by hand (§9.2). On Windows, Git Bash ships with Git
   for Windows (the scaffold scripts' single variant, §10.1). The
@@ -51,7 +51,7 @@ Bitbucket, or Jenkins-backed setups included:
   the exact command when something is missing.
 - **A clone of sdd-standard at the pinned release tag.** Bootstrap, the
   templates, and both CI checks come from it. That is how every
-  adopting repo speaks one dialect at a known version, instead of
+  adopting repo uses one set of templates at a known version, instead of
   hand-copied templates quietly diverging (§9.2, §9.3). CI clones it
   too — the first line of every snippet in §3.
 - **A work tracker — any.** Items carry a summary and a link to the
@@ -83,7 +83,7 @@ uv run bootstrap/init.py <path-to-your-repo> --integration <your-agent> --profil
   command files.
 
 Commit the scaffold as its own commit before anything else. Never copy
-templates between repos by hand. That is how divergent dialects start,
+templates between repos by hand. That is how divergent template copies start,
 and the standard prohibits it.
 
 ## 3. Wire the CI gate
@@ -140,8 +140,8 @@ Enforcement on CE, stated honestly:
 - Protect the default branch (Settings → Repository → Protected branches)
   so pushes go through MRs at all.
 - **CODEOWNERS approval enforcement is a Premium feature — on CE the file
-  is informational only.** Reviewer discipline has to carry what the
-  platform won't; say so in your team working agreement rather than
+  is informational only.** Reviewer discipline has to enforce what the
+  platform will not; say so in your team working agreement rather than
   pretending the gate exists.
 
 ### Jenkins
@@ -182,7 +182,7 @@ merge-blocker by convention.
   reviewed PRs that pass the full tri-OS matrix first. Your repo picks
   them up by re-cloning at the new release tag.
 - `check_convention_version.py` in your CI tells you when your repo is
-  behind the convention release. It also tells you when the seeded
+  older than the convention release. It also tells you when the seeded
   constitution's shared-principles block was edited: SDD-STANDARD §8.2
   compares it byte-for-byte against the pinned template. Repo-specific
   principles go under "Repo principles".

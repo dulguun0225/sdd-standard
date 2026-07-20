@@ -12,7 +12,7 @@
 > provides **defaults, vocabulary, and worked examples only**. It shall not
 > add gates, approval steps, artifact types, or workflow steps, and shall
 > not override the standard. If something here appears to conflict with
-> SDD-STANDARD.md, the standard wins and this profile gets fixed.
+> SDD-STANDARD.md, the standard takes precedence and this profile gets fixed.
 
 ## 1. Scope
 
@@ -30,7 +30,7 @@ failure mode of AI implementers is not syntax; it is quietly filling each
 unstated detail with the most common pattern in their training data,
 without flagging the gap. This profile therefore gives every contract
 dimension a **stated-or-default** reading: what the Design Document
-states wins; where it is silent, the defaults below are the reading; and
+states takes precedence; where it is silent, the defaults below are the reading; and
 where no safe default can exist (§2, idempotency of a mutating
 operation), silence is a named review question. Under this profile,
 silence is never the implementer's choice.
@@ -47,7 +47,7 @@ per operation:
 | Auth | The named permission/scope, or `none` with a reason |
 | Request | Body/params summary, link to schema if one exists (default location: `contracts/` inside the feature's spec folder); a collection operation names its page parameters |
 | Responses | Every success status with body summary; a collection response names its page shape |
-| Errors | Every business error as a **stable error code** (`LIMIT_EXCEEDED`), with its status; the §4 failure cases are the usual suspects |
+| Errors | Every business error as a **stable error code** (`LIMIT_EXCEEDED`), with its status; the §4 failure cases are the ones that commonly apply |
 | Idempotency | Stated for every mutating operation: `key: <field>` (client-supplied), natural key (request-content identity), or `not idempotent` + why that is safe |
 
 Column conventions:

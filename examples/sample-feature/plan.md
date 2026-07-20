@@ -19,13 +19,13 @@ one consumed and one produced event).
 A new `alerts-service` capability: a small CRUD surface for alert
 registration, a consumer on the payments limit-exceeded subject, and
 delivery through the existing notification service. State lives in the
-service's own store; idempotency rides the producer's `event_id`.
+service's own store; idempotency is keyed on the producer's `event_id`.
 
 ## 2. Architecture overview
 
 transfer-service (existing) publishes `transfer-limit-exceeded`.
 alerts-service (this feature) consumes it, matches active alerts, and calls
-notification-service (existing) for delivery; every attempt lands in the
+notification-service (existing) for delivery; every attempt is recorded in the
 delivery log. Alert registration is a synchronous API on alerts-service.
 
 ## 3. Synchronous contracts
@@ -58,9 +58,9 @@ in `delivery_log` — that index IS the R-6 dedup.
 
 ## 7. Risks
 
-Notification-service latency spikes eat into the 60-second budget (R-5) —
+Notification-service latency spikes reduce the 60-second budget (R-5) —
 the delivery log's timestamps give the measurement; the delivery criterion
-in spec §3 watches it.
+in spec §3 measures it.
 
 ## 8. Constitution check
 

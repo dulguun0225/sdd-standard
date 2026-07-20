@@ -16,7 +16,7 @@ name: verify-tri-os
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 2 * * 1" # weekly heartbeat against upstream/runner drift
+    - cron: "0 2 * * 1" # weekly run to catch upstream/runner drift
   pull_request:
     paths:
       - "bootstrap/**"
@@ -32,7 +32,7 @@ jobs:
   matrix:
     name: ${{ matrix.os }} / ${{ matrix.script }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15 # caps macOS minute burn on a hang
+    timeout-minutes: 15 # caps macOS minutes consumed on a hang
     strategy:
       fail-fast: false # the variant decision needs every cell's result
       matrix:

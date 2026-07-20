@@ -10,37 +10,37 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- The teaching corpus: `docs/` now covers every seat of the lifecycle
-  (informative throughout; org-neutrality D-13 intact — the cast is
+- The teaching corpus: `docs/` now covers every role of the lifecycle
+  (informative throughout; org-neutrality D-13 intact — the example people are
   fictional, extending the teaching example's own names).
   - `docs/feature-walkthrough.md` — "who does what, when": the teaching
-    example replayed as a team runs it — roles bound to a cast, a
+    example replayed as a team runs it — roles bound to a set of named example people, a
     gates-onto-PRs shape, a requirements-gate rejection, a
-    mid-implementation same-PR amendment, the review phase feeding the
+    mid-implementation same-PR amendment, the review phase providing input to the
     Review gate, hotfix/exempt/spike variations, and a one-page
     who/what/how/when table. It also names, honestly, the one mechanic
     the standard leaves to the team's working agreement: which file
     carries the Review gate's Status line.
   - `docs/writing-requirements.md` — the author's guide to `spec.md`: a
-    realistic agent draft carrying the standard defects (smuggled
-    "and", judgment words, triggers the system never observes,
-    undefined terms smuggling features, happy-path bias) shaped move by
-    move into the approved teaching example; choosing the EARS pattern;
-    the testable-not-prophetic bar; a pre-gate checklist mirroring the
+    realistic agent draft carrying the standard defects (a second
+    requirement hidden behind "and", judgment words, triggers the system never observes,
+    undefined terms that hide features, happy-path bias) revised step by
+    step into the approved teaching example; choosing the EARS pattern;
+    the testable-not-predictive bar; a pre-gate checklist mirroring the
     approver's.
   - `docs/writing-design.md` — the author's guide to `plan.md`:
-    contract rows readable from the caller's seat, stable error codes
+    contract rows readable from the caller's perspective, stable error codes
     traced to IF/THEN requirements, the stated-or-default silence rule
     applied at authoring time (silence as a deliberate claim; the
     Idempotency cell never silent), schema links that must resolve,
     decisions carrying their rejected alternative, the phase plan as
-    the Task List's skeleton.
+    the Task List's outline.
   - `docs/writing-tasks.md` — the author's guide to `tasks.md`: slicing
-    to one-sitting-verifiable tasks, `[R-n]` coverage walked both
+    to tasks verifiable in a single work session, `[R-n]` coverage checked both
     directions, evidence designed at authoring time (with a bad→good
     evidence table), explicit dependencies, stable T-ids.
   - `docs/README.md` — the guide index: a "you want to… → read" table
-    and reading paths per seat (everyone, authors, approvers, team
+    and reading paths per role (everyone, authors, approvers, team
     leads).
   Cross-linked throughout: the README lifecycle section points at the
   index; the quickstart, feature-walkthrough, and adopting-a-repo point
@@ -56,7 +56,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   on push/PR — the §8.1 merge gate; merge blocking where the plan has
   it, with §8.1's honest fallback; uv + git per machine — one Python
   implementation, pinned Spec Kit via `uv tool run`; the pinned
-  sdd-standard clone — one dialect at a known version; any tracker —
+  sdd-standard clone — one set of templates at a known version; any tracker —
   summary + link only), plus what is deliberately not required (no
   specific CI vendor, agent, IDE, central specs repo, or approval bot).
   The CI-gate section gains a Jenkins example alongside GitHub Actions
@@ -164,7 +164,7 @@ template nudges, and the profile's full text shipped into product repos.
   atomic publish-with-state-change, existence-safe not-entitled) rather
   than a guess, and flags every mutating operation whose Idempotency cell
   is empty (no safe default — profile §2) as a named question. Findings
-  land in review-notes.md; zero new gates — the command still only
+  are written to review-notes.md; zero new gates — the command still only
   informs the human Review approver and never writes Status lines.
   Ground: agents violate explicit constraints in 40.4% of confirmed
   real-world failures (arXiv:2605.30777) — verification, not document
@@ -199,10 +199,10 @@ template nudges, and the profile's full text shipped into product repos.
   gate-rejection edges, a spike/prototype detour off `spec.md` (§6.1)
   and a learning edge from Done back to the next work item (§5.2, §4.2).
 - `docs/evolving-requirements.md` — informative guide to the
-  spec → build → learn loop: testable-not-airtight (§4.1), amendments in
+  spec → build → learn loop: testable-not-exhaustive (§4.1), amendments in
   the same PR (§5.2, §4.2), spiking under the §6.1 exemption, and the
-  wrong-altitude / too-thick diagnostics. It walks the README diagram
-  rather than carrying its own. Linked from the quickstart; the question
+  wrong-level-of-detail / over-detailed diagnostics. It steps through the README diagram
+  rather than including its own. Linked from the quickstart; the question
   that prompted it is seeded as the first FAQ entry.
 
 ### Changed
@@ -215,8 +215,8 @@ template nudges, and the profile's full text shipped into product repos.
   defaults never reached an implementing agent's context beyond the
   compressed template comments; embedding the relevant knowledge in the
   generation context is the strongest measured hallucination mitigation
-  (arXiv:2404.00971). `ci/check_convention_version.py` keeps the copy
-  honest: compared byte-for-byte against the standard's profile at the
+  (arXiv:2404.00971). `ci/check_convention_version.py` verifies the copy
+  has not drifted: compared byte-for-byte against the standard's profile at the
   pinned release, same mechanism as the constitution's shared-block
   check (D-17 precedent) — profile changes land upstream by PR, never by
   editing the copy. SDD-STANDARD §8.2 amended accordingly; the tri-OS
@@ -263,8 +263,8 @@ template nudges, and the profile's full text shipped into product repos.
   (converter + CI round-trip), the plan-B candidates (OpenSpec, in-house),
   and the pre-declared exit triggers are withdrawn — superseding D-2 and
   D-14 and simplifying D-1 and D-9's premise. The trade is explicit: no
-  tested escape hatch remains; if Spec Kit or its supported override points
-  fail, an exit is rebuilt then, not kept warm. Org-neutrality (D-13) is
+  tested fallback exit remains; if Spec Kit or its supported override points
+  fail, an exit is rebuilt then, not maintained in advance. Org-neutrality (D-13) is
   retained. Rationale in the D-18 note.
 
 ## [0.1.0-draft] - 2026-07-05
@@ -344,7 +344,7 @@ below.
   `plan.md`, `tasks.md`); the standard's vocabulary lives inside the
   documents via preset template overrides and the glossary's mapping
   table. **Premise on record:** justified by the exit being a *tested*
-  capability (D-2); if `migration/` rots, the premise fails and the
+  capability (D-2); if `migration/` falls out of date, the premise fails and the
   decision must be revisited.
 - **Scaffold script variant: bash (`sh`), for all adopting repos, all
   three OS** (D-10) — per the pre-declared rule (bash unless it fails
@@ -370,7 +370,7 @@ below.
   §1; rationale in the D-14 note.
 - **EARS is the requirements notation** (D-15): §4.1 binds one testable
   behavior + a stable R-id, phrased in EARS, with a narrow
-  structured-fallback escape hatch (mathematical content, >3
+  structured-fallback exit (mathematical content, >3
   preconditions). Rejected: stock Spec Kit user stories + Given/When/Then,
   Gherkin-as-primary, plain ISO-29148 shall statements, Planguage, FRET.
   Evidence, the recorded evidence gap on LLM codegen, and revisit triggers

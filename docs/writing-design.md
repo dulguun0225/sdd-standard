@@ -77,15 +77,15 @@ event name is a past-tense fact: `transfer-limit-exceeded`, not "limit
 exceeded". The producer is a named service.
 
 **5. Schema links must resolve.** "(Schema in the registry)" is a
-pointer to nowhere. Local schemas live at `contracts/` inside the
+link that resolves to nothing. Local schemas live at `contracts/` inside the
 feature folder. The structure check verifies every local `contracts/…`
 path the plan references. Agents are known to invent schema links; that
 is why the check exists. Registry references and URLs are fine too —
 they just have to be real.
 
 **6. Cite `[R-n]` in both directions.** Every design element cites the
-requirement it satisfies. Then walk the list the other way. An R-id no
-element satisfies is a design hole. Your approver does this walk in two
+requirement it satisfies. Then check the list the other way. An R-id no
+element satisfies is a gap in the design. Your approver does this check in two
 minutes ([reviewing-specs.md](reviewing-specs.md)). Do it first.
 
 **7. Decisions carry the rejected alternative.** "D1: dedup by unique
@@ -94,7 +94,7 @@ why. Here: an in-memory cache, rejected because it dies on restart and
 scale-out. Decisions with alternatives survive re-reading months later.
 Preferences get argued again.
 
-**8. Be honest in the constitution check; make the phase plan feed
+**8. Be honest in the constitution check; make the phase plan drive the
 tasks.** Name the tension with the repo constitution if one exists. An
 automatic "no conflicts" makes the section useless. Write §9 so each
 phase delivers a working increment covering named R-ids. The Task List
@@ -122,18 +122,17 @@ The whole pass, in one table:
 The author's pass over the approver's checklist
 ([reviewing-specs.md](reviewing-specs.md)):
 
-- every row is readable from the caller's seat — statuses, field
+- every row is readable from the caller's perspective — statuses, field
   names, stable error codes;
 - every mutating row's Idempotency cell is filled;
 - every silent cell is deliberate: you mean the profile default, and
   the design makes it real;
 - every local `contracts/…` path resolves — run the structure check
   (quickstart §6 has the command);
-- `[R-n]` coverage walked in both directions;
+- `[R-n]` coverage checked in both directions;
 - every decision names its rejected alternative; every risk names what
-  watches it;
+  mitigates or monitors it;
 - the constitution check is honest; the phase plan's phases cover all
   R-ids between them.
 
-Then request the review. The design gate is where empty cells become
-questions. Cheaper to answer them now than during an outage.
+Then request the review. The design gate is where the reviewer asks about empty cells. Cheaper to answer them now than during an outage.

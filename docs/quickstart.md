@@ -2,7 +2,7 @@
 
 **Informative.** This guide explains and demonstrates; the rules live in
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md). In any conflict, the
-standard wins.
+standard takes precedence.
 
 Time: ~20 minutes. Works identically on Windows (Git Bash), macOS, and
 Linux — every shell command below is verified by this repo's tri-OS CI
@@ -13,8 +13,8 @@ macOS/Linux.
 
 [uv](https://docs.astral.sh/uv/) and git. On Windows, a working
 `python3` or `jq` in Git Bash is recommended. Stock Windows has a
-broken Microsoft-Store `python3` stub. The scaffold survives it at the
-pinned Spec Kit version, but a real parser is one command away:
+broken Microsoft-Store `python3` stub. The scaffold still works with it at the
+pinned Spec Kit version, but installing a real parser takes one command:
 
 ```
 uv python install --default
@@ -25,15 +25,15 @@ checks all of it and prints the exact fix if something is missing.
 Never install Spec Kit by hand; the tooling brings the pinned version
 itself.
 
-## 1. Get a playground
+## 1. Get a scratch repo
 
 Your team's real repos are adopted by your team lead
 ([adopting-a-repo.md](adopting-a-repo.md)). For this walkthrough, make a
 scratch repo. From a clone of `sdd-standard`:
 
 ```
-uv run bootstrap/init.py ../my-playground --integration generic --profile backend-services
-cd ../my-playground
+uv run bootstrap/init.py ../my-scratch --integration generic --profile backend-services
+cd ../my-scratch
 git init -b main .
 git add -A
 git commit -m "bootstrap"
@@ -49,7 +49,7 @@ script from its footnote instead — on Windows, in Git Bash.)
 Start the feature from its one-line intent:
 
 ```
-/speckit.specify alert clients when a transfer bounces off their daily limit
+/speckit.specify alert clients when a transfer is rejected by their daily limit
 ```
 
 Your agent scaffolds the feature folder and drafts the Requirements
@@ -66,13 +66,13 @@ with `Status: APPROVED — <name>, <date>`. You never write that line
 yourself. Your agent must never write it at all. Nothing further is
 drafted until the approval lands.
 
-**What runs underneath.** `/speckit.specify` first runs a scaffold
+**What the command does mechanically.** `/speckit.specify` first runs a scaffold
 script. The script is mechanical setup only: create the feature folder,
 copy the template, report paths as JSON. Then the agent drafts the
 content. The same step by hand:
 
 ```
-bash .specify/scripts/bash/create-new-feature.sh --json --short-name limit-alerts "alert clients when a transfer bounces off their daily limit"
+bash .specify/scripts/bash/create-new-feature.sh --json --short-name limit-alerts "alert clients when a transfer is rejected by their daily limit"
 ```
 
 ## 3. The Design Document
@@ -86,7 +86,7 @@ requirements as `[R-n]`. Gate: your technical authority approves the same
 way. How to fill the contract rows well is
 [writing-design.md](writing-design.md).
 
-**What runs underneath.** `bash .specify/scripts/bash/setup-plan.sh --json`
+**What the command does mechanically.** `bash .specify/scripts/bash/setup-plan.sh --json`
 creates `plan.md` from the template and reports the paths as JSON. The
 agent — or you, by hand — fills it.
 
@@ -99,7 +99,7 @@ requirement or not needed. Gate: technical authority approves;
 implementation starts only after that. Slicing tasks and writing their
 evidence lines is [writing-tasks.md](writing-tasks.md).
 
-**What runs underneath.**
+**What the commands do mechanically.**
 
 ```
 bash .specify/scripts/bash/check-prerequisites.sh --json
@@ -127,7 +127,7 @@ spec covers, the same PR updates that spec.** The CI gate
 The same check CI runs, locally (from your sdd-standard clone):
 
 ```
-uv run ci/check_spec_structure.py --repo ../my-playground
+uv run ci/check_spec_structure.py --repo ../my-scratch
 ```
 
 It verifies Status lines, gate order, R-id uniqueness, `[R-n]`
@@ -143,8 +143,8 @@ once the approvals from §2–§4 are in place.
   [feature-walkthrough.md](feature-walkthrough.md) replays this same
   feature with the roles bound to people.
 - Too small to spec? An item matching none of the qualifying triggers
-  needs no ceremony — SDD-STANDARD §6, the pressure valve.
-- Requirements won't hold still? That is normal —
+  needs no ceremony — SDD-STANDARD §6, the exemption for small changes.
+- Requirements keep changing? That is normal —
   [evolving-requirements.md](evolving-requirements.md), the
   spec → build → learn loop.
 - Reviewing someone's spec? [reviewing-specs.md](reviewing-specs.md).

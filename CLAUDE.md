@@ -44,7 +44,7 @@ updates the index in the same PR.
   `APPROVED — <name>, <date>` line — in any artifact (SDD-STANDARD §3.2).
   Writing `Status: DRAFT` on an artifact you draft is fine and expected; it
   is the *approval* flip that is reserved for a human approver, added in
-  their own change. This is the one rule with zero tolerance.
+  their own change. This is the one rule that allows no exceptions.
 - A change that alters behavior covered by an approved spec must update
   that spec **in the same PR**. Approved documents are never silently
   edited — add a dated amendment note and flag it for re-approval in the
@@ -60,7 +60,7 @@ updates the index in the same PR.
   defaults and vocabulary only — never gates, approval steps, or artifact
   types.
 - All tooling is one Python implementation, **stdlib + pathlib only**, run
-  via `uv run` — never `.sh`/`.ps1` twins, never `shell=True`. Every
+  via `uv run` — never `.sh`/`.ps1` duplicates, never `shell=True`. Every
   failure message must include the exact remediation command.
 - LF line endings everywhere (.gitattributes enforces); filenames in spec
   folders are lowercase-kebab-case (exceptions: README.md, CODEOWNERS,
@@ -131,7 +131,7 @@ examples/sample-feature — teaching example (kept fresh by check_spec_structure
   `after_implement` hook. It prepares review notes and never writes Status
   lines. No command or script overrides — only supported upstream override
   points, which is what keeps pin-forwards cheap.
-- `examples/sample-feature` rots nowhere: `ci/check_spec_structure.py --self`
+- `examples/sample-feature` never falls out of date: `ci/check_spec_structure.py --self`
   gates it on every push (it keys on `- **R-n**` requirement bullets), so any
   edit must keep that check green.
 

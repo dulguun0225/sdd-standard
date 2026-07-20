@@ -2,18 +2,18 @@
 
 **Informative.** This guide explains and demonstrates; the rules live in
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md). In any conflict, the
-standard wins.
+standard takes precedence.
 
-The [quickstart](quickstart.md) walks *you* through the artifacts,
+The [quickstart](quickstart.md) guides *you* through the artifacts,
 alone in a scratch repo. This guide replays the same feature the way it
 happens in an adopted product repo. Four people, one agent, four pull
 requests, about a week. The feature is the teaching example,
 [transfer-limit-alerts](../examples/sample-feature/spec.md). Those
 files show the finished documents. This guide shows what the files
-cannot: the people, the rejection, the clock. In a hurry? Read
+cannot: the people, the rejection, the timing. In a hurry? Read
 [the one-page version](#the-one-page-version) at the end.
 
-## The cast
+## The people
 
 Fictional, like everything about the feature. The gate roles (§3.3)
 were bound to named people at adoption and recorded in the team's
@@ -50,7 +50,7 @@ violation, whatever the PR shape.
 
 The tracker item reads, in full:
 
-> Clients discover bounced transfers from support tickets — alert them
+> Clients discover rejected transfers from support tickets — alert them
 > instead. → `specs/007-transfer-limit-alerts/`
 
 A summary and a link, nothing more. The acceptance criteria will live
@@ -70,11 +70,11 @@ judgment. When it is genuinely unclear, ask — the answer lands in
 **Who:** Bilguun and the agent. **How:**
 
 ```
-/speckit.specify alert clients when a transfer bounces off their daily limit, so they can raise it before the payroll run fails
+/speckit.specify alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails
 ```
 
 The agent scaffolds the feature branch and folder, then drafts
-`spec.md` (what runs underneath: quickstart §2). The draft is a draft.
+`spec.md` (what the command does mechanically: quickstart §2). The draft is a draft.
 Bilguun shapes it: one testable EARS behavior per R-id (§4.1), the
 unwanted-behavior `IF … THEN …` cases the draft missed, the
 out-of-scope sentence. The shaping moves, demonstrated on this very
@@ -139,7 +139,7 @@ trusted alone:
 The full authoring pass, demonstrated on this feature's contract rows,
 is [writing-design.md](writing-design.md).
 
-**Tulga** walks the R-id list in both directions — two minutes. He asks
+**Tulga** checks the R-id list in both directions — two minutes. He asks
 the empty-cell questions now, not in an incident review. One push on
 rationale: decision D1 says *what*, so he asks for the rejected
 alternative before approving. Then his own change:
@@ -150,7 +150,7 @@ alternative before approving. Then his own change:
 **Who:** the same pair drafts with `/speckit.tasks` (the authoring
 pass — slicing, evidence lines — is
 [writing-tasks.md](writing-tasks.md)). **Tulga** holds this gate too,
-wearing the other hat (§3.3 allows it). He checks three things. Every
+in the other role (§3.3 allows it). He checks three things. Every
 task carries at least one `[R-n]`, and together the tasks cover all of
 R-1…R-8 — an uncovered requirement is an unbuilt requirement. Every
 task states its **evidence**: what will exist when it is truthfully
@@ -168,7 +168,7 @@ pushed next to an unapproved plan is another red build.
 exists. T-4's box stays open until the at-least-once replay test
 actually delivers exactly once — not when the code "looks done".
 
-**Day 5, reality arrives.** The create-alert endpoint accepts a
+**Day 5, an unspecified case appears.** The create-alert endpoint accepts a
 `channel` value. Nothing in the approved spec says what happens when it
 is one the notification service does not offer. That is new externally
 observable behavior, so §5.2 applies. The PR that ships the behavior
@@ -209,11 +209,11 @@ merges. The item is done.
 
 ## After Done
 
-Done is a dashed edge, not a wall (the
+Done is a dashed edge, not an end point (the
 [README's lifecycle diagram](../README.md#the-lifecycle-in-a-product-repo)).
-The delivery log starts teaching: which channels fail, whether
-60 seconds was the right number. What it teaches re-enters as the next
-work item. [evolving-requirements.md](evolving-requirements.md) walks
+The delivery log starts to show: which channels fail, whether
+60 seconds was the right number. What it shows re-enters as the next
+work item. [evolving-requirements.md](evolving-requirements.md) covers
 that loop.
 
 ## Variations
@@ -238,7 +238,7 @@ that loop.
 | Before anything else | developer + agent | draft `spec.md`: EARS, stable R-ids, unwanted-behavior cases, out-of-scope | `/speckit.specify`, then human shaping; Status stays DRAFT | §4.1–4.3 |
 | Requirements gate | product authority | approve — or reject with comments, Status untouched | own commit or suggestion flips Status to APPROVED | §3.2–3.4 |
 | After that gate | developer + agent | draft `plan.md`: contracts in profile shapes, every element cites `[R-n]` | `/speckit.plan`; silent cells assert profile defaults; always fill Idempotency | §7 + profile |
-| Design gate | technical authority | walk R-id coverage both ways, ask the empty-cell questions, approve | own change | §3.2–3.3 |
+| Design gate | technical authority | check R-id coverage both ways, ask the empty-cell questions, approve | own change | §3.2–3.3 |
 | After that gate | developer + agent | draft `tasks.md`: every task ≥ 1 `[R-n]`, evidence stated | `/speckit.tasks` | §5.1 |
 | Tasks gate | technical authority (may be the same person) | check coverage and evidence, approve | own change | §3.2–3.3 |
 | After that gate | developer + agent | implement; tick a task only when its evidence exists | `/speckit.implement`, task by task | §3.1 |

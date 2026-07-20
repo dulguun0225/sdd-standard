@@ -8,10 +8,10 @@ PR and a CHANGELOG entry.
 > **Normative status.** This document and the profiles under
 > `standard/profiles/` are the ONLY normative sources of the SDD
 > convention. Everything in `docs/` is informative — it explains and
-> demonstrates, never legislates. In any conflict, this standard wins and the
+> demonstrates, never legislates. In any conflict, this standard takes precedence and the
 > guide gets fixed. Requirements language: **shall** = binding; **may** =
 > explicitly permitted. Parameters marked ⚠ are starting defaults — the
-> standard owner amends them by reviewed PR as real usage teaches.
+> standard owner amends them by reviewed PR as real usage shows what needs to change.
 
 ---
 
@@ -20,8 +20,8 @@ PR and a CHANGELOG entry.
 This standard governs how features are specified, approved, and traced in
 adopting product repositories. It does **not** govern coding style,
 architecture review, CI/CD pipelines beyond the checks in §8, choice of AI
-agent or IDE, or the team's process ceremonies. Adjacent standardization
-gets its own home.
+agent or IDE, or the team's process ceremonies. Adjacent standardization is
+defined elsewhere.
 
 ## 2. Vocabulary and artifacts
 
@@ -44,7 +44,7 @@ endings.
 2.3 Specs shall live in the repository whose code they govern. There shall
 be **no central specs repository**. (Spec change and implementation land in
 the same PR; co-location prevents drift; any vendor's agent gets the spec in
-its working directory for free.)
+its working directory with no extra step.)
 
 2.4 A repo may append repo-specific principles to its constitution; it shall
 not remove or weaken the seeded shared principles.
@@ -103,7 +103,7 @@ a requirement it implements.
 merge unless the same PR/MR updates that spec. A merged violation is a
 spec-drift incident.
 
-## 6. Qualifying work items — the pressure valve
+## 6. Qualifying work items — the exemption
 
 6.1 A work item **qualifies** (full gated workflow, §3.1) WHEN it does any
 of the following ⚠:
@@ -179,7 +179,7 @@ tightening belongs under the constitution's repo-principles section.
 
 9.2 Repos shall adopt the convention only via `bootstrap/init.py`. Manual
 copying of templates into repos is prohibited — it creates divergent
-dialects.
+template copies.
 
 9.3 A pin change shall land as a reviewed PR to this repository that passes
 the full tri-OS verification matrix before any product repo consumes it.
@@ -246,7 +246,7 @@ the standard designates its own standard owner at adoption and records the
 binding in its own space. This repository carries no organization-specific
 governance. The standard owner: approves changes to this document and to
 profiles (§7.6), approves version-pin changes (§9.3), and arbitrates
-standard-vs-guide conflicts (the standard wins and the guide gets fixed).
+standard-vs-guide conflicts (the standard takes precedence and the guide gets fixed).
 
 The convention is semantically versioned; every release has a CHANGELOG
 entry. Releases shall be 0.x pre-versions until the standard owner declares

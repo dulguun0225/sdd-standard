@@ -98,7 +98,7 @@ def tool_version(exe: str) -> str | None:
 
 
 def find_git_bash() -> Path | None:
-    """Locate Git Bash on Windows without being fooled by WSL's bash.exe."""
+    """Locate Git Bash on Windows without mistakenly selecting WSL's bash.exe."""
     git = shutil.which("git")
     if git is not None:
         # C:/Program Files/Git/cmd/git.exe -> C:/Program Files/Git/bin/bash.exe
@@ -135,7 +135,7 @@ def preflight(pin: str, variant: str) -> None:
     print(f"   git      : {git}")
 
     # A specify CLI installed on PATH at a version other than the pin
-    # would drive the developer's own /speckit workflow off the pinned version.
+    # would run the developer's own /speckit workflow on a version other than the pin.
     # Bootstrap itself always invokes the pin via `uv tool run`.
     installed = tool_version("specify")
     if installed is not None:
@@ -157,7 +157,7 @@ def preflight(pin: str, variant: str) -> None:
     # (fixing spec-kit#3304, in by v0.12.9) fall through to grep/sed/awk on
     # parse failure, and template resolution degrades to path-convention
     # replace-only — exactly what the all-replace SDD preset needs. A
-    # working parser still buys manifest-aware template resolution and
+    # working parser still provides manifest-aware template resolution and
     # robust JSON parsing, so the probe stays as a WARNING, not a gate.
     if variant == "sh" and platform.system() == "Windows":
         bash = find_git_bash()
@@ -179,7 +179,7 @@ def preflight(pin: str, variant: str) -> None:
         if result.returncode != 0:
             print(
                 "   json     : WARNING - no working jq or python3 in Git "
-                "Bash (spec-kit#3304 territory). The scaffold scripts "
+                "Bash (the spec-kit#3304 situation). The scaffold scripts "
                 "fall back to text parsing at the pinned version, but a "
                 "real parser is recommended:\n"
                 "              uv python install --default   (or: install "
@@ -421,7 +421,7 @@ def main() -> None:
         f"  1. cd {target}\n"
         "  2. commit the scaffold before anything else\n"
         "  3. wire the spec CI gate (docs/adopting-a-repo.md in sdd-standard)\n"
-        "  4. first feature: docs/quickstart.md walks it end to end\n"
+        "  4. first feature: docs/quickstart.md steps through it end to end\n"
         "Reminder: gates are passed by human approvers writing the Status "
         "line - never by an agent (SDD-STANDARD §3.2)."
     )
