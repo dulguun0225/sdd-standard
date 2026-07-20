@@ -16,9 +16,10 @@ This is the **Design Document**: how the approved requirements get built.
 Design elements cite the requirements they satisfy as `[R-n]`. The two
 contract sections follow the repo's stack profile. The profile provides
 the table shape and vocabulary. Deviations carry a stated reason.
-Be precise first, simple second: keep exact technical terms even when
-an everyday word is close; everywhere else, use short sentences,
-everyday words, one idea per sentence.
+Be precise first, simple second: say exactly what is true, no
+ambiguity. Keep technical terms when the everyday word is less exact.
+Within that: short sentences, everyday words, one idea per sentence.
+No business-speak or figurative filler.
 
 ---
 

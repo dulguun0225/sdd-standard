@@ -68,12 +68,10 @@ updates the index in the same PR.
 
 ## Writing style
 
-Be precise first, simple second: keep exact technical terms even
-when an everyday word is close. Everywhere else, optimize for fast
-comprehension: short sentences, everyday words, one idea per sentence.
-Prefer concrete wording over abstract phrasing. No business-speak or
-figurative filler. Say it plainly or not at all.
-Banned words (never use): tapestry, learnings
+Be precise first, simple second: say exactly what is true, no
+ambiguity. Keep technical terms when the everyday word is less exact.
+Within that: short sentences, everyday words, one idea per sentence.
+No business-speak or figurative filler.
 
 ## Behavior
 

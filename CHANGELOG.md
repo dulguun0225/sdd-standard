@@ -78,11 +78,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   principles" block stays byte-identical; only its intro is reworded.
   The approved teaching example (`examples/sample-feature`) is left
   verbatim — approved artifacts are never silently edited.
-- The three artifact templates (`spec`, `plan`, `tasks`) gain one
-  authoring-guidance sentence: "Be precise first, simple second: keep
-  exact technical terms even when an everyday word is close; everywhere
-  else, use short sentences, everyday words, one idea per sentence."
-  Precision protects EARS keywords, R-id/T-id references, and
+- The three artifact templates (`spec`, `plan`, `tasks`) gain a short
+  authoring-guidance block: "Be precise first, simple second: say
+  exactly what is true, no ambiguity. Keep technical terms when the
+  everyday word is less exact. Within that: short sentences, everyday
+  words, one idea per sentence. No business-speak or figurative
+  filler." Precision protects EARS keywords, R-id/T-id references, and
   profile vocabulary. Product repos inherit the style at the point of
   drafting. Guidance only, never a gate.
 
