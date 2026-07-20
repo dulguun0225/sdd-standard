@@ -83,7 +83,7 @@ testable behavior** and carry a stable R-id. Requirements shall be phrased
 in an EARS pattern (patterns illustrated in GLOSSARY §1). Where an EARS
 sentence would distort a requirement's meaning — mathematical content, or
 more than three preconditions — the requirement may instead carry a
-structured list or table under its R-id, with a one-line rationale; it
+structured list or table under its R-id, with a one-line rationale. It
 still expresses one testable behavior. (Decision record: D-15.)
 
 4.2 R-ids shall never be renumbered or reused. Amendments supersede a
@@ -157,7 +157,7 @@ requires standard-owner approval. v1.0 ships exactly one profile:
 
 8.1 Product repos shall run `ci/check_spec_structure.py` as merge-blocking
 CI, using the hosting platform's enforcement mechanism where available
-(e.g. required status checks, "pipelines must succeed") — where hard
+(e.g. required status checks, "pipelines must succeed"). Where hard
 enforcement is unavailable, the check still runs and a red pipeline is
 treated as a blocker by convention.
 
@@ -168,8 +168,8 @@ constitution's seeded shared-principles block byte-for-byte against the
 pinned template (§2.4), and the repo's profile copy
 (`.specify/memory/profile.md`, installed by bootstrap so the profile's
 defaults are present in the repo agents work in) byte-for-byte against the
-standard's profile (§7) at the pinned release: any change to the shared
-block or to a profile lands upstream by PR to the standard; repo-specific
+standard's profile (§7) at the pinned release. Any change to the shared
+block or to a profile lands upstream by PR to the standard. Repo-specific
 tightening belongs under the constitution's repo-principles section.
 
 ## 9. Implementation
@@ -243,7 +243,7 @@ by the standard owner at adoption).
 **The standard owner** is the maintainer or maintainers of the repository
 that hosts this standard — a role, never a person. An organization adopting
 the standard designates its own standard owner at adoption and records the
-binding in its own space; this repository carries no organization-specific
+binding in its own space. This repository carries no organization-specific
 governance. The standard owner: approves changes to this document and to
 profiles (§7.6), approves version-pin changes (§9.3), and arbitrates
 standard-vs-guide conflicts (the standard wins and the guide gets fixed).
