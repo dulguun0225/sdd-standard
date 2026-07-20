@@ -8,6 +8,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+*(nothing yet)*
+
+## [0.3.0-draft] - 2026-07-20
+
+The pin-forward release: Spec Kit v0.12.4 → v0.13.0 through the full
+tri-OS matrix, with the pinned-version facts re-verified against source.
+LW-1's scaffold-runtime leg is fixed upstream, so §10.3 relaxes from a
+preflight-enforced gate to a recommendation — the one normative change.
+Also: the glossary's Mongolian translations are native-reviewed.
+
 ### Changed
 
 - Spec Kit pin v0.12.4 → v0.13.0 (per SDD-STANDARD §9.3: reviewed PR
