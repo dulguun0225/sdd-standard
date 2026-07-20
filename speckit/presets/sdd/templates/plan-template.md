@@ -14,8 +14,8 @@
 
 This is the **Design Document**: how the approved requirements get built.
 Design elements cite the requirements they satisfy as `[R-n]`. The two
-contract sections follow the repo's stack profile — the profile provides the
-table shape and vocabulary; deviations carry a stated reason.
+contract sections follow the repo's stack profile. The profile provides
+the table shape and vocabulary. Deviations carry a stated reason.
 
 ---
 
@@ -35,11 +35,13 @@ what already exists vs. what this feature adds.]
      `.specify/memory/profile.md` (default: backend-services profile §2 —
      operation, method & path, auth, request, responses, errors with
      stable codes, idempotency).
-     Silence reads as the profile default, never implementer's choice:
-     empty Auth = authenticated + named permission; collection = cursor
-     pages; versioned update = compare-and-set; multi-store mutation =
-     all-or-nothing. A mutating row with an empty Idempotency cell is a
-     review question — state it, don't guess it.
+     Silence reads as the profile default, never implementer's choice.
+     Empty Auth = authenticated + named permission.
+     Collection = cursor pages.
+     Versioned update = compare-and-set.
+     Multi-store mutation = all-or-nothing.
+     A mutating row with an empty Idempotency cell is a review
+     question — state it, don't guess it.
      Delete this section only if the feature exposes no synchronous
      operations — deletion is a review question. -->
 
@@ -53,10 +55,12 @@ what already exists vs. what this feature adds.]
      `.specify/memory/profile.md` (default: backend-services profile §3 —
      event, subject/topic, schema, producer, delivery semantics,
      consumers).
-     Silence reads as the profile default: at-least-once + durable dedup
-     on event_id; no ordering guarantee; unprocessable messages
-     dead-letter, never drop; publish + state change are atomic (name the
-     mechanism). Events are facts (past tense) — commands belong in the
+     Silence reads as the profile default.
+     Delivery = at-least-once + durable dedup on event_id.
+     Ordering = no guarantee.
+     Unprocessable messages dead-letter, never drop.
+     Publish + state change are atomic (name the mechanism).
+     Events are facts (past tense) — commands belong in the
      synchronous table above.
      Delete this section only if the feature produces and consumes no
      messages — deletion is a review question. -->

@@ -13,11 +13,12 @@ current feature branch's spec folder.
 
 ## Goal
 
-Run the SDD **review phase** (SDD-STANDARD §3.1): after implementation
-completes, compare what was built against the approved Requirements Document
-(`spec.md`), Design Document (`plan.md`), and Task List (`tasks.md`), and
-write `review-notes.md` into the feature's spec folder for the human Review
-approver. The notes inform the gate; they never pass it.
+Run the SDD **review phase** (SDD-STANDARD §3.1). It runs after
+implementation completes. Compare what was built against the approved
+Requirements Document (`spec.md`), Design Document (`plan.md`), and Task
+List (`tasks.md`). Write `review-notes.md` into the feature's spec
+folder for the human Review approver. The notes inform the gate; they
+never pass it.
 
 ## Hard rules
 
@@ -31,9 +32,10 @@ approver. The notes inform the gate; they never pass it.
 ## Execution steps
 
 1. **Locate the feature.** Run the repo's check-prerequisites script with
-   `--json --include-tasks` (`.specify/scripts/bash/check-prerequisites.sh`
-   or the PowerShell twin) to get `FEATURE_DIR` and available docs; if the
-   user supplied a feature directory, use that instead.
+   `--json --include-tasks` to get `FEATURE_DIR` and the available docs.
+   The script is `.specify/scripts/bash/check-prerequisites.sh` or its
+   PowerShell twin. If the user supplied a feature directory, use that
+   instead.
 
 2. **Verify the gates held.** Read `spec.md`, `plan.md`, `tasks.md` in
    `FEATURE_DIR`. Each must carry `Status: APPROVED — <name>, <date>` (em
@@ -45,15 +47,15 @@ approver. The notes inform the gate; they never pass it.
    this feature: the feature branch's diff against its base, or the merged
    PRs/commits referencing the feature. List the files touched.
 
-4. **Check requirement by requirement.** For every R-id in `spec.md`, judge:
-   implemented / partial / missing / deviates, each verdict with concrete
-   evidence (file, behavior, test). EARS phrasing makes each requirement one
-   testable behavior — test it or trace it.
+4. **Check requirement by requirement.** For every R-id in `spec.md`, give
+   a verdict: implemented / partial / missing / deviates. Back each verdict
+   with concrete evidence (file, behavior, test). EARS phrasing makes each
+   requirement one testable behavior — test it or trace it.
 
 5. **Check the contracts.** Compare `plan.md`'s Synchronous contracts and
-   Asynchronous contracts tables against the code: every declared operation,
-   error code, event, and delivery semantic present and matching; anything
-   implemented but undeclared flagged.
+   Asynchronous contracts tables against the code. Every declared
+   operation, error code, event, and delivery semantic must be present and
+   matching. Flag anything implemented but undeclared.
 
    Then check **silence-conformance** against the repo's stack profile
    (`.specify/memory/profile.md`). Under the profile's stated-or-default
@@ -78,16 +80,16 @@ approver. The notes inform the gate; they never pass it.
 
    Give each silent dimension a verdict: default honored / default violated
    (name what the code does instead) / not applicable. Separately, flag
-   every mutating operation whose Idempotency cell is empty — that cell has
-   no safe default (profile §2); record it as a named question for the
+   every mutating operation whose Idempotency cell is empty. That cell has
+   no safe default (profile §2). Record it as a named question for the
    approver, never as a gap to fill yourself.
 
 6. **Check the tasks.** Every task marked done has its stated evidence;
    every task carries `[R-n]`; incomplete tasks are listed.
 
-7. **Check for spec drift.** Any behavior changed by the delta that the
-   approved spec covers but the same change did not update (§5.2) — this is
-   the finding the approver most needs.
+7. **Check for spec drift.** Find behavior the delta changed that the
+   approved spec covers, where the same change did not also update the
+   spec (§5.2). This is the finding the approver most needs.
 
 8. **Write the notes.** Create or overwrite `FEATURE_DIR/review-notes.md`:
 

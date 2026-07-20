@@ -1,11 +1,12 @@
 # Constitution — [PROJECT NAME]
 
 Seeded from the SDD convention, version [CONVENTION VERSION] (the
-sdd-standard repository). `standard/SDD-STANDARD.md` at the pinned release
-is the normative text — in any conflict the standard prevails and this file
-gets fixed. The shared principles below are non-negotiable: a repo may
-append to this file, never remove or weaken them (§2.4); the seeded block
-is checked against the pinned template by `ci/check_convention_version.py`.
+sdd-standard repository). `standard/SDD-STANDARD.md` at the pinned
+release is the normative text. In any conflict the standard prevails and
+this file gets fixed. The shared principles below are non-negotiable. A
+repo may append to this file, never remove or weaken them (§2.4).
+`ci/check_convention_version.py` checks the seeded block against the
+pinned template.
 
 ## Shared principles (seeded — do not edit)
 
