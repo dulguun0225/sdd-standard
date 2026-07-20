@@ -8,7 +8,67 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-*(nothing yet)*
+### Added
+
+- The teaching corpus: `docs/` now covers every seat of the lifecycle
+  (informative throughout; org-neutrality D-13 intact — the cast is
+  fictional, extending the teaching example's own names).
+  - `docs/feature-walkthrough.md` — "who does what, when": the teaching
+    example replayed as a team runs it — roles bound to a cast, a
+    gates-onto-PRs shape, a requirements-gate rejection, a
+    mid-implementation same-PR amendment, the review phase feeding the
+    Review gate, hotfix/exempt/spike variations, and a one-page
+    who/what/how/when table. It also names, honestly, the one mechanic
+    the standard leaves to the team's working agreement: which file
+    carries the Review gate's Status line.
+  - `docs/writing-requirements.md` — the author's guide to `spec.md`: a
+    realistic agent draft carrying the standard defects (smuggled
+    "and", judgment words, triggers the system never observes,
+    undefined terms smuggling features, happy-path bias) shaped move by
+    move into the approved teaching example; choosing the EARS pattern;
+    the testable-not-prophetic bar; a pre-gate checklist mirroring the
+    approver's.
+  - `docs/writing-design.md` — the author's guide to `plan.md`:
+    contract rows readable from the caller's seat, stable error codes
+    traced to IF/THEN requirements, the stated-or-default silence rule
+    applied at authoring time (silence as a deliberate claim; the
+    Idempotency cell never silent), schema links that must resolve,
+    decisions carrying their rejected alternative, the phase plan as
+    the Task List's skeleton.
+  - `docs/writing-tasks.md` — the author's guide to `tasks.md`: slicing
+    to one-sitting-verifiable tasks, `[R-n]` coverage walked both
+    directions, evidence designed at authoring time (with a bad→good
+    evidence table), explicit dependencies, stable T-ids.
+  - `docs/README.md` — the guide index: a "you want to… → read" table
+    and reading paths per seat (everyone, authors, approvers, team
+    leads).
+  Cross-linked throughout: the README lifecycle section points at the
+  index; the quickstart, feature-walkthrough, and adopting-a-repo point
+  at the writing guides at the step where each applies; each
+  reviewing-specs gate section points at its author-side guide.
+
+### Changed
+
+- `docs/adopting-a-repo.md` — the prerequisites section becomes "What
+  you need, and why": the convention's requirements listed as
+  capabilities with their rationale (a git host with a review flow —
+  approvals are commits, the same-PR rule needs the PR unit; one CI job
+  on push/PR — the §8.1 merge gate; merge blocking where the plan has
+  it, with §8.1's honest fallback; uv + git per machine — one Python
+  implementation, pinned Spec Kit via `uv tool run`; the pinned
+  sdd-standard clone — one dialect at a known version; any tracker —
+  summary + link only), plus what is deliberately not required (no
+  specific CI vendor, agent, IDE, central specs repo, or approval bot).
+  The CI-gate section gains a Jenkins example alongside GitHub Actions
+  and GitLab CE, with the run-vs-block distinction spelled out.
+- Editorial readability pass, no normative or behavioral change. The
+  informative guides (quickstart, reviewing-specs, adopting-a-repo,
+  evolving-requirements) and the README are rewritten for fast
+  comprehension: short sentences, everyday words, concrete wording.
+  SDD-STANDARD gets punctuation-level splits only (§4.1,
+  §8.1, §8.2, §13 — long clauses broken at existing dashes and
+  semicolons, wording untouched). The §10 decision records and all
+  dated amendment notes remain verbatim.
 
 ## [0.3.0-draft] - 2026-07-20
 
