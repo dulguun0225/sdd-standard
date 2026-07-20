@@ -5,13 +5,18 @@
 > **Amendment 2026-07-09 (pending re-approval, D-18):** the intro's
 > converter-fixture reference is removed — `migration/` was withdrawn when
 > vendor-neutrality was abandoned. Re-approve to clear this note.
+>
+> **Amendment 2026-07-20 (pending re-approval):** the Input description
+> is reworded to match the seed command the guides show — "alert … by
+> their daily limit", not "notify … for exceeding". Re-approve to clear
+> this note.
 
 | Field    | Value                                                        |
 | -------- | ------------------------------------------------------------ |
 | Feature  | `007-transfer-limit-alerts` (shown here as `examples/sample-feature`) |
 | Authored | 2026-07-02                                                    |
 | Approver | Requirements gate: product owner of the alerts domain         |
-| Input    | User description: "notify clients when a transfer is rejected for exceeding their daily limit, so they can raise it before the payroll run fails" |
+| Input    | User description: "alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails" |
 
 This is the **Requirements Document** of the convention's teaching example —
 a complete, approved spec the shape a real qualifying work item produces.

@@ -77,8 +77,11 @@ The agent scaffolds the feature branch and folder, then drafts
 `spec.md` (what the command does mechanically: quickstart §2). The draft is a draft.
 Bilguun shapes it: one testable EARS behavior per R-id (§4.1), the
 unwanted-behavior `IF … THEN …` cases the draft missed, the
-out-of-scope sentence. The shaping moves, demonstrated on this very
-draft, are [writing-requirements.md](writing-requirements.md).
+out-of-scope sentence. The shaping moves, demonstrated on this feature's
+raw draft, are [writing-requirements.md](writing-requirements.md). That
+guide shows the raw `/speckit.specify` numbering, where the delivery
+behavior with "quickly" is R-3; shaping lands it at R-5, the id it keeps
+here and in the final spec.
 `Status: DRAFT` stays exactly as scaffolded. He opens the PR and
 requests Nara's review.
 
