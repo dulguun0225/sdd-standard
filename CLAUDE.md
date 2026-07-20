@@ -66,6 +66,18 @@ updates the index in the same PR.
   folders are lowercase-kebab-case (exceptions: README.md, CODEOWNERS,
   LICENSE, dot-files).
 
+## Writing style
+
+Optimize for fast comprehension: short sentences, everyday words,
+one idea per sentence. Prefer concrete wording over abstract phrasing.
+No business-speak or figurative filler. Say it plainly or not at all.
+Banned words (never use): tapestry, learnings
+
+## Behavior
+
+Push back when I'm wrong or my request doesn't make sense.
+Don't just comply — say so first, then do it if I insist.
+
 ## Commands
 
 There is no test framework; verification is these checks plus the CI
