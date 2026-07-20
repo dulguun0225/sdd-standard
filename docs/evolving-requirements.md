@@ -9,8 +9,16 @@ them. The bar is **testable** (§4.1), not complete and unambiguous. A requireme
 testable when a reader can tell whether an implementation satisfies it.
 It can still be narrow, incomplete, or later proven wrong. A spec is
 the team's *current intent in checkable form*. The rules around
-it — stable R-ids, amendments, the same-PR rule — exists precisely
+it — stable R-ids, amendments, the same-PR rule — exist precisely
 because intent changes.
+
+**In short.** When you learn something after approval, you change the
+spec and the code together, in the same PR (§5.2). Three moves keep the
+record honest: supersede a requirement in place, append a new R-id, or
+mark a dead one `WITHDRAWN` — never renumber, never delete (§4.2). The
+rest of this guide walks the loop stage by stage, then two full worked
+turns. Read a worked turn when you reach it; you do not need both on a
+first pass.
 
 ## The cycle this replaces
 

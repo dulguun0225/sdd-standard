@@ -9,6 +9,12 @@ for its gate. On most teams that is a developer working with an agent.
 The approver reads [reviewing-specs.md](reviewing-specs.md) — the same
 checklist from the other side. Write so the approver finds nothing.
 
+Every requirement is one EARS sentence. The common shape is
+`WHEN <trigger>, the <system> shall <response>`; there are five patterns
+in all, and [GLOSSARY §1](../standard/GLOSSARY.md#1-ears-requirement-patterns)
+shows each with an example. "Choosing the pattern" below picks between
+them.
+
 ## The raw material
 
 `/speckit.specify` turns a one-line intent into a drafted `spec.md`.

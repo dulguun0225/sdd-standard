@@ -4,10 +4,35 @@
 [SDD-STANDARD.md](../standard/SDD-STANDARD.md). In any conflict, the
 standard takes precedence.
 
-Time: ~20 minutes. Works identically on Windows (Git Bash), macOS, and
-Linux — every shell command below is verified by this repo's tri-OS CI
-matrix. Shell commands run in **Git Bash** on Windows and any shell on
-macOS/Linux.
+Time: ~20 minutes. The scaffold scripts and checks below run identically
+on Windows (Git Bash), macOS, and Linux — this repo's tri-OS CI matrix
+verifies them on all three. Shell commands run in **Git Bash** on Windows
+and any shell on macOS/Linux; the `/speckit.*` commands run inside your
+coding agent.
+
+## The shape, before you start
+
+```
+spec.md → gate → plan.md → gate → tasks.md → gate → implement → Review gate → done
+```
+
+Each `gate` is a human approver: they read the artifact and, in a change
+they author themselves, write its approval line. The four gates in order
+are Requirements, Design, Tasks, and Review. Nothing downstream starts
+until the gate before it passes. The full picture — including the loops
+back when requirements change — is the
+[README's lifecycle diagram](../README.md#the-lifecycle-in-a-product-repo).
+
+Three terms recur below:
+
+- **product authority** — the person your team named to approve the
+  Requirements Document (`spec.md`).
+- **technical authority** — the person named to approve the Design
+  Document (`plan.md`) and the Task List (`tasks.md`).
+- **profile** — your stack's contract vocabulary; this guide uses
+  `backend-services`, installed into the repo at bootstrap.
+
+[GLOSSARY §3](../standard/GLOSSARY.md#3-terms) defines the rest.
 
 ## 0. Prerequisites, once per machine
 
@@ -32,17 +57,20 @@ Your team's real repos are adopted by your team lead
 scratch repo. From a clone of `sdd-standard`:
 
 ```
-uv run bootstrap/init.py ../my-scratch --integration generic --profile backend-services
+uv run bootstrap/init.py ../my-scratch --integration claude --profile backend-services
 cd ../my-scratch
 git init -b main .
 git add -A
 git commit -m "bootstrap"
 ```
 
-(`--integration generic` keeps this agent-neutral. In a real repo your
-team passes its own agent — the choice is yours, that is the point.
-With `generic` no agent commands are wired. Run each step's underlying
-script from its footnote instead — on Windows, in Git Bash.)
+(`--integration claude` wires the `/speckit.*` slash commands this guide
+uses below, for Claude Code. Your team's agent is a free choice — pass its
+name instead if you use a different one, that is the point. No coding
+agent, or want the agent-neutral path this repo's CI verifies? Pass
+`--integration generic`: no slash commands are wired, and you run each
+scaffold step yourself — steps 2–4 below each show the exact script, in
+Git Bash on Windows.)
 
 ## 2. Start a feature — the Requirements Document
 
@@ -54,14 +82,18 @@ Start the feature from its one-line intent:
 
 Your agent scaffolds the feature folder and drafts the Requirements
 Document. Open `specs/001-limit-alerts/spec.md`:
-phrase each requirement in an EARS pattern with a stable R-id. Look at
+phrase each requirement in an EARS pattern with a stable R-id. An EARS
+requirement reads `WHEN <trigger>, the <system> shall <response>` — one of
+five patterns ([GLOSSARY §1](../standard/GLOSSARY.md#1-ears-requirement-patterns)
+shows all five with examples). Look at
 [examples/sample-feature/spec.md](../examples/sample-feature/spec.md) to
 see a finished one — same template, filled in.
 [writing-requirements.md](writing-requirements.md) shows how to get
 from the agent's raw draft to that finished shape.
 
-**The gate:** when the requirements are ready, your product authority
-reviews. In their own change, they replace the `Status: DRAFT` line
+**The gate:** when the requirements are ready, your product authority (the
+approver your team named for requirements) reviews. In their own change,
+they replace the `Status: DRAFT` line
 with `Status: APPROVED — <name>, <date>`. You never write that line
 yourself. Your agent must never write it at all. Nothing further is
 drafted until the approval lands.
