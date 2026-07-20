@@ -117,22 +117,27 @@ examples/sample-feature — teaching example (kept fresh by check_spec_structure
 
 ## Pinned-version facts (re-verify at every pin-forward)
 
-Verified against Spec Kit v0.12.4 source; each one shapes code here:
+Verified against Spec Kit v0.13.0 source; each one shapes code here:
 
-1. `specify init` seeds `.specify/memory/constitution.md` from the **stock**
-   template *before* the preset installs — `bootstrap/init.py` repairs it
-   afterwards (`seed_constitution`).
-2. The scaffolded shell scripts resolve templates by path convention only
-   (`presets/<id>/templates/<name>.md`, first match) and never apply
-   composition strategies — which is why every preset override is
-   `replace`, not `append`.
+1. `specify init` seeds `.specify/memory/constitution.md` *after* the
+   preset installs, from the preset's own constitution-template when one
+   exists (`ensure_constitution_from_template`, upstream #3276) —
+   `bootstrap/init.py::seed_constitution` still overwrites it afterwards
+   to fill the placeholders and append the stack-profile block.
+2. The scaffolded shell scripts apply manifest-declared composition
+   strategies only when a working python3 + PyYAML exist at scaffold
+   time, and degrade to path-convention replace-only resolution
+   (`presets/<id>/templates/<name>.md`) without them — which is why every
+   preset override stays `replace`: identical behavior at every
+   degradation level.
 3. `--integration generic` requires `--integration-options
-   --commands-dir …`; bootstrap defaults it to `.agent/commands`.
-4. v0.12.4 ships a `py` script type; evaluated and not adopted
-   (SDD-STANDARD §10.4) — `py`'s interpreter resolution
-   (`shutil.which("python3")`) can bake the Windows Store stub into
-   scaffolded commands (LW-1 at scaffold time). Watch its maturation at
-   future pin-forwards.
+   --commands-dir …`; bootstrap defaults it to `.agent/commands`
+   (unchanged since v0.12.4).
+4. The `py` script type is still shipped (sh/ps/py) and matured —
+   upstream #3385 fixed the Store-stub interpreter resolution — but
+   remains not adopted (SDD-STANDARD §10.4, re-evaluated 2026-07-20: no
+   verification-matrix cells, single-variant rule). Watch again at the
+   next pin-forward.
 
 A pin change lands only as a reviewed PR that passes the full tri-OS matrix
 (SDD-STANDARD §9.3); never install Spec Kit by hand or bump the pin
@@ -141,9 +146,11 @@ casually.
 ## Platform pitfalls with prior art
 
 - **LW-1 (Windows):** stock Windows has a Microsoft-Store `python3` stub in
-  Git Bash that *exists but fails at runtime*, silently breaking the
-  scaffold scripts' JSON parsing. Bootstrap's preflight *executes* the
-  parser rather than locating it. Fix: `uv python install --default`.
+  Git Bash that *exists but fails at runtime*. At the v0.13.0 pin the
+  scaffold scripts survive it (spec-kit#3304 fixed upstream by v0.12.9 —
+  they fall through to text parsing), so bootstrap's preflight WARNS
+  instead of failing; it still *executes* the parser rather than locating
+  it. Recommended fix stays: `uv python install --default`.
 - **pwsh CI steps:** invoking a `.ps1` via `&` does not reset
   `$LASTEXITCODE`; guards reading it see stale state from earlier native
   commands. Reset it explicitly (see `Run-Json` in verify-tri-os.yml).

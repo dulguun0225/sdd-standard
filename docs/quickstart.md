@@ -11,9 +11,10 @@ macOS/Linux.
 
 ## 0. Prerequisites, once per machine
 
-[uv](https://docs.astral.sh/uv/) and git. On Windows also make sure Git
-Bash has a working `python3` or `jq` — stock Windows has a broken
-Microsoft-Store `python3` stub, and the fix is one command:
+[uv](https://docs.astral.sh/uv/) and git. On Windows a working `python3`
+or `jq` in Git Bash is recommended — stock Windows has a broken
+Microsoft-Store `python3` stub; the scaffold survives it at the pinned
+Spec Kit version, but a real parser is one command away:
 
 ```
 uv python install --default
