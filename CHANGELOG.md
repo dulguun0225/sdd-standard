@@ -53,6 +53,20 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   numbered concurrency limits, structured-concurrency preview
   caveat — version facts to verify before amending); and the open
   research questions carried from the 2026-07-21 verification run.
+- `docs/stack-packs/future-packs.md` — recorded a verified research
+  pass (2026-07-22) on the three deferred exactness domains beside
+  money — physical quantities, legal time, security-critical values:
+  per-domain trigger predicate, toolchain verdict with
+  confirmed/convention/uncertain markers, the honest enforcement gaps
+  (no off-the-shelf raw-arithmetic or do-not-log gate; the quantity
+  compile-check is only partial), and the cross-cutting
+  AI-implementer traps (jqwik ≥ 1.10 anti-AI clause, the dead
+  `de.jollyday`, "just store UTC" for future legal deadlines, ArchUnit
+  as the wrong tool for non-loggability). Records a one-body,
+  always-on value-property-triggered model as considered and set aside
+  (three domains convention-strength, enforcement bespoke or partial,
+  no driving repo, D-17 bloat). Working notes only — no standard or
+  profile text changed, nothing binds; org-neutrality (D-13) intact.
 
 - The teaching corpus: `docs/` now covers every role of the lifecycle
   (informative throughout; org-neutrality D-13 intact — the example people are
