@@ -41,6 +41,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Indexed in `docs/README.md`; pointed to from `choosing-a-stack.md`
   §1. Org-neutrality (D-13) intact — no adopter or reference repo is
   named.
+- `docs/stack-packs/future-packs.md` — working notes so pack-boundary
+  reasoning is not re-derived: the four-assumption test for when a
+  requirement warrants a new pack (platform, exactness domain,
+  deterministic evidence, running-service shape) with the
+  edits-versus-variants-versus-new-pack line; the candidate roster
+  (five language families with money-grade verdicts; llm-service,
+  data-pipeline, iac, supply-chain, and the deferred frontend kind);
+  the virtual-threads finding pending amendment (blocking style
+  scales on virtual threads, reactive ban reinforced, explicit
+  numbered concurrency limits, structured-concurrency preview
+  caveat — version facts to verify before amending); and the open
+  research questions carried from the 2026-07-21 verification run.
 
 - The teaching corpus: `docs/` now covers every role of the lifecycle
   (informative throughout; org-neutrality D-13 intact — the example people are

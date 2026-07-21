@@ -66,6 +66,10 @@ carries the exact-numbers discipline end to end; the general pack
 replaces it with a lighter numeric discipline and a tripwire for the
 day the first money field appears.
 
+Which requirements fall outside these two packs, which candidates
+would cover them, and the findings waiting on a research pass:
+[future-packs.md](future-packs.md) (working notes).
+
 ## Freshness
 
 Version facts and tool verdicts in the packs were verified
