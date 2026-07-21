@@ -77,7 +77,9 @@ uv run bootstrap/init.py <path-to-your-repo> --integration <your-agent> --profil
 - `--integration` is your team's coding agent (mandatory — there is no
   default on purpose; `generic` if you use none or several).
 - `--profile` binds your Design Documents' contract vocabulary. v1.0 ships
-  one profile: `backend-services`.
+  one profile: `backend-services`. The profile names no technologies;
+  if the repo is new and the stack itself is still open,
+  [choosing-a-stack.md](choosing-a-stack.md) comes first.
 - The target can be a fresh directory or an existing repo. Existing
   specs and code are untouched; the scaffold adds `.specify/` and agent
   command files.
