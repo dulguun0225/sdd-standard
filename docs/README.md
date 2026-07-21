@@ -17,6 +17,7 @@ guide gets fixed.
 | change requirements after approval; spike; amend | [evolving-requirements.md](evolving-requirements.md) |
 | know what infrastructure this needs — hosting, CI, tracker — and why | [adopting-a-repo.md](adopting-a-repo.md) §1 — capabilities, not vendors |
 | choose the tech stack for a new repo | [choosing-a-stack.md](choosing-a-stack.md) — capabilities, not brand names |
+| seed your repo's stack rules after that choice | [stack-packs](stack-packs/README.md) — pre-written, opt-in, edit before landing |
 | adopt the convention in a repo | [adopting-a-repo.md](adopting-a-repo.md) |
 | ask a question | [faq.md](faq.md) — real questions and answers collect there |
 
@@ -34,8 +35,9 @@ Reading paths, by role:
   first gate, plus the writing guide of the artifact you approve — it
   is your checklist, read from the author's side.
 - **Team leads:** [choosing-a-stack.md](choosing-a-stack.md) when the
-  repo is new, [adopting-a-repo.md](adopting-a-repo.md), then
-  everything your team reads.
+  repo is new, the [stack packs](stack-packs/README.md) if the
+  decision lands on a stack they cover, [adopting-a-repo.md](adopting-a-repo.md),
+  then everything your team reads.
 
 Reference material lives outside `docs/`: the normative standard and
 profiles (`standard/`), the glossary with the EARS patterns

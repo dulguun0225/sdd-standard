@@ -31,6 +31,9 @@ recorded. Both are below.
   — the chosen platform, a ban list, a pinned toolchain — go under
   the constitution's *Repo principles*, appended by PR. They may
   tighten the seeded shared principles, never loosen them (§2.4).
+  For two common backend outcomes, pre-written seed text for that PR
+  exists ([stack packs](stack-packs/README.md)) — a starting text
+  for the record, never a substitute for the decision.
 - **Per-feature technical choices live in `plan.md`.** Each cites its
   `[R-n]` and names its rejected alternative
   ([writing-design.md](writing-design.md), moves 6–7). The stack

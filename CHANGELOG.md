@@ -10,6 +10,38 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `docs/stack-packs/` — stack packs: pre-written, opt-in seed text for
+  the constitution's *Repo principles* section. Packs name technologies
+  on purpose; the standard and profiles stay technology-free, and
+  nothing binds until an adopting repo lands the edited text by PR
+  (§2.4). Two packs for one platform family (Java, Spring Boot MVC,
+  jOOQ, PostgreSQL):
+  - `java-backend-money.md` — money-grade: one `Money` value type
+    rejecting excess precision, per-operation explicit rounding (no
+    repo default), total-conserving allocation, scale-4 `numeric`
+    storage, string-decimal wire stated as a chosen convention,
+    injected `Clock`, the runtime-silent ban list with its honesty
+    meta-test, and an evidence toolchain through mutation gates,
+    contract-conformance fuzzing, characterization replay with a
+    reproducible-generation precondition, and production invariants.
+  - `java-backend-general.md` — the same platform without the money
+    discipline: a lighter numeric discipline (`double` only for
+    measurement-noise values, no float equality, units in types) and a
+    tripwire — the first money field adopts the money pack's rules in
+    the same PR.
+  Both packs assume choosing-a-stack §3's review model taken to its
+  end state: no human reads generated code line by line; machine
+  evidence is the review; weakening a gate is the stated deviation.
+  Version facts were adversarially verified 2026-07-21 and are dated
+  in each pack's evidence notes (jqwik ≤ 1.9.x with the anti-AI-clause
+  record, pitest ≥ 1.25.8, JSpecify mainstream via Spring Boot 4, no
+  surveyed regulator mandating banker's rounding, ISO 4217 covered by
+  scale 4, string-decimal a convention not an industry standard);
+  rules with no surviving evidence are marked convention, not cited.
+  Indexed in `docs/README.md`; pointed to from `choosing-a-stack.md`
+  §1. Org-neutrality (D-13) intact — no adopter or reference repo is
+  named.
+
 - The teaching corpus: `docs/` now covers every role of the lifecycle
   (informative throughout; org-neutrality D-13 intact — the example people are
   fictional, extending the teaching example's own names).
