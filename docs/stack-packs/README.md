@@ -39,16 +39,20 @@ that as the normal case, not the extreme one
   rules are gates, not advice. Weakening one is a stated deviation
   for a repo where a human actually reads the code — that repo is
   the exception and carries the burden of saying so.
-- Human review does not disappear; it moves up the stack. The
-  standard's four gates are humans reading artifacts and evidence,
-  and the Review approver judges behavior against the spec (§3.3).
-  That human semantic backstop is why the packs stop at
-  deterministic gates and do not import the heavier apparatus a
-  fully human-free repo needs.
+- The standard supplies no human backstop. It defines no human
+  approval gates (§3.3, D-19): after implementation an automated
+  review phase checks the built behavior against the spec, and
+  every finding is resolved before the item is marked done (§3.2).
+  That phase is a model checking model output — it shares the
+  implementer's blind spots. So the deterministic evidence gates
+  here, plus the review phase, are the whole backstop; the packs'
+  premise is now the standard's own default, not a repo's extreme
+  case. Whether humans also review PRs is the team's own practice,
+  outside the standard's scope (§1).
 
 ## How to use one
 
-1. Bootstrap the repo ([adopting-a-repo.md](../adopting-a-repo.md) §6).
+1. Bootstrap the repo ([adopting-a-repo.md](../adopting-a-repo.md) §5).
 2. Open the Repo-principles PR with the pack's seed text, edited.
 3. Wire the pack's enforcement the same week: a ban without its
    ArchUnit or Error Prone rule is a wish, not a rule.

@@ -1,24 +1,11 @@
 # Tasks — transfer-limit-alerts
 
-**Status: APPROVED — Tulga (tech lead), 2026-07-05**
-
-> **Amendment 2026-07-20 (pending re-approval):** the Requirements and
-> Design cross-reference dates below are corrected to 2026-07-05 to match
-> the `spec.md` and `plan.md` approvals. Re-approve to clear this note.
->
-> **Amendment 2026-07-21 (pending re-approval):** the six task boxes are
-> ticked and `review-notes.md` now sits beside this file — the teaching
-> snapshot moves from "gates passed, implementation not started" to
-> "implementation complete, Review gate pending". Re-approve to clear
-> this note.
-
 | Field        | Value                                    |
 | ------------ | ---------------------------------------- |
 | Feature      | `007-transfer-limit-alerts`               |
 | Authored     | 2026-07-02                                |
-| Requirements | [spec.md](spec.md) — approved 2026-07-05  |
-| Design       | [plan.md](plan.md) — approved 2026-07-05  |
-| Approver     | Tasks gate: alerts-service technical authority |
+| Requirements | [spec.md](spec.md)                        |
+| Design       | [plan.md](plan.md)                        |
 
 This is the **Task List** of the teaching example. Every task carries at
 least one `[R-n]`; T-ids are stable; a task is done when its evidence
@@ -54,7 +41,7 @@ exists. Phases come from plan.md §9.
 
 ---
 
-**Approval protocol:** the approver reviews, then replaces the Status line
-at the top with `Status: APPROVED — <name>, <date>` in their own change.
-Implementation starts only after that; the review phase follows
-implementation before the item is marked done.
+**Order (SDD-STANDARD §3.1):** implementation starts only after this list
+exists; the review phase follows implementation, and its findings are
+resolved before the item is marked done (§3.2) — see
+[review-notes.md](review-notes.md) beside this file.

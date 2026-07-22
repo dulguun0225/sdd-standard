@@ -5,8 +5,9 @@
 # review extension from this checkout), exercise all five scaffolded
 # workflow scripts asserting template provenance through the preset
 # resolution stack, then run both ci/ checks inside the bootstrapped repo —
-# including negative probes that the structure gate goes red on a skipped
-# approval and the currency check goes red on a drifted profile copy.
+# including negative probes that the structure check goes red on a task
+# with no [R-n] reference and the currency check goes red on a drifted
+# profile copy.
 # The full grid (fail-fast: false) is the evidence for the
 # scaffold variant decision (SDD-STANDARD §10); it is not a
 # normal red/green gate.
@@ -94,24 +95,6 @@ jobs:
           grep -q '^# Design —' "$(echo "$LAST_JSON" | jq -r '.IMPL_PLAN')" \
             || { echo "::error::plan.md did not come from the SDD preset"; exit 1; }
 
-          # negative probe: plan.md exists while spec.md is DRAFT — the
-          # structure gate must go red on a skipped approval
-          if uv run ../ci/check_spec_structure.py --repo . > probe.log 2>&1; then
-            cat probe.log
-            echo "::error::structure check passed on an unapproved gate order"
-            exit 1
-          fi
-          rm -f probe.log
-          echo "negative probe OK: structure check rejects a skipped requirements gate"
-
-          # play the human approvers' role (CI fixture; this leg exercises
-          # the plain-hyphen separator accepted by SDD-STANDARD §3.2)
-          TODAY=$(date +%F)
-          SPEC_PATH=$(echo "$LAST_JSON" | jq -r '.FEATURE_SPEC')
-          PLAN_PATH=$(echo "$LAST_JSON" | jq -r '.IMPL_PLAN')
-          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$SPEC_PATH" && rm -f "$SPEC_PATH.bak"
-          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$PLAN_PATH" && rm -f "$PLAN_PATH.bak"
-
           run_json check-prerequisites bash $S/check-prerequisites.sh --json
           echo "$LAST_JSON" | jq -e '.FEATURE_DIR and (.AVAILABLE_DOCS | type=="array")' > /dev/null
           run_json setup-tasks         bash $S/setup-tasks.sh --json
@@ -120,7 +103,22 @@ jobs:
           # play the agent's role: /speckit.tasks materializes tasks.md from the template
           TASKS_PATH="$(echo "$LAST_JSON" | jq -r '.FEATURE_DIR')/tasks.md"
           cp "$(echo "$LAST_JSON" | jq -r '.TASKS_TEMPLATE')" "$TASKS_PATH"
-          sed -i.bak "s/^\*\*Status: DRAFT\*\*/**Status: APPROVED - matrix-approver, $TODAY**/" "$TASKS_PATH" && rm -f "$TASKS_PATH.bak"
+
+          # negative probe: a task with no [R-n] reference must turn the
+          # structure check red (the traceability rule, SDD-STANDARD §5.1)
+          cp "$TASKS_PATH" tasks-probe-backup.md
+          printf -- '- [ ] **T-99** probe task with no requirement reference\n' >> "$TASKS_PATH"
+          if uv run ../ci/check_spec_structure.py --repo . > probe.log 2>&1; then
+            cat probe.log
+            echo "::error::structure check passed on a task with no [R-n] reference"
+            exit 1
+          fi
+          grep -q 'carries no \[R-n\] reference' probe.log \
+            || { cat probe.log; echo "::error::structure check went red for a different reason than the probe"; exit 1; }
+          mv tasks-probe-backup.md "$TASKS_PATH"
+          rm -f probe.log
+          echo "negative probe OK: structure check rejects a task with no [R-n] reference"
+
           run_json check-prereq-tasks  bash $S/check-prerequisites.sh --json --require-tasks --include-tasks
           echo "sh variant: all scripts OK on ${{ matrix.os }} (SDD preset resolved)"
 
@@ -147,15 +145,6 @@ jobs:
             if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "$Name exited $LASTEXITCODE" }
           }
 
-          function Approve-Artifact([string]$Path) {
-            # CI fixture playing the human approver; this leg exercises the
-            # em-dash separator accepted by SDD-STANDARD §3.2
-            $today = Get-Date -Format 'yyyy-MM-dd'
-            $text = Get-Content $Path -Raw
-            $text = $text -replace '\*\*Status: DRAFT\*\*', "**Status: APPROVED — matrix-approver, $today**"
-            Set-Content -Path $Path -Value $text -NoNewline
-          }
-
           Run-Json "create-new-feature" { & "$S/create-new-feature.ps1" -Json -ShortName matrix-check "verify tri-os matrix feature" }
           # preset provenance: the scaffolded spec must be the SDD preset template
           if ((Get-Content $script:LastJson.SPEC_FILE -TotalCount 1) -notmatch '^# Requirements —') {
@@ -166,19 +155,6 @@ jobs:
             throw "plan.md did not come from the SDD preset"
           }
 
-          # negative probe: plan.md exists while spec.md is DRAFT — the
-          # structure gate must go red on a skipped approval
-          uv run ../ci/check_spec_structure.py --repo . 2>&1 | Out-File probe.log
-          if ($LASTEXITCODE -eq 0) {
-            Get-Content probe.log
-            throw "structure check passed on an unapproved gate order"
-          }
-          Remove-Item probe.log
-          Write-Host "negative probe OK: structure check rejects a skipped requirements gate"
-
-          Approve-Artifact $script:LastJson.FEATURE_SPEC
-          Approve-Artifact $script:LastJson.IMPL_PLAN
-
           Run-Json "check-prerequisites" { & "$S/check-prerequisites.ps1" -Json }
           if (-not $script:LastJson.FEATURE_DIR) { throw "check-prerequisites: FEATURE_DIR missing" }
           Run-Json "setup-tasks"         { & "$S/setup-tasks.ps1" -Json }
@@ -188,7 +164,24 @@ jobs:
           # play the agent's role: /speckit.tasks materializes tasks.md from the template
           $tasksPath = Join-Path $script:LastJson.FEATURE_DIR "tasks.md"
           Copy-Item $script:LastJson.TASKS_TEMPLATE $tasksPath
-          Approve-Artifact $tasksPath
+
+          # negative probe: a task with no [R-n] reference must turn the
+          # structure check red (the traceability rule, SDD-STANDARD §5.1)
+          $orig = Get-Content $tasksPath -Raw
+          Set-Content -Path $tasksPath -Value ($orig + "- [ ] **T-99** probe task with no requirement reference`n") -NoNewline
+          uv run ../ci/check_spec_structure.py --repo . 2>&1 | Out-File probe.log
+          if ($LASTEXITCODE -eq 0) {
+            Get-Content probe.log
+            throw "structure check passed on a task with no [R-n] reference"
+          }
+          if (-not (Select-String -Path probe.log -Pattern 'carries no \[R-n\] reference' -Quiet)) {
+            Get-Content probe.log
+            throw "structure check went red for a different reason than the probe"
+          }
+          Set-Content -Path $tasksPath -Value $orig -NoNewline
+          Remove-Item probe.log
+          Write-Host "negative probe OK: structure check rejects a task with no [R-n] reference"
+
           Run-Json "check-prereq-tasks"  { & "$S/check-prerequisites.ps1" -Json -RequireTasks -IncludeTasks }
           Write-Host "ps variant: all scripts OK on ${{ matrix.os }} (SDD preset resolved)"
 

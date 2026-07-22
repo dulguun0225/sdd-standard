@@ -1,18 +1,12 @@
 # Design — [FEATURE NAME]
 
-**Status: DRAFT**
-<!-- The gate is passed only when a HUMAN approver replaces the line above
-     with `Status: APPROVED — <name>, <date>` in their own change.
-     AI agents shall not write or modify Status lines (SDD-STANDARD §3.2). -->
-
 | Field        | Value                                                  |
 | ------------ | ------------------------------------------------------ |
 | Feature      | `[###-feature-name]`                                    |
 | Authored     | [DATE]                                                  |
-| Requirements | [spec.md](spec.md) — approved [date]                    |
-| Approver     | Design gate: [technical authority — tech lead/architect] |
+| Requirements | [spec.md](spec.md)                                      |
 
-This is the **Design Document**: how the approved requirements get built.
+This is the **Design Document**: how the requirements get built.
 Design elements cite the requirements they satisfy as `[R-n]`. The two
 contract sections follow the repo's stack profile. The profile provides
 the table shape and vocabulary. Deviations carry a stated reason.
@@ -100,11 +94,11 @@ what already exists vs. what this feature adds.]
 | ----- | -------- | --------- |
 | 1     | [increment] | [R-n, R-m] |
 
-[Becomes tasks.md at the tasks gate — each phase turns into tasks carrying
-these `[R-n]` references.]
+[Becomes tasks.md — each phase turns into tasks carrying these `[R-n]`
+references.]
 
 ---
 
-**Approval protocol:** the approver reviews, then replaces the Status line at
-the top with `Status: APPROVED — <name>, <date>` in their own change. The
-Task List is drafted only after that.
+**Order (SDD-STANDARD §3.1):** the Task List (`tasks.md`) is drafted only
+after this document exists — design before tasks, tasks before
+implementation.

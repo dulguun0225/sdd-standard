@@ -10,16 +10,15 @@ pinned template.
 
 ## Shared principles (seeded — do not edit)
 
-1. **Gates are human.** A qualifying work item (§6) passes the
-   Requirements → Design → Tasks gates, in order, before implementation
-   starts, and the Review gate after implementation (§3.1). An artifact
-   passes a gate only when a human approver adds
-   `Status: APPROVED — <name>, <date>` in their own change; AI agents never
-   write or modify approval Status lines (§3.2). The Review approver is
-   never the implementer (§3.3).
+1. **Spec before code.** A qualifying work item (§6) has its
+   Requirements Document, Design Document, and Task List in place, in
+   that order, before implementation starts (§3.1). The review phase
+   runs after implementation; its findings are resolved — fix, same-PR
+   amendment, or explicit accepted-with-reason note — before the item
+   is marked done (§3.2).
 2. **No silent drift.** Every task carries at least one `[R-n]` reference
    to a requirement it implements. A change that alters behavior covered by
-   an approved spec does not merge unless the same PR/MR updates that spec
+   a spec does not merge unless the same PR/MR updates that spec
    (§5).
 3. **Specs are clean and English.** No credentials, secrets, or personal
    data in specs; spec content inherits the repo's data classification, and

@@ -1,17 +1,10 @@
 # Design — transfer-limit-alerts
 
-**Status: APPROVED — Tulga (tech lead), 2026-07-05**
-
-> **Amendment 2026-07-20 (pending re-approval):** the Requirements
-> cross-reference date below is corrected to 2026-07-05 to match
-> `spec.md`'s approval. Re-approve to clear this note.
-
 | Field        | Value                                         |
 | ------------ | --------------------------------------------- |
 | Feature      | `007-transfer-limit-alerts`                    |
 | Authored     | 2026-07-02                                     |
-| Requirements | [spec.md](spec.md) — approved 2026-07-05       |
-| Approver     | Design gate: alerts-service technical authority |
+| Requirements | [spec.md](spec.md)                             |
 
 This is the **Design Document** of the teaching example. Its two contract
 sections follow the `backend-services` profile — this is what the profile's
@@ -68,9 +61,9 @@ in spec §3 measures it.
 
 ## 8. Constitution check
 
-Honors the repo constitution: contracts documented in profile shape, no new
-gates invented, no secrets in spec content, audit on every state
-transition.
+Honors the repo constitution: spec before code (this document precedes
+implementation), contracts documented in profile shape, no secrets in
+spec content, audit on every state transition.
 
 ## 9. Phase plan
 
@@ -81,6 +74,6 @@ transition.
 
 ---
 
-**Approval protocol:** the approver reviews, then replaces the Status line
-at the top with `Status: APPROVED — <name>, <date>` in their own change.
-The Task List is drafted only after that.
+**Order (SDD-STANDARD §3.1):** the Task List ([tasks.md](tasks.md)) is
+drafted only after this document exists — design before tasks, tasks
+before implementation.

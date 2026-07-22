@@ -6,7 +6,75 @@ The convention is semantically versioned; Spec Kit is pinned separately in
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.4.0-draft] - 2026-07-22
+
+The simplification release: the human approval gates are removed (D-19).
+The convention keeps its mechanical core — EARS with stable R-ids,
+`[R-n]` traceability, artifact order by presence, profiles, drift
+checks, pinned distribution, the automated review phase — and drops the
+`Status:` approval machinery, the approver roles, and the human Review
+gate. Also new: the stack packs and the exactness-domains research notes.
+
+### Removed
+
+- Human approval gates (D-19). Gone from the standard: the
+  `Status: APPROVED — <name>, <date>` lines and the rule that only a
+  human writes them (the then §3.2), the four approver roles (the then
+  §3.3), rejection/resubmission (the then §3.4), and gate order enforced
+  through approval lines. Gone from the tooling: the `Status:` lines,
+  Approver rows, and approval-protocol footers in all four seeded
+  templates; the Status/approval checks in `ci/check_spec_structure.py`;
+  the approval fixtures and the skipped-approval negative probe in
+  `verify-tri-os.yml` (replaced by a missing-`[R-n]` probe); the
+  em-dash/hyphen separator tolerance, which no longer has an object.
+  Product repos bootstrapped at ≤0.3.0 keep passing the structure check
+  (nothing requires Status lines' absence); they re-seed the
+  constitution's shared block on upgrade.
+
+### Changed
+
+- SDD-STANDARD §3 rewritten "Workflow and gates" → "Workflow": artifact
+  order Requirements → Design → Tasks before implementation is enforced
+  by presence (no plan.md without spec.md, no tasks.md without plan.md);
+  the review phase is automated — the review command writes
+  `review-notes.md`, and every finding is resolved (fix, same-PR
+  amendment per §5.2, or explicit accepted-with-reason note) before the
+  item is done; §1's scope verbs drop "approved" and code-review or approval
+  practice is explicitly out of scope. "Approved spec" becomes "spec" in
+  §5.2 and §6.2. §7.3's prohibition on profile-added gates and approval
+  steps is retained deliberately: it now guards against reintroduction.
+- The seeded constitution's shared principle 1 "Gates are human" becomes
+  "Spec before code" (D-17 note); the shared-block drift check is
+  unchanged mechanically. Preset 0.4.0: all three artifact templates
+  lose Status lines, Approver rows, and approval footers; order and
+  review-phase pointers stay as point-of-use nudges. Review extension
+  0.3.0: `speckit.sdd.review` is agent self-review — same comparison
+  steps (requirements coverage, contracts, silence-conformance, task
+  evidence, spec drift), findings now resolved by the team/agent instead
+  of informing a human Review approver; the never-write-Status-lines
+  hard rule is replaced by never-silently-amend-artifacts (a spec change
+  is its own visible change, §5.2).
+- `ci/check_spec_structure.py`: Status-line and approval checks removed;
+  presence order kept (plan.md requires spec.md, tasks.md requires
+  plan.md); R-id uniqueness, `[R-n]` validity, contract links, layer
+  congruence, filenames, LF, and the advisory vague-word warning are
+  unchanged. `verify-tri-os.yml` drops the approver fixtures and probes
+  the surviving mechanical core instead: a task with no `[R-n]`
+  reference must turn the structure check red.
+- GLOSSARY: "Gate" and "Approval" rows removed; "Review phase" added
+  (MN machine-drafted, marked "(ноорог)" pending native review);
+  SDD/spec-drift/qualifying-item/normative definitions reworded.
+
+### Decided
+
+- **Human approval gates removed** (D-19): the standard governs
+  specification and traceability only. No `Status:` lines, no approver
+  roles, no human Review gate; artifact order by presence; the review
+  phase is automated. The explicit trade: no human sign-off exists
+  anywhere in the workflow, and spec drift loses its signed-off
+  baseline — "drift" now means "spec and code disagree". Human review
+  of changes is a team/hosting concern, out of scope (§1). Rationale
+  and the full retained/withdrawn split in the D-19 note.
 
 ### Added
 
@@ -72,20 +140,20 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (informative throughout; org-neutrality D-13 intact — the example people are
   fictional, extending the teaching example's own names).
   - `docs/feature-walkthrough.md` — "who does what, when": the teaching
-    example replayed as a team runs it — roles bound to a set of named example people, a
-    gates-onto-PRs shape, a requirements-gate rejection, a
-    mid-implementation same-PR amendment, the review phase providing input to the
-    Review gate, hotfix/exempt/spike variations, and a one-page
-    who/what/how/when table. It also names, honestly, the one mechanic
-    the standard leaves to the team's working agreement: which file
-    carries the Review gate's Status line.
+    example replayed as a team runs it — example people bound to the work
+    by the team's own practice (the standard assigns no roles and defines
+    no human approval gates, §3.3), one PR per artifact in the presence
+    order, a requirements revision from a teammate's comments, a
+    mid-implementation same-PR amendment, the automated review phase whose
+    findings are resolved before the item is done, hotfix/exempt/spike
+    variations, and a one-page who/what/how/when table.
   - `docs/writing-requirements.md` — the author's guide to `spec.md`: a
     realistic agent draft carrying the standard defects (a second
     requirement hidden behind "and", judgment words, triggers the system never observes,
     undefined terms that hide features, happy-path bias) revised step by
-    step into the approved teaching example; choosing the EARS pattern;
-    the testable-not-predictive bar; a pre-gate checklist mirroring the
-    approver's.
+    step into the teaching example; choosing the EARS pattern;
+    the testable-not-predictive bar; a pre-implementation checklist
+    mirroring the reader's.
   - `docs/writing-design.md` — the author's guide to `plan.md`:
     contract rows readable from the caller's perspective, stable error codes
     traced to IF/THEN requirements, the stated-or-default silence rule
@@ -98,25 +166,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     directions, evidence designed at authoring time (with a bad→good
     evidence table), explicit dependencies, stable T-ids.
   - `docs/README.md` — the guide index: a "you want to… → read" table
-    and reading paths per role (everyone, authors, approvers, team
-    leads).
+    and reading paths per reader (everyone, authors, anyone reviewing a
+    teammate's spec as optional team practice, team leads).
   Cross-linked throughout: the README lifecycle section points at the
   index; the quickstart, feature-walkthrough, and adopting-a-repo point
   at the writing guides at the step where each applies; each
-  reviewing-specs gate section points at its author-side guide.
+  reviewing-specs section points at its author-side guide.
 
 ### Changed
 
 - `docs/adopting-a-repo.md` — the prerequisites section becomes "What
   you need, and why": the convention's requirements listed as
-  capabilities with their rationale (a git host with a review flow —
-  approvals are commits, the same-PR rule needs the PR unit; one CI job
+  capabilities with their rationale (a git host with a PR/MR unit —
+  the same-PR rule needs it (§5.2), and any review flow on top is
+  optional team practice; one CI job
   on push/PR — the §8.1 merge gate; merge blocking where the plan has
   it, with §8.1's honest fallback; uv + git per machine — one Python
   implementation, pinned Spec Kit via `uv tool run`; the pinned
   sdd-standard clone — one set of templates at a known version; any tracker —
   summary + link only), plus what is deliberately not required (no
-  specific CI vendor, agent, IDE, central specs repo, or approval bot).
+  specific CI vendor, agent, IDE, central specs repo, or human approval step).
   The CI-gate section gains a Jenkins example alongside GitHub Actions
   and GitLab CE, with the run-vs-block distinction spelled out.
 - Editorial readability pass, no normative or behavioral change. The
@@ -134,8 +203,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `speckit.sdd.review` command text, and the guidance prose of the four
   seeded templates. The constitution template's drift-checked "Shared
   principles" block stays byte-identical; only its intro is reworded.
-  The approved teaching example (`examples/sample-feature`) is left
-  verbatim — approved artifacts are never silently edited.
+  The teaching example (`examples/sample-feature`) is left
+  verbatim — artifacts are never silently edited.
 - The three artifact templates (`spec`, `plan`, `tasks`) gain a short
   authoring-guidance block: "Be precise first, simple second: say
   exactly what is true, no ambiguity. Keep technical terms when the

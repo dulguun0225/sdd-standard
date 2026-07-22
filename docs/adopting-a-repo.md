@@ -15,17 +15,15 @@ providing these six works — GitHub, GitLab (SaaS or self-hosted CE),
 Bitbucket, or Jenkins-backed setups included:
 
 - **A git repository per product, on a host with a review flow
-  (PRs/MRs).** Approvals are commits: a gate is passed by the approver
-  adding the Status line in their own change (§3.2). So git history
-  shows who approved what, and when. No approval bot, app, or side
-  database. The same-PR rule (§5.2) needs the PR/MR unit to exist —
-  spec update and code change merge together or not at all. And the
-  Review gate needs an assignable reviewer who is not the implementer
-  (§3.3).
+  (PRs/MRs).** The same-PR rule (§5.2) needs the PR/MR unit to exist —
+  spec update and code change merge together or not at all.
 - **One CI job on every push/PR.** This is the merge gate (§8.1).
-  `check_spec_structure.py --repo .` turns the pipeline red when an
-  artifact appears before passing its gate — a `plan.md` next to a DRAFT `spec.md` —
-  before a human has to catch it. `check_convention_version.py` reports
+  `check_spec_structure.py --repo .` turns the pipeline red when the
+  structure breaks — a `tasks.md` with no `plan.md` beside it (§3.1),
+  a task with no `[R-n]`, a duplicate R-id, a `contracts/` link that
+  points at no file — before a human has to catch it. Vague wording in
+  a requirement gets a WARNING line; that is advisory, never
+  merge-blocking. `check_convention_version.py` reports
   when the repo is older than the pinned convention, or when the seeded
   constitution/profile copies were edited locally (§8.2). The job is
   one Linux container or shell with git and uv. Stdlib Python, no
@@ -35,10 +33,9 @@ Bitbucket, or Jenkins-backed setups included:
 - **Merge blocking, where your plan has it.** Red must mean "does not
   merge". Turn on the platform's mechanism where it exists: required
   status checks, "pipelines must succeed". Where it does not exist
-  (branch protection on free-plan private GitHub repos, CODEOWNERS
-  approval on GitLab CE), the check still runs. A red pipeline is then
-  a merge-blocker by convention, recorded in the team agreement. That
-  fallback is §8.1's own wording.
+  (branch protection on free-plan private GitHub repos), the check
+  still runs. A red pipeline is then a merge-blocker by convention,
+  recorded in the team agreement. That fallback is §8.1's own wording.
 - **uv and git on every developer machine.** All convention tooling is
   one cross-platform Python implementation run via `uv run`. No local
   Python to manage, no `.sh`/`.ps1` duplicates to drift apart. Bootstrap
@@ -62,8 +59,9 @@ Bitbucket, or Jenkins-backed setups included:
 Deliberately **not** required: a specific CI vendor; a specific AI
 agent or IDE (§1 scopes the choice out — bootstrap wires whichever you
 pass to `--integration`, or `generic` for none); a central specs
-repository (§2.3 — there deliberately is none); any platform bot or app
-for approvals (an approval is a plain commit).
+repository (§2.3 — there deliberately is none); any human approval
+step (the standard defines none, §3.3 — whether humans review PRs is
+the team's own practice, §1).
 
 ## 2. Bootstrap
 
@@ -97,11 +95,11 @@ sdd-standard and comes along when you clone at the pin.
 ### GitHub Actions
 
 ```yaml
-# .github/workflows/spec-gate.yml
-name: spec-gate
+# .github/workflows/spec-checks.yml
+name: spec-checks
 on: [push, pull_request]
 jobs:
-  spec-gate:
+  spec-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -109,7 +107,7 @@ jobs:
       - name: Get the convention at the pinned release
         # use your organization's sdd-standard fork/home
         run: git clone --depth 1 --branch <PINNED-RELEASE-TAG> https://example.com/sdd-standard sdd-standard
-      - name: Spec structure gate
+      - name: Spec structure check
         run: uv run sdd-standard/ci/check_spec_structure.py --repo .
       - name: Convention currency
         run: uv run sdd-standard/ci/check_convention_version.py --repo . --standard sdd-standard
@@ -127,7 +125,7 @@ the `docker` or `shell` executor.)
 
 ```yaml
 # .gitlab-ci.yml
-spec-gate:
+spec-checks:
   image: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
   script:
     - git clone --depth 1 --branch <PINNED-RELEASE-TAG> https://<your-mirror>/sdd-standard sdd-standard
@@ -141,10 +139,11 @@ Enforcement on CE, stated honestly:
   succeed"** — that makes the red job block merges.
 - Protect the default branch (Settings → Repository → Protected branches)
   so pushes go through MRs at all.
-- **CODEOWNERS approval enforcement is a Premium feature — on CE the file
-  is informational only.** Reviewer discipline has to enforce what the
-  platform will not; say so in your team working agreement rather than
-  pretending the gate exists.
+- Human review of MRs is the team's own practice, outside the standard
+  (§1). If your team requires it, know that **CODEOWNERS approval
+  enforcement is a Premium feature — on CE the file is informational
+  only.** Record the practice in the team working agreement rather
+  than pretending the platform enforces it.
 
 ### Jenkins
 
@@ -156,7 +155,7 @@ via the Docker plugin):
 pipeline {
   agent { label 'linux' }
   stages {
-    stage('spec-gate') {
+    stage('spec-checks') {
       steps {
         sh 'git clone --depth 1 --branch <PINNED-RELEASE-TAG> https://<your-mirror>/sdd-standard sdd-standard'
         sh 'uv run sdd-standard/ci/check_spec_structure.py --repo .'
@@ -183,6 +182,18 @@ merge-blocker by convention.
 - Never upgrade Spec Kit locally. Pin changes land in sdd-standard as
   reviewed PRs that pass the full tri-OS matrix first. Your repo picks
   them up by re-cloning at the new release tag.
+- Upgrading the convention takes three steps: re-clone sdd-standard at
+  the new release tag, point `<PINNED-RELEASE-TAG>` in your CI job at
+  it, and restore the constitution's "## Shared principles" block from
+  `speckit/presets/sdd/templates/constitution-template.md` at that tag.
+  The restore is required, not optional: the shared block's text
+  changes between releases — 0.4.0 changed principle 1 to "Spec before
+  code" — and the byte-for-byte check below stays red until the block
+  matches the new template. Repo-specific principles under
+  "## Repo principles" are untouched by the restore. The same applies
+  to the profile copy (`.specify/memory/profile.md`) when the profile
+  changed between releases: restore it from
+  `standard/profiles/<profile>/profile.md` at the new tag.
 - `check_convention_version.py` in your CI tells you when your repo is
   older than the convention release. It also tells you when the seeded
   constitution's shared-principles block was edited: SDD-STANDARD §8.2
@@ -195,17 +206,7 @@ merge-blocker by convention.
   change lands upstream by PR to sdd-standard, never by editing the
   copy.
 
-## 5. Roles before you start
-
-Bind the four gate-approver roles (SDD-STANDARD §3.3) to named people and
-record them in your repo (README or team agreement): requirements — product
-authority; design and tasks — technical authority; review — a reviewer who
-is never the implementer. Approvers read
-[reviewing-specs.md](reviewing-specs.md) before their first gate.
-[feature-walkthrough.md](feature-walkthrough.md) shows the whole team
-around one feature: who acts at each step, in which PR, on which day.
-
-## 6. One adoption, step by step
+## 5. One adoption, step by step
 
 The steps above, on one fictitious morning. The cast is the
 walkthrough's ([feature-walkthrough.md](feature-walkthrough.md)):
@@ -220,7 +221,6 @@ fields — when, who, what, where, how, why — are the columns.
 | **Monday, 09:00** | **Tulga** (tech lead) | Tells the standard owner his team is adopting, and gets the current release tag back | A message to the standard owner (§13's role, bound at his organization) | One question: "which tag do we pin?" | The convention is pre-1.0; coordinating first means pin-forwards do not surprise the repo (top of this guide) |
 | **Monday, 09:15** | **Tulga** | Clones sdd-standard at that pinned tag and runs bootstrap against the team repo. The preflight checks uv, git, and the Git Bash parser, and prints the exact fix for anything missing | His workstation | `git clone --depth 1 --branch <PINNED-RELEASE-TAG> https://<the-org-mirror>/sdd-standard`, then `uv run bootstrap/init.py ../alerts-service --integration claude --profile backend-services` | Bootstrap is the only adoption path (§9.2) — hand-copied templates are how silent divergence starts |
 | **Monday, 09:40** | **Tulga** | Commits the scaffold as its own commit and opens the adoption MR: `.specify/` (constitution, profile copy, scripts, `sdd.json`) and the agent command files, nothing else | The team repo, a fresh branch | One commit, no code mixed in | Existing code and specs are untouched by bootstrap; a clean scaffold commit is easy to review and easy to revert |
-| **Monday, 10:00** | **Tulga** | Wires the merge gate: both checks on every push/MR, cloning sdd-standard at the same pin | `.gitlab-ci.yml`, from §3's CE snippet; one Linux runner a project Maintainer registered | `check_spec_structure.py --repo .` and `check_convention_version.py --repo . --standard sdd-standard` | The gate goes red on a skipped approval before any human has to catch it (§8.1) |
-| **Monday, 10:30** | **Tulga** | Turns on "Pipelines must succeed", protects the default branch, and records the CE gap honestly: CODEOWNERS approval is Premium, so on CE reviewer discipline enforces what the platform will not | GitLab settings; the team working agreement | §3's CE notes, verbatim | Red has to mean "does not merge"; where the platform cannot hard-block, the fallback is named in writing (§8.1) rather than pretended away |
-| **Monday, 11:00** | The team, fifteen minutes | Binds the four gate roles to people and records them: Nara — Requirements; Tulga — Design and Tasks; Sarnai — Review, never the implementer | The repo README | §3.3's table, with names in it; the approvers read [reviewing-specs.md](reviewing-specs.md) before their first gate | An unbound gate is a stalled gate; the binding is what turns "your product authority" from a phrase into a person |
+| **Monday, 10:00** | **Tulga** | Wires the merge gate: both checks on every push/MR, cloning sdd-standard at the same pin | `.gitlab-ci.yml`, from §3's CE snippet; one Linux runner a project Maintainer registered | `check_spec_structure.py --repo .` and `check_convention_version.py --repo . --standard sdd-standard` | The check goes red on a broken structure — a `tasks.md` with no `plan.md` beside it, a task with no `[R-n]` — before any human has to catch it (§8.1) |
+| **Monday, 10:30** | **Tulga** | Turns on "Pipelines must succeed", protects the default branch, and records the CE gap honestly: the team's own MR-review practice — outside the standard (§1) — goes in the working agreement, because on CE CODEOWNERS approval is informational only | GitLab settings; the team working agreement | §3's CE notes, verbatim | Red has to mean "does not merge"; where the platform cannot hard-block, the fallback is named in writing (§8.1) rather than pretended away |
 | **Monday, afternoon** | **Bilguun** (developer) | Picks up the team's next qualifying work item — the first feature under the convention | The work tracker; a new feature branch | The lifecycle [feature-walkthrough.md](feature-walkthrough.md) replays, from its Day 1 | Adoption ends where the walkthrough begins |

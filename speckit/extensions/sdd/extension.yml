@@ -3,8 +3,8 @@ schema_version: "1.0"
 extension:
   id: sdd
   name: "SDD Review Phase"
-  version: "0.2.1"
-  description: "The SDD review phase: checks the implementation against the approved spec/plan/tasks — including silence-conformance against the profile's stated-or-default contract reading — and prepares review notes for the human Review-gate approver; never writes Status lines"
+  version: "0.3.0"
+  description: "The SDD review phase: agent self-review — checks the implementation against spec/plan/tasks, including silence-conformance against the profile's stated-or-default contract reading, and writes the findings to review-notes.md; findings are resolved before the item is done"
   category: "process"
   effect: "read-write"
   author: "sdd-standard maintainers"
@@ -18,7 +18,7 @@ provides:
   commands:
     - name: speckit.sdd.review
       file: commands/review.md
-      description: "Prepare review notes comparing the implementation with the approved spec, plan, and tasks; the human Review approver decides"
+      description: "Compare the implementation with the spec, plan, and tasks; write the findings to review-notes.md"
 
 hooks:
   after_implement:

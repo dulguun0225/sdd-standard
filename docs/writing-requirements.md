@@ -5,9 +5,11 @@
 standard takes precedence.
 
 You are the author when you draft a Requirements Document and shape it
-for its gate. On most teams that is a developer working with an agent.
-The approver reads [reviewing-specs.md](reviewing-specs.md) — the same
-checklist from the other side. Write so the approver finds nothing.
+into a spec that design, tasks, and implementation can build on. On most
+teams that is a developer working with an agent.
+[reviewing-specs.md](reviewing-specs.md) turns the same craft into a
+critique checklist — for an agent, a teammate, or your own second pass.
+Write so the critique finds nothing.
 
 Every requirement is one EARS sentence. The common shape is
 `WHEN <trigger>, the <system> shall <response>`; there are five patterns
@@ -37,8 +39,8 @@ those failures is in it:
 > - **R-4** The system shall be robust against duplicate events.
 > - **R-5** The alerts service shall log alert activity.
 
-Five plausible lines. None survives the gate. The rest of this guide
-turns them into the approved
+Five plausible lines. None survives the shaping pass below. The rest of
+this guide turns them into the teaching example's
 [sample spec](../examples/sample-feature/spec.md).
 
 ## The shaping moves
@@ -65,10 +67,11 @@ and return `201` with the new alert's id**.
 implements, without saying so. A human implementer guesses. An AI
 implementer fills the gap with the most common pattern in its training
 data — not with your intent. "Quickly" becomes **within 60 seconds**.
-The structure check warns on these words, and it warns you before it
-warns your approver. "Robust against duplicate events" becomes an
-outcome a test can check: at-least-once delivery shall **never produce
-a duplicate notification**, de-duplicated by `event_id` (final R-6).
+The structure check warns on these words. The warning is advisory,
+never merge-blocking — treat each hit as a defect anyway, or defend the
+word. "Robust against duplicate events" becomes an outcome a test can
+check: at-least-once delivery shall **never produce a duplicate
+notification**, de-duplicated by `event_id` (final R-6).
 
 **4. Write the trigger the system actually observes.** Draft R-3 fires
 "WHEN a transfer exceeds the daily limit". But the alerts service never
@@ -161,39 +164,43 @@ vague one is not. When the answer arrives, it takes the next free R-id
 - **Unstated scope.** Say what is out. The sentence you leave out is
   the one that costs weeks later.
 
-## Before you request the gate
+## The pre-implementation checklist
 
-The author's pass over the approver's checklist
-([reviewing-specs.md](reviewing-specs.md)):
+Run this pass before design and implementation build on the draft —
+yourself, or point an agent at it
+([reviewing-specs.md](reviewing-specs.md) is the same list from the
+critic's side):
 
 - every R-id states one testable behavior, in an EARS pattern or the
   §4.1 fallback with its rationale;
 - the structure check ran locally (quickstart §6 has the command) —
-  its vague-word warning is for you first, not your approver;
+  its vague-word warning is advisory, but treat each hit as a defect
+  or defend the word;
 - the IF/THEN rows cover the profile failure cases that apply;
 - every essential term is defined or plain;
 - scope says what is out; success criteria are measurable after
   shipping;
 - new requirements took the next free R-id; nothing was renumbered.
 
-Then request the review. Rejection is normal and cheap (§3.4). But a
-draft that survived this list usually passes on the first cycle. The
-gate stays what it should be: minutes, not a meeting.
+A draft that survives this list is ready to build on. What slips
+through surfaces later — in a teammate's PR comments, or in the review
+phase after implementation (§3.2) — where each defect costs a round
+trip instead of minutes. The checklist keeps that loop short.
 
 ## The author's turn, step by step
 
 The moves above, placed on the walkthrough's timeline.
 [feature-walkthrough.md](feature-walkthrough.md) tells the whole week;
-this table replays its first three days from the author's chair. The
-people and gate bindings are the walkthrough's; everything is
-fictitious. Each row is one step. The six fields — when, who, what,
-where, how, why — are the columns.
+this table replays its opening days from the author's chair. The
+people are the walkthrough's; everything is fictitious. Each row is
+one step. The six fields — when, who, what, where, how, why — are the
+columns.
 
 | When | Who | What | Where | How | Why |
 | ---- | --- | ---- | ----- | --- | --- |
-| **Day 1, afternoon** | **Bilguun** (developer, the author) + agent | The raw material: the five-line draft this guide opened with. `Status: DRAFT` stays as scaffolded | The feature branch and folder the scaffold created | `/speckit.specify alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails` | The draft is not a spec. The known failures — happy path only, vague filler, packed "and"s — are all in it |
-| **Day 1, afternoon** | **Bilguun** + agent | The shaping pass, in one sitting: draft R-1 split three ways; "the system" named as the alerts service, every response made observable; IF/THEN rows written for the profile's failure cases; the trigger rewritten to the event the service consumes; "preferred channel" replaced by a channel chosen per alert; "log alert activity" pinned to named transitions in the audit log | `spec.md`, edited directly | Moves 1–7; the defect table above is this step's summary | Write so the approver finds nothing — a defect caught here costs minutes; the same defect at the gate costs a review cycle |
-| **Day 1, before pushing** | **Bilguun** | The author's checks: the structure check locally, then the checklist above. One finding stands — R-5 still says "quickly" | The local checkout, then a PR requesting Nara's review | Quickstart §6's command; the vague-word warning is advisory, never merge-blocking | The warning is for the author first. What survives his pass, the gate exists to catch |
-| **Day 2** | **Nara** (Requirements approver) | Three comments, no Status flip: "quickly" is not a number (60 s or 6?); what happens when the same alert is registered twice; does scope cover *changing* limits? | The same PR | Comments only (§3.4); the Status line stays as it is | Rejection is normal and cheap. Even a careful pass leaves defects; the gate is the second net |
-| **Day 2, same day** | **Bilguun** + agent | The revision: R-5 gets "within 60 seconds"; a new R-3 covers the duplicate (`409 ALERT_EXISTS`); §1 gains its out-list — changing limits, limit-raise approvals, channels beyond sms and email | The same PR, revised and resubmitted | Each comment answered in the document, not in the comment thread | If the document does not say it, it is not agreed |
-| **Day 3, morning** | **Nara** | The gate passes: `Status: APPROVED — Nara (PO), <date>`. The PR merges | Inside the PR, in a change she authors herself | She re-reads the diff, then rewrites the Status line (§3.2). The author never writes it | Only now may `plan.md` be drafted (§3.1) — [writing-design.md](writing-design.md) continues from here |
+| **Day 1, afternoon** | **Bilguun** (developer, the author) + agent | The raw material: the five-line draft this guide opened with | The feature branch and folder the scaffold created | `/speckit.specify alert clients when a transfer is rejected by their daily limit, so they can raise it before the payroll run fails` | The draft is not a spec. The known failures — happy path only, vague filler, packed "and"s — are all in it |
+| **Day 1, afternoon** | **Bilguun** + agent | The shaping pass, in one sitting: draft R-1 split three ways; "the system" named as the alerts service, every response made observable; IF/THEN rows written for the profile's failure cases; the trigger rewritten to the event the service consumes; "preferred channel" replaced by a channel chosen per alert; "log alert activity" pinned to named transitions in the audit log | `spec.md`, edited directly | Moves 1–7; the defect table above is this step's summary | Write so the critique finds nothing — a defect caught here costs minutes; the same defect found later costs a round trip |
+| **Day 1, before pushing** | **Bilguun** | The author's checks: the structure check locally, then the checklist above. One finding stands — R-5 still says "quickly" | The local checkout, then a PR | Quickstart §6's command; the vague-word warning is advisory, never merge-blocking | The warning is for the author first. What survives his pass, a second reader catches |
+| **Day 2** | **Nara** (product owner of the alerts domain) | Three comments: "quickly" is not a number (60 s or 6?); what happens when the same alert is registered twice; does scope cover *changing* limits? | The same PR | Ordinary PR review — the team's own practice, outside the standard's scope (§1) | Even a careful author's pass leaves defects. A second reader is the cheapest net there is |
+| **Day 2, same day** | **Bilguun** + agent | The revision: R-5 gets "within 60 seconds"; a new R-3 covers the duplicate (`409 ALERT_EXISTS`); §1 gains its out-list — changing limits, limit-raise approvals, channels beyond sms and email | The same PR, revised | Each comment answered in the document, not in the comment thread | If the document does not say it, it is not agreed |
+| **Day 3, morning** | **Bilguun** | The PR merges; `spec.md` exists in the feature folder | The feature folder on the branch | Nothing to flip, nothing to sign — the order is presence (§3.1): `plan.md` may exist only next to `spec.md`, and the structure check (§8.1) enforces it | The next artifact can start — [writing-design.md](writing-design.md) continues from here |

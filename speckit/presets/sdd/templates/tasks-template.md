@@ -1,17 +1,11 @@
 # Tasks — [FEATURE NAME]
 
-**Status: DRAFT**
-<!-- The gate is passed only when a HUMAN approver replaces the line above
-     with `Status: APPROVED — <name>, <date>` in their own change.
-     AI agents shall not write or modify Status lines (SDD-STANDARD §3.2). -->
-
 | Field        | Value                                        |
 | ------------ | -------------------------------------------- |
 | Feature      | `[###-feature-name]`                          |
 | Authored     | [DATE]                                        |
-| Requirements | [spec.md](spec.md) — approved [date]          |
-| Design       | [plan.md](plan.md) — approved [date]          |
-| Approver     | Tasks gate: [technical authority]             |
+| Requirements | [spec.md](spec.md)                            |
+| Design       | [plan.md](plan.md)                            |
 
 This is the **Task List**. Every task carries at least one `[R-n]`
 reference to a requirement it implements. A task that maps to no
@@ -44,7 +38,6 @@ edge case.
 
 ---
 
-**Approval protocol:** the approver reviews, then replaces the Status line at
-the top with `Status: APPROVED — <name>, <date>` in their own change.
-Implementation starts only after that; the review phase follows
-implementation before the item is marked done.
+**Order (SDD-STANDARD §3.1):** implementation starts only after this list
+exists; the review phase follows implementation, and its findings are
+resolved before the item is marked done (§3.2).
