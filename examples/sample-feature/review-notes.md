@@ -1,28 +1,26 @@
 # Review notes — transfer-limit-alerts
 
-Prepared by: the team's coding agent, 2026-07-08, for the human Review
-approver. These notes inform the Review gate; they do not pass it.
+Prepared by: the team's coding agent, 2026-07-08.
+Every finding below is resolved before the item is marked done
+(SDD-STANDARD §3.2): fix, same-PR amendment, or an explicit acceptance
+with a reason recorded here.
 
 This is the review phase's output of the teaching example — what
 `speckit.sdd.review` writes into the feature folder after implementation
-completes. It deliberately carries no Status line: the extension never
-writes one (SDD-STANDARD §3.2). The Review approver — never the
-implementer (§3.3) — passes the gate in their own change; a team that
-keeps the Review Status line in this file adds it at the top. Everything
-about the feature is fictitious, and this folder stays frozen at
-R-1…R-8 — the amendments the guides tell on top of it (R-9 and later)
-live in `docs/` only.
+completes. Everything about the feature is fictitious, and this folder
+stays frozen at R-1…R-8 — the amendments the guides tell on top of it
+(R-9 and later) live in `docs/` only.
 
-## Gate check
+## Artifact check
 
-| Artifact | Gate | Held |
-| -------- | ---- | ---- |
-| spec.md  | Requirements | passed — approved by Nara (PO), 2026-07-05 |
-| plan.md  | Design       | passed — approved by Tulga (tech lead), 2026-07-05 |
-| tasks.md | Tasks        | passed — approved by Tulga (tech lead), 2026-07-05 |
+| Artifact | Present |
+| -------- | ------- |
+| spec.md  | yes — authored 2026-07-02, before plan.md |
+| plan.md  | yes — authored before tasks.md |
+| tasks.md | yes — the branch's first implementation commit postdates it |
 
-Gates passed in order; the branch's first implementation commit postdates
-the Tasks approval (§3.1).
+The artifact order held (§3.1): requirements, design, tasks, then
+implementation.
 
 ## Requirements coverage
 
@@ -80,14 +78,14 @@ Every task carries `[R-n]`; no incomplete tasks remain.
 ## Spec-drift findings
 
 None. The delta is confined to alerts-service and implements R-1…R-8;
-nothing in it changes behavior an approved spec covers without that
+nothing in it changes behavior a spec covers without that
 spec. The empty section is a checked result, not an unchecked one: the
 diff was read file by file against spec.md and plan.md.
 
-## Open questions for the approver
+## Open questions
 
 1. plan.md §4 does not state the atomic-publish mechanism for
    `alert-notification-delivered`; the code uses a transactional outbox,
-   which is the profile default. Behavior conforms — consider stating
-   the mechanism in the plan at its next amendment, so the table says
-   what the code does.
+   which is the profile default. Behavior conforms — accepted with this
+   note; state the mechanism in the plan at its next amendment, so the
+   table says what the code does.

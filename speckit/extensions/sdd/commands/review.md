@@ -1,5 +1,5 @@
 ---
-description: Prepare SDD review notes — implementation vs approved spec/plan/tasks. Prepares notes for the human Review approver; never writes approval lines.
+description: Run the SDD review phase — compare the implementation against spec/plan/tasks and write the findings to review-notes.md.
 ---
 
 ## User input
@@ -13,21 +13,26 @@ current feature branch's spec folder.
 
 ## Goal
 
-Run the SDD **review phase** (SDD-STANDARD §3.1). It runs after
-implementation completes. Compare what was built against the approved
-Requirements Document (`spec.md`), Design Document (`plan.md`), and Task
-List (`tasks.md`). Write `review-notes.md` into the feature's spec
-folder for the human Review approver. The notes inform the gate; they
-never pass it.
+Run the SDD **review phase** (SDD-STANDARD §3.1–3.2). It runs after
+implementation completes, before the item is marked done. Compare what
+was built against the Requirements Document (`spec.md`), Design Document
+(`plan.md`), and Task List (`tasks.md`). Write `review-notes.md` into
+the feature's spec folder. Every finding is then resolved one of three
+ways (§3.2): fix the implementation, amend the artifact in the same
+PR/MR, or record an explicit acceptance with a reason in the notes.
 
 ## Hard rules
 
-1. You shall NOT write, modify, or delete any `Status:` line in any artifact
-   (SDD-STANDARD §3.2). If asked to, refuse and cite this rule.
-2. The Review gate is passed only by a human approver who is not the
-   implementer (§3.3). Your output is input to their decision, nothing more.
-3. Report what you find, including "no findings" — an empty diff section is
-   itself evidence the approver needs.
+1. You shall NOT resolve a finding by silently editing `spec.md`,
+   `plan.md`, or `tasks.md` to match the code. A deliberate spec change
+   is its own visible change in the same PR/MR (SDD-STANDARD §5.2) —
+   record the finding first, then amend openly if amending is the right
+   resolution.
+2. Report what you find, including "no findings" — an empty diff section
+   is itself evidence.
+3. In this phase you shall not tick tasks, mark the item done, or edit
+   the implementation. Findings are resolved after the notes exist, as
+   their own visible changes.
 
 ## Execution steps
 
@@ -37,11 +42,11 @@ never pass it.
    PowerShell twin. If the user supplied a feature directory, use that
    instead.
 
-2. **Verify the gates held.** Read `spec.md`, `plan.md`, `tasks.md` in
-   `FEATURE_DIR`. Each must carry `Status: APPROVED — <name>, <date>` (em
-   dash or hyphen). If any is missing or still DRAFT, stop and report which
-   gate was skipped — implementation should not have started (§3.1). Record
-   this as a finding, not a failure to continue past.
+2. **Verify the artifacts exist.** Read `spec.md`, `plan.md`, `tasks.md`
+   in `FEATURE_DIR`. All three must exist — the artifact order is
+   Requirements → Design → Tasks before implementation (§3.1). If any is
+   missing, record which one as a finding, not a failure to continue
+   past.
 
 3. **Gather the implementation delta.** Identify the changes implementing
    this feature: the feature branch's diff against its base, or the merged
@@ -81,25 +86,27 @@ never pass it.
    Give each silent dimension a verdict: default honored / default violated
    (name what the code does instead) / not applicable. Separately, flag
    every mutating operation whose Idempotency cell is empty. That cell has
-   no safe default (profile §2). Record it as a named question for the
-   approver, never as a gap to fill yourself.
+   no safe default (profile §2). Record it as a named open question,
+   never as a gap to fill yourself.
 
 6. **Check the tasks.** Every task marked done has its stated evidence;
    every task carries `[R-n]`; incomplete tasks are listed.
 
 7. **Check for spec drift.** Find behavior the delta changed that the
-   approved spec covers, where the same change did not also update the
-   spec (§5.2). This is the finding the approver most needs.
+   spec covers, where the same change did not also update the
+   spec (§5.2). This is the most important finding class.
 
 8. **Write the notes.** Create or overwrite `FEATURE_DIR/review-notes.md`:
 
    ```markdown
    # Review notes — <feature>
 
-   Prepared by: <agent> on <date> for the human Review approver.
-   These notes inform the Review gate; they do not pass it.
+   Prepared by: <agent> on <date>.
+   Every finding below is resolved before the item is marked done
+   (SDD-STANDARD §3.2): fix, same-PR amendment, or an explicit
+   acceptance with a reason recorded here.
 
-   ## Gate check
+   ## Artifact check
    ## Requirements coverage
    | R-id | Verdict | Evidence |
    ## Contract check
@@ -107,8 +114,9 @@ never pass it.
    ### Idempotency cells left empty
    ## Task evidence
    ## Spec-drift findings
-   ## Open questions for the approver
+   ## Open questions
    ```
 
-9. **Report.** Summarize the verdicts and point the approver at the notes
-   file. Do not mark anything done, approved, or complete.
+9. **Report.** Summarize the verdicts and point at the notes file. Do
+   not mark anything done or complete — findings are resolved after this
+   phase, as their own visible changes (§3.2).

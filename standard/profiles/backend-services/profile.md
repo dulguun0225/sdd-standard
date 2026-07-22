@@ -2,7 +2,7 @@
 
 | Field | Value |
 | ----- | ----- |
-| Profile version | `0.2.0-draft` |
+| Profile version | `0.2.1-draft` |
 | Requires | `SDD-STANDARD >= 0.1` |
 | Owning team | TBD — named when adoption creates one; CODEOWNERS entry added then |
 | Outside reviewer | Every change needs ≥ 1 reviewer from outside the owning team (SDD-STANDARD §7.4) |
@@ -20,12 +20,13 @@ Applies to backend service repos adopting this standard — code exposing
 synchronous APIs (HTTP/RPC) and/or exchanging asynchronous messages,
 whether deployed as separate services or as modules of one deployable. It
 binds the Design Document's two contract sections to a common shape so
-reviewers read every design the same way. It deliberately does not name
+every reader reads every design the same way. It deliberately does not name
 technologies (broker, framework, serialization) — those are repo
 decisions; only the *documentation shape* is standardized here.
 
-**The reading rule.** A contract table has two consumers: the human
-reviewer and the implementer — increasingly an AI agent. The documented
+**The reading rule.** A contract table has two consumers: the reviewing
+reader — the review phase, or a human reading the PR — and the
+implementer, increasingly an AI agent. The documented
 failure mode of AI implementers is not syntax; it is quietly filling each
 unstated detail with the most common pattern in their training data,
 without flagging the gap. This profile therefore gives every contract
@@ -191,5 +192,6 @@ Asynchronous — one consumed and one produced event:
 
 | Version | Date | Change |
 | ------- | ---- | ------ |
+| 0.2.1-draft | 2026-07-22 | Wording only, no defaults changed: the reading rule's "human reviewer" becomes the reviewing reader (review phase or a human reading the PR) — the standard's human approval gates were removed (D-19, convention 0.4.0-draft) |
 | 0.2.0-draft | 2026-07-18 | The stated-or-default reading rule (§1); silence defaults for auth, pagination, concurrency, atomicity, delivery, ordering, dead-lettering, and schema evolution; contract vocabulary and the standard failure cases (§4); worked examples extended. Grounds recorded in the convention CHANGELOG entry |
 | 0.1.0-draft | 2026-07-02 | Initial thin version |

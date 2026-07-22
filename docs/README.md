@@ -10,11 +10,11 @@ guide gets fixed.
 | understand what this convention is, and why | the [repo README](../README.md) — its lifecycle section is the overview |
 | run your first spec'd feature yourself | [quickstart.md](quickstart.md) (~20 minutes, scratch repo) |
 | see who does what, when, on a real team | [feature-walkthrough.md](feature-walkthrough.md) |
-| write a Requirements Document that passes its gate | [writing-requirements.md](writing-requirements.md) |
+| write a Requirements Document | [writing-requirements.md](writing-requirements.md) |
 | write a Design Document | [writing-design.md](writing-design.md) |
 | write a Task List | [writing-tasks.md](writing-tasks.md) |
-| approve at a gate — any of the four | [reviewing-specs.md](reviewing-specs.md) |
-| change requirements after approval; spike; amend | [evolving-requirements.md](evolving-requirements.md) |
+| review a teammate's spec — an optional practice, not a standard rule | [reviewing-specs.md](reviewing-specs.md) |
+| change requirements after the spec exists; spike; amend | [evolving-requirements.md](evolving-requirements.md) |
 | know what infrastructure this needs — hosting, CI, tracker — and why | [adopting-a-repo.md](adopting-a-repo.md) §1 — capabilities, not vendors |
 | choose the tech stack for a new repo | [choosing-a-stack.md](choosing-a-stack.md) — capabilities, not brand names |
 | seed your repo's stack rules after that choice | [stack-packs](stack-packs/README.md) — pre-written, opt-in, edit before landing |
@@ -27,13 +27,14 @@ Reading paths, by role:
   quickstart done yourself.
 - **Authors** (usually a developer working with an agent): the three
   writing guides, in artifact order. Each takes a realistic weak draft
-  and shapes it into the approved
+  and shapes it into the finished
   [teaching example](../examples/sample-feature/spec.md). Add
   [evolving-requirements.md](evolving-requirements.md) for when requirements
   change, and the walkthrough to see the whole week of work.
-- **Approvers:** [reviewing-specs.md](reviewing-specs.md) before your
-  first gate, plus the writing guide of the artifact you approve — it
-  is your checklist, read from the author's side.
+- **Anyone reviewing a teammate's spec** — an optional team practice,
+  outside the standard's scope (§1): [reviewing-specs.md](reviewing-specs.md),
+  plus the writing guide of the artifact you review — it is your
+  checklist, read from the author's side.
 - **Team leads:** [choosing-a-stack.md](choosing-a-stack.md) when the
   repo is new, the [stack packs](stack-packs/README.md) if the
   decision lands on a stack they cover, [adopting-a-repo.md](adopting-a-repo.md),

@@ -1,15 +1,9 @@
 # Requirements — [FEATURE NAME]
 
-**Status: DRAFT**
-<!-- The gate is passed only when a HUMAN approver replaces the line above
-     with `Status: APPROVED — <name>, <date>` in their own change.
-     AI agents shall not write or modify Status lines (SDD-STANDARD §3.2). -->
-
 | Field    | Value                                                     |
 | -------- | --------------------------------------------------------- |
 | Feature  | `[###-feature-name]`                                       |
 | Authored | [DATE]                                                     |
-| Approver | Requirements gate: [product authority or explicit delegate] |
 | Input    | User description: "$ARGUMENTS"                             |
 
 This is the **Requirements Document** (SDD convention). Every
@@ -77,11 +71,10 @@ implementation claims. Delete only with a stated reason.]
 ## 6. Traceability
 
 `tasks.md` shall reference these requirements as `[R-n]`. A change that
-alters behavior covered by this document after approval shall update it in
-the same PR/MR.
+alters behavior covered by this document shall update it in the same
+PR/MR.
 
 ---
 
-**Approval protocol:** the approver reviews, then replaces the Status line at
-the top with `Status: APPROVED — <name>, <date>` in their own change. The
-Design Document is drafted only after that.
+**Order (SDD-STANDARD §3.1):** the Design Document (`plan.md`) is drafted
+only after this document exists — requirements first, design second.

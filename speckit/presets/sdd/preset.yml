@@ -3,8 +3,8 @@ schema_version: "1.0"
 preset:
   id: "sdd"
   name: "SDD Standard"
-  version: "0.3.1"
-  description: "The SDD convention over stock Spec Kit: Requirements/Design/Tasks vocabulary, EARS with stable R-ids, human approval gates, profile contract slots"
+  version: "0.4.0"
+  description: "The SDD convention over stock Spec Kit: Requirements/Design/Tasks vocabulary, EARS with stable R-ids, [R-n] traceability, profile contract slots"
   author: "sdd-standard maintainers"
   repository: "https://example.com/sdd-standard"
   license: "MIT"
@@ -25,7 +25,7 @@ provides:
     - type: "template"
       name: "spec-template"
       file: "templates/spec-template.md"
-      description: "Requirements Document: EARS requirements with stable R-ids, human requirements gate"
+      description: "Requirements Document: EARS requirements with stable R-ids"
       replaces: "spec-template"
 
     - type: "template"
@@ -43,7 +43,7 @@ provides:
     - type: "template"
       name: "tasks-template"
       file: "templates/tasks-template.md"
-      description: "Task List: every task carries [R-n] traceability, human tasks gate"
+      description: "Task List: every task carries [R-n] traceability"
       replaces: "tasks-template"
 
 tags:

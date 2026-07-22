@@ -7,8 +7,9 @@ SDD-STANDARD.md or a profile, the standard takes precedence and this file gets f
 > **Монгол орчуулгын тухай / About the Mongolian column:** орчуулгыг
 > AI ноороглож, эх хэлтэй хянагч 2026-07-20-нд хянаж баталсан.
 > The Mongolian translations were machine-drafted, then native-reviewed
-> and approved on 2026-07-20. Improvements land by PR like any other
-> change.
+> and approved on 2026-07-20. Terms added after that date carry a
+> "(ноорог)" draft marker until native-reviewed. Improvements land by PR
+> like any other change.
 
 ---
 
@@ -71,16 +72,15 @@ filenames, the standard's vocabulary inside the documents.
 
 | Term (EN) | Definition | Монгол |
 | --------- | ---------- | ---------------- |
-| Spec-driven development (SDD) | Working method where an approved specification precedes and governs implementation | Тодорхойлолтод суурилсан хөгжүүлэлт |
+| Spec-driven development (SDD) | Working method where a specification precedes and governs implementation | Тодорхойлолтод суурилсан хөгжүүлэлт |
 | Specification (spec) | The set of artifacts (requirements, design, tasks) governing one feature | Техникийн тодорхойлолт (спек) |
 | Requirement | A single testable statement of expected behavior, phrased in EARS | Шаардлага |
 | R-id | A requirement's stable identifier (`R-7`); never renumbered, never reused — withdrawn requirements stay listed as WITHDRAWN | Шаардлагын тогтмол дугаар |
 | Traceability | The property that every task and change links back to a requirement (`[R-n]`) | Мөшгих боломж |
-| Gate | A human approval checkpoint on an artifact; passed only via an explicit Status line | Шалгах цэг (гейт) |
-| Approval | A human adding `Status: APPROVED — <name>, <date>` to an artifact; agents never write it | Баталгаажуулалт |
-| Spec drift | A merged change altering behavior covered by an approved spec without updating that spec in the same PR/MR | Тодорхойлолтын зөрүү |
+| Review phase | The automated post-implementation step: the review command compares the implementation against spec/plan/tasks and writes `review-notes.md`; findings are resolved before the item is done (SDD-STANDARD §3.2) | Хяналтын үе шат (ноорог) |
+| Spec drift | A merged change altering behavior covered by a spec without updating that spec in the same PR/MR | Тодорхойлолтын зөрүү |
 | Qualifying triggers | The §6.1 list of change properties (externally observable behavior or contract, boundary-crossing, hard-to-reverse step, new capability) that require spec ceremony; items matching none are exempt (the exemption) | Болзол хангах шалгуурууд |
-| Qualifying work item | A work item matching at least one §6.1 trigger — full gated workflow applies | Болзол хангасан ажил |
+| Qualifying work item | A work item matching at least one §6.1 trigger — full artifact workflow applies | Болзол хангасан ажил |
 | Emergency hotfix | A change shipped outside the normal spec workflow to restore service; implemented first, spec updated after | Яаралтай засвар |
 
 ### Governance & tooling
@@ -88,7 +88,7 @@ filenames, the standard's vocabulary inside the documents.
 | Term (EN) | Definition | Монгол |
 | --------- | ---------- | ---------------- |
 | Standard owner | The named **role** (not person) that approves normative changes, pin-forwards, and new profiles (SDD-STANDARD §13) | Стандарт эзэмшигч (үүрэг) |
-| Normative | Binding language (shall/MUST, gates) — lives only in SDD-STANDARD.md and profiles | Заавал мөрдөх |
+| Normative | Binding language (shall/MUST) — lives only in SDD-STANDARD.md and profiles | Заавал мөрдөх |
 | Informative | Explains and demonstrates, never legislates — everything in `docs/` | Танилцуулах, мэдээллийн |
 | Stack profile | A subordinate document binding the standard's abstract slots to one stack; defaults and vocabulary only — never gates, approvals, or artifact types | Технологийн профайл |
 | Version pin | The single pinned Spec Kit version (`speckit/PINNED-VERSION`); upgrades are tested in this repo first | Бэхэлсэн хувилбар |

@@ -420,10 +420,11 @@ def main() -> None:
         "\nDone. Next steps:\n"
         f"  1. cd {target}\n"
         "  2. commit the scaffold before anything else\n"
-        "  3. wire the spec CI gate (docs/adopting-a-repo.md in sdd-standard)\n"
+        "  3. wire the spec CI check (docs/adopting-a-repo.md in sdd-standard)\n"
         "  4. first feature: docs/quickstart.md steps through it end to end\n"
-        "Reminder: gates are passed by human approvers writing the Status "
-        "line - never by an agent (SDD-STANDARD §3.2)."
+        "Reminder: spec before code - the artifacts exist in order before "
+        "implementation, and review-phase findings are resolved before done "
+        "(SDD-STANDARD §3)."
     )
 
 

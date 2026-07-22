@@ -16,8 +16,10 @@ Rules (mirroring the R-id discipline of SDD-STANDARD §4):
   fact; only State and Record pointers change, with a dated note below.
 - A PR that settles, supersedes, or withdraws a decision updates this
   index in the same PR as its CHANGELOG entry.
-- The column is named **State**, not Status — "Status" stays reserved for
-  the gate-approval lines of SDD-STANDARD §3.2.
+- The column is named **State**, not Status. *(Until 0.4.0-draft,
+  "Status" was reserved for the gate-approval lines of the then
+  SDD-STANDARD §3.2; D-19 removed those lines. The column name stays for
+  stability.)*
 - ⚠ marks the standard's starting defaults (SDD-STANDARD preamble): the
   standard owner amends them by reviewed PR as real usage provides evidence.
 
@@ -51,6 +53,7 @@ Decisions made after founding.
 | ID | Decision | Date | Authority | State | Record |
 | -- | -------- | ---- | --------- | ----- | ------ |
 | D-18 | Vendor-neutrality abandoned for simplicity: GitHub Spec Kit is the sole implementation, and the tested-exit apparatus (plan-B converter `migration/`, pre-declared exit triggers, CI round-trip) is withdrawn. Supersedes D-2 and D-14; amends D-1 and D-9's premise. Org-neutrality (D-13) unaffected | 2026-07-09 | Repo owner | Settled — see note | [CHANGELOG](CHANGELOG.md) "Decided"; [SDD-STANDARD §9](standard/SDD-STANDARD.md) |
+| D-19 | Human approval gates removed for simplicity: no `Status:` lines, no approver roles, no human Review gate. The standard governs specification and traceability only; artifact order is enforced by presence, the review phase is automated agent self-review, and human code-review practice is out of scope (§1). Amends §3 and D-17's seeded principle 1 | 2026-07-22 | Repo owner | Settled — see note | [SDD-STANDARD §3](standard/SDD-STANDARD.md); [CHANGELOG](CHANGELOG.md) 0.4.0-draft |
 
 ## Notes
 
@@ -184,3 +187,38 @@ Decisions made after founding.
   tested fallback exit remains — if Spec Kit or its supported override
   points fail, the exit is rebuilt then, not maintained in advance. Org-neutrality
   (D-13) is retained. Authority: repo owner, during demo validation (D-11).
+- **D-19** (2026-07-22): human approval gates removed so the convention
+  starts simpler. Withdrawn: the `Status: APPROVED — <name>, <date>`
+  approval lines, the DRAFT/APPROVED status machinery in the templates,
+  the four approver roles of the then §3.3, gate order enforced through
+  approval lines, the reviewer-is-not-the-implementer rule, and the
+  agents-never-write-Status-lines rule (now objectless). Retained: the
+  artifact order Requirements → Design → Tasks before implementation
+  (enforced by presence, `ci/check_spec_structure.py`), the automated
+  review phase (reframed from notes-for-a-human-approver to agent
+  self-review whose findings are resolved before the item is done, §3.2),
+  and every traceability and drift rule (§4, §5). The explicit trade: no
+  human sign-off exists anywhere in the workflow — whether humans review
+  changes is a team/hosting concern outside the standard's scope (§1),
+  and "approved spec" degrades to "spec" in the drift rule (§5.2), so
+  drift means "spec and code disagree", with no signed-off baseline.
+  §7.3's prohibition (profiles never add gates or approval steps) stays —
+  it now guards against reintroduction. D-17's seeded principle 1 ("Gates
+  are human") is replaced by "Spec before code"; the D-11 observables
+  that referenced gates read against the 0.4.0 model (see the D-11 note).
+  Authority: repo owner, during demo validation (D-11).
+- **D-11** (note added 2026-07-22): D-19 rewords two observables.
+  Observable (4) "gates — a seeded-defect probe of the review phase"
+  keeps its substance: the probe now tests that `review-notes.md` catches
+  a deliberate spec–code mismatch, with no human gate downstream.
+  Observable (8) "vagueness surviving the Requirements gate" becomes
+  vagueness surviving requirements authoring despite the structure
+  check's warning. Observables (2) and (7) mention reviewers/approvers
+  incidentally; their substance (trigger decidability, review-notes
+  catches) is unchanged.
+- **D-17** (note added 2026-07-22): D-19 replaces seeded shared
+  principle 1 ("Gates are human") with "Spec before code" (artifact
+  order before implementation; review-phase findings resolved before
+  done). Principles 2 and 3 and the thin-context design are unchanged;
+  the shared-block drift check keeps working mechanically. Product repos
+  seeded at ≤0.3.0 must re-seed the shared block when they upgrade.

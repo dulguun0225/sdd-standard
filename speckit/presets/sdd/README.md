@@ -8,9 +8,9 @@ never install it by hand (SDD-STANDARD §9.2).
 | Override | Strategy | Provides |
 | -------- | -------- | -------- |
 | `constitution-template` | replace | Shared constitution — non-negotiable principles, repo-append section, profile slot |
-| `spec-template` | replace | Requirements Document — EARS + stable R-ids, requirements gate |
-| `plan-template` | replace | Design Document — sync/async contract sections (profile slots), design gate |
-| `tasks-template` | replace | Task List — `[R-n]` traceability, tasks gate |
+| `spec-template` | replace | Requirements Document — EARS + stable R-ids |
+| `plan-template` | replace | Design Document — sync/async contract sections (profile slots) |
+| `tasks-template` | replace | Task List — `[R-n]` traceability |
 
 `tasks-template` is a full replace, not the originally designed append
 addendum. Reason: the scaffolded workflow scripts honor composition

@@ -1,6 +1,6 @@
 # Spec-Driven Development Standard
 
-**Version: 0.3.0-draft** (pre-release — binding for a repository from the
+**Version: 0.4.0-draft** (pre-release — binding for a repository from the
 moment that repository adopts the convention) · Owner: the **standard
 owner** — a role, not a person, defined in §13 · Changes land by reviewed
 PR and a CHANGELOG entry.
@@ -17,11 +17,11 @@ PR and a CHANGELOG entry.
 
 ## 1. Scope
 
-This standard governs how features are specified, approved, and traced in
+This standard governs how features are specified and traced in
 adopting product repositories. It does **not** govern coding style,
-architecture review, CI/CD pipelines beyond the checks in §8, choice of AI
-agent or IDE, or the team's process ceremonies. Adjacent standardization is
-defined elsewhere.
+architecture review, code-review or approval practice, CI/CD pipelines
+beyond the checks in §8, choice of AI agent or IDE, or the team's process
+ceremonies. Adjacent standardization is defined elsewhere.
 
 ## 2. Vocabulary and artifacts
 
@@ -49,32 +49,30 @@ its working directory with no extra step.)
 2.4 A repo may append repo-specific principles to its constitution; it shall
 not remove or weaken the seeded shared principles.
 
-## 3. Workflow and gates
+## 3. Workflow
 
-3.1 For every qualifying work item (§6), the artifacts shall pass their
-gates in order — **Requirements → Design → Tasks** — before implementation
-starts, and the **Review** gate after implementation completes, before the
-item is marked done.
+3.1 For every qualifying work item (§6), the artifacts shall exist in
+order — **Requirements → Design → Tasks** — before implementation starts,
+and the review phase (§3.2) shall run after implementation completes,
+before the item is marked done. The order is structural: no Design
+Document without its Requirements Document, no Task List without its
+Design Document. `ci/check_spec_structure.py` (§8.1) enforces presence.
 
-3.2 An artifact passes a gate only when a human approver adds
-`Status: APPROVED — <name>, <date>` to it in that same change (an em-dash or
-plain hyphen is accepted). AI agents shall not write or modify approval
-Status lines.
+3.2 The review phase is automated. The review command compares the
+implementation against the Requirements Document, Design Document, and
+Task List and writes its findings to `review-notes.md` in the feature
+folder. Before the item is marked done, every finding shall be resolved
+one of three ways: fix the implementation, amend the artifact in the same
+PR/MR (§5.2), or record an explicit acceptance with a reason in the
+notes.
 
-3.3 Gate approver roles — each adopting team binds these to named people at
-adoption (`docs/adopting-a-repo.md` shows how, informatively):
-
-| Gate | Approver role |
-| ---- | ------------- |
-| Requirements | The repo's product authority (e.g. a product owner, or an explicit delegate) |
-| Design | The repo's technical authority (tech lead or architect) |
-| Tasks | The technical authority (may be the Design approver) |
-| Review | A code reviewer who is **not** the implementer |
-
-One person may hold several roles; the Review approver shall never be the
-implementer of the item under review.
-
-3.4 A rejected artifact is revised and resubmitted.
+3.3 This standard defines no human approval gates. *(Amended 2026-07-22,
+D-19: the human gates of 0.3.0 — `Status: APPROVED — <name>, <date>`
+lines written by named approvers on each artifact, gate order enforced
+through those lines, and the human Review gate with its
+reviewer-is-not-the-implementer rule — are withdrawn. Whether and how
+humans review changes remains a team and hosting-platform concern,
+outside this standard's scope (§1).)*
 
 ## 4. Requirements rules
 
@@ -99,14 +97,14 @@ to the spec folder. ⚠
 5.1 Every task in a Task List shall carry at least one `[R-n]` reference to
 a requirement it implements.
 
-5.2 A change that alters behavior covered by an approved spec shall not
+5.2 A change that alters behavior covered by a spec shall not
 merge unless the same PR/MR updates that spec. A merged violation is a
 spec-drift incident.
 
 ## 6. Qualifying work items — the exemption
 
-6.1 A work item **qualifies** (full gated workflow, §3.1) WHEN it does any
-of the following ⚠:
+6.1 A work item **qualifies** (full artifact workflow, §3.1) WHEN it does
+any of the following ⚠:
 
 - creates or alters externally observable behavior or a contract (API,
   CLI, schema, message, protocol);
@@ -125,7 +123,7 @@ properties of the change itself, so they bind without requiring any
 estimation practice. (Decision record: D-16.)
 
 6.2 An emergency hotfix may be implemented immediately. WHEN a hotfix alters
-behavior covered by an approved spec, the team shall update that spec within
+behavior covered by a spec, the team shall update that spec within
 5 working days of the fix shipping.
 
 ## 7. Stack profiles

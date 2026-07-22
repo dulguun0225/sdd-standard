@@ -5,17 +5,18 @@
 your repo's stack profile (`.specify/memory/profile.md`). In any
 conflict, they win.
 
-You are the author when you draft a Design Document and shape it for
-its gate, after the requirements gate passed (§3.1). On most teams that
-is a developer working with an agent. The approver's side is
-[reviewing-specs.md](reviewing-specs.md). A Design Document has two
-readers who cannot ask you questions: the approver at the gate, and the
-implementer — increasingly an AI agent. The implementer will take every
-cell literally and fill every gap with *something*. Write for both.
+You are the author when you draft a Design Document, after the
+Requirements Document exists (§3.1). On most teams that is a developer
+working with an agent. [reviewing-specs.md](reviewing-specs.md) turns
+the same craft into a critique checklist — for an agent, a teammate, or
+your own second pass. A Design Document has two readers who cannot ask
+you questions: whoever reviews it next, and the implementer —
+increasingly an AI agent. The implementer will take every cell literally
+and fill every gap with *something*. Write for both.
 
 ## The raw material
 
-`/speckit.plan` drafts `plan.md` from the approved requirements. The
+`/speckit.plan` drafts `plan.md` from the requirements. The
 architecture prose is usually serviceable. The contract tables are
 where drafts fail, because they fail quietly. A realistic draft row for
 the teaching example:
@@ -32,7 +33,7 @@ and a consumed event:
 
 Nothing here is *wrong* yet. It is vague, which is worse. A vague row
 does not fail the build. It becomes somebody else's silent guess. The
-shaping pass turns these into the approved
+shaping pass turns these into the
 [sample plan](../examples/sample-feature/plan.md). The profile's §5
 worked examples show the same shapes on a create, an update, and a
 list.
@@ -85,7 +86,7 @@ they just have to be real.
 
 **6. Cite `[R-n]` in both directions.** Every design element cites the
 requirement it satisfies. Then check the list the other way. An R-id no
-element satisfies is a gap in the design. Your approver does this check in two
+element satisfies is a gap in the design. A reader does this check in two
 minutes ([reviewing-specs.md](reviewing-specs.md)). Do it first.
 
 **7. Decisions carry the rejected alternative.** "D1: dedup by unique
@@ -118,10 +119,11 @@ The whole pass, in one table:
 | Delivery *(empty)* | fine **only** if the profile default is the design — then make it real in §5 and a task | stated: at-least-once, dedup on `event_id` [R-6] |
 | Schema "(in the registry)" | points at nothing | `contracts/transfer-limit-exceeded.schema.json` — a file that exists |
 
-## Before you request the gate
+## The pre-implementation checklist
 
-The author's pass over the approver's checklist
-([reviewing-specs.md](reviewing-specs.md)):
+The author's pass over the reader's checklist
+([reviewing-specs.md](reviewing-specs.md) is the same list from the
+critic's side):
 
 - every row is readable from the caller's perspective — statuses, field
   names, stable error codes;
@@ -136,21 +138,21 @@ The author's pass over the approver's checklist
 - the constitution check is honest; the phase plan's phases cover all
   R-ids between them.
 
-Then request the review. The design gate is where the reviewer asks about empty cells. Cheaper to answer them now than during an outage.
+A reader asks about the empty cells before implementation. Cheaper to answer them now than during an outage.
 
 ## The author's turn, step by step
 
 The moves above, placed on the walkthrough's timeline.
 [feature-walkthrough.md](feature-walkthrough.md) compresses this phase
 into one Day 3 row; this table replays it step by step from the
-author's chair. The people and gate bindings are the walkthrough's;
+author's chair. The people are the walkthrough's;
 everything is fictitious. Each row is one step. The six fields — when,
 who, what, where, how, why — are the columns.
 
 | When | Who | What | Where | How | Why |
 | ---- | --- | ---- | ----- | --- | --- |
-| **Day 3**, after the spec PR merges | **Bilguun** (developer, the author) + agent | The raw material: a drafted `plan.md` — serviceable architecture prose, and the vague contract rows this guide opened with | A new PR touching `plan.md`, on the same feature branch | `/speckit.plan` | The order is binding (§3.1): a `plan.md` pushed next to a DRAFT spec is a red build on every push (§8.1). That is why this step waits for Day 3 |
+| **Day 3**, after the spec PR merges | **Bilguun** (developer, the author) + agent | The raw material: a drafted `plan.md` — serviceable architecture prose, and the vague contract rows this guide opened with | A new PR touching `plan.md`, on the same feature branch | `/speckit.plan` | The order is binding (§3.1): a `plan.md` pushed with no `spec.md` beside it is a red build on every push (§8.1). That is why this step waits for the spec PR to merge |
 | **Day 3** | **Bilguun** + agent | The synchronous row, filled like its caller: Request `{account_id, threshold, channel}`; Responses `201` created alert; Errors from the spec's IF/THEN rows as stable codes — `400 VALIDATION_FAILED` [R-2], `404 ACCOUNT_NOT_FOUND` [R-4], `409 ALERT_EXISTS` [R-3]; Auth `alerts:write`; Idempotency natural key `(account_id, threshold, channel)` | `plan.md` §3 | Moves 1–4 | Neither reader can ask questions. The finished-row test: the client could be implemented from the row alone |
 | **Day 3** | **Bilguun** + agent | The asynchronous row: event `transfer-limit-exceeded`, subject `payments.transfer.limit-exceeded`, producer transfer-service; Delivery states the profile default — at-least-once, de-duplicate on `event_id` [R-6] — and §5 makes it real: consumed `event_id`s unique-indexed in `delivery_log` | `plan.md` §4 and §5; the schema file created at `contracts/transfer-limit-exceeded.schema.json` | Moves 3–5; the structure check verifies the `contracts/` path resolves | An empty Delivery cell would assert the same default (profile §1); either way the design has to make it real — the unique index IS the R-6 dedup |
-| **Day 3** | **Bilguun** + agent | Coverage and decisions: every element cites `[R-n]`; the reverse pass finds each of R-1…R-8 satisfied somewhere; D1 written with its rejected alternative — dedup by unique index, not an in-memory cache, because the index survives restarts and scale-out | `plan.md` §6; the checklist above, as the author's pass | Moves 6–7 | An R-id no element satisfies is a gap found now, not at the gate; a decision without a rejected alternative gets argued again |
-| **Day 3** | **Tulga** (tech lead, Design approver) | The gate: `[R-n]` coverage checked both ways (two minutes), the empty-cell questions asked, a push for D1's rejected alternative — then `Status: APPROVED — Tulga (tech lead), <date>` in his own change. The PR merges | The same PR | [reviewing-specs.md](reviewing-specs.md) is his side; §3.2 the mechanics | Cheaper to answer the empty-cell questions now than during an outage. Only now may `tasks.md` be drafted — [writing-tasks.md](writing-tasks.md) continues from here |
+| **Day 3** | **Bilguun** + agent | Coverage and decisions: every element cites `[R-n]`; the reverse pass finds each of R-1…R-8 satisfied somewhere; D1 written with its rejected alternative — dedup by unique index, not an in-memory cache, because the index survives restarts and scale-out | `plan.md` §6; the checklist above, as the author's pass | Moves 6–7 | An R-id no element satisfies is a gap found now, not by a reader later; a decision without a rejected alternative gets argued again |
+| **Day 3** | **Tulga** (tech lead) reads the PR | `[R-n]` coverage checked both ways (two minutes), the empty-cell questions asked, a push for D1's rejected alternative — the PR merges once they have answers in the document | The same PR — the team's own review practice, outside the standard's scope (§1) | [reviewing-specs.md](reviewing-specs.md) is the reader's side | A reader asking about an empty cell now is cheaper than the review phase flagging it later — and far cheaper than an outage. Only with `plan.md` merged may `tasks.md` be drafted (§3.1) — [writing-tasks.md](writing-tasks.md) continues from here |

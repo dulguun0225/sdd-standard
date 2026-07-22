@@ -6,10 +6,9 @@
 
 Checks every feature folder (`specs/*/`; with --self also `examples/*/`):
 
-  * spec.md exists and each present artifact carries a Status line
-    (em dash or plain hyphen accepted in APPROVED lines)
-  * gate order holds: no plan.md without an APPROVED spec.md, no tasks.md
-    without an APPROVED plan.md
+  * spec.md exists in every feature folder
+  * artifact order holds by presence (SDD-STANDARD §3.1): no tasks.md
+    without plan.md (a missing spec.md is already a violation on its own)
   * R-ids are unique within spec.md
   * every task in tasks.md carries at least one [R-n] that exists in spec.md
   * every local `contracts/...` path referenced from plan.md exists in the
@@ -24,7 +23,8 @@ redundant spec layers help only while they agree; drifted layers hurt.
 
 Advisory (WARNING lines, never merge-blocking): vague wording in spec.md
 requirement bullets ("quickly", "appropriate", …) — lexical vagueness
-survives well-formed EARS; the human Requirements approver decides.
+survives well-formed EARS; replace the word with a number and a unit, or
+leave it with a stated reason.
 
 Non-zero exit on any violation; each violation names its file. Runs the
 same locally and on CI, on all three OS — stdlib + pathlib only.
@@ -38,8 +38,6 @@ import re
 import sys
 from pathlib import Path
 
-STATUS_RE = re.compile(r"Status:\s*(.+?)\**\s*$")
-APPROVED_RE = re.compile(r"^APPROVED\s*[—–-]\s*\S.*$")
 RID_DEF_RE = re.compile(r"^\s*-\s+\*\*(R-\d+)\*\*", re.MULTILINE)
 TASK_START_RE = re.compile(r"^\s*-\s+\[[ xX]\]\s+\*\*(T-\d+)\*\*", re.MULTILINE)
 RID_REF_RE = re.compile(r"\[(R-\d+)\]")
@@ -72,20 +70,6 @@ def warning(path: Path, message: str) -> None:
     warnings.append(f"{path.as_posix()}: {message}")
 
 
-def status_of(path: Path) -> str | None:
-    """The artifact's Status value, or None when no Status line exists."""
-    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
-        if "Status:" in line:
-            match = STATUS_RE.search(line)
-            if match:
-                return match.group(1).strip().rstrip("*").strip()
-    return None
-
-
-def is_approved(status: str | None) -> bool:
-    return status is not None and APPROVED_RE.match(status) is not None
-
-
 def check_feature(feature: Path) -> None:
     spec = feature / "spec.md"
     plan = feature / "plan.md"
@@ -94,11 +78,6 @@ def check_feature(feature: Path) -> None:
     if not spec.is_file():
         violation(feature, "spec.md missing - every feature folder needs one")
         return
-
-    spec_status = status_of(spec)
-    if spec_status is None:
-        violation(spec, "no Status line (expected `Status: DRAFT` or "
-                        "`Status: APPROVED — <name>, <date>`)")
 
     rids = RID_DEF_RE.findall(spec.read_text(encoding="utf-8", errors="replace"))
     seen: set[str] = set()
@@ -110,23 +89,14 @@ def check_feature(feature: Path) -> None:
 
     check_vague_words(spec)
 
-    plan_status = None
     if plan.is_file():
-        plan_status = status_of(plan)
-        if plan_status is None:
-            violation(plan, "no Status line")
-        if not is_approved(spec_status):
-            violation(plan, "plan.md exists but spec.md is not APPROVED - "
-                            "the requirements gate comes first")
         check_contract_links(plan, feature)
 
     if tasks.is_file():
-        tasks_status = status_of(tasks)
-        if tasks_status is None:
-            violation(tasks, "no Status line")
-        if not plan.is_file() or not is_approved(plan_status):
-            violation(tasks, "tasks.md exists but plan.md is missing or not "
-                             "APPROVED - the design gate comes first")
+        if not plan.is_file():
+            violation(tasks, "tasks.md exists but plan.md is missing - the "
+                             "Design Document comes before the Task List "
+                             "(SDD-STANDARD §3.1)")
         check_task_references(tasks, seen)
 
     check_filenames(feature)
@@ -185,8 +155,7 @@ def check_vague_words(spec: Path) -> None:
             for word in VAGUE_WORD_RE.findall(line):
                 warning(spec, f'{current_rid} says "{word.lower()}" - '
                               "replace it with a number and a unit; "
-                              "advisory for the Requirements approver, "
-                              "never merge-blocking")
+                              "advisory, never merge-blocking")
 
 
 def section_lines(text: str, heading: str) -> list[str]:
@@ -328,8 +297,8 @@ def main() -> None:
     total = sum(scan_root(root) for root in roots)
 
     if warnings:
-        print(f"WARNING: {len(warnings)} advisory finding(s) - informative "
-              "for the human approver, never merge-blocking:\n")
+        print(f"WARNING: {len(warnings)} advisory finding(s) - "
+              "never merge-blocking:\n")
         for entry in warnings:
             print(f"  {entry}")
         print()

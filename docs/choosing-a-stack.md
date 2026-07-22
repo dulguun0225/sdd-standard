@@ -2,7 +2,7 @@
 
 **Informative.** No normative text names a technology for your code:
 the standard ([SDD-STANDARD.md](../standard/SDD-STANDARD.md)) governs
-how features are specified, approved, and traced (§1), and the
+how features are specified and traced (§1), and the
 [backend-services profile](../standard/profiles/backend-services/profile.md)
 deliberately names no technologies (profile §1).
 The tech stack — language, framework, storage, messaging, the build
@@ -13,11 +13,11 @@ standard takes precedence.
 The choice is real mainly when the repo is new. Adoption never touches
 existing code ([adopting-a-repo.md](adopting-a-repo.md) §2) — a repo
 that has a stack keeps it, and the convention adapts to it. The
-chooser is the repo's technical authority, the same role that holds
-the Design gate (§3.3). Discard one assumption first: that spec-driven
-development has a best stack. It does not; it changes the weights on a
-few ordinary criteria, and it gives the decision a place to be
-recorded. Both are below.
+chooser is the team — in the worked example below, its tech lead;
+the standard assigns the choice to no role (§1). Discard one
+assumption first: that spec-driven development has a best stack. It
+does not; it changes the weights on a few ordinary criteria, and it
+gives the decision a place to be recorded. Both are below.
 
 ## 1. What the convention settles, and what stays yours
 
@@ -41,7 +41,7 @@ recorded. Both are below.
   example shows the record.
 - **Changing the stack later is real work.** Where a migration alters
   a contract, carries a data migration, or contains any other
-  hard-to-reverse step, it qualifies for the full gated workflow
+  hard-to-reverse step, it qualifies for the full artifact workflow
   (§6.1) — and most migrations meet at least one of these. The
   cheap moment to choose well is before the first feature.
 
@@ -116,24 +116,24 @@ Four questions, answered before any candidate is named:
 ## 4. What a better stack does not buy
 
 When specs and code drift apart, the cause is almost never the stack.
-It is a skipped gate, a spec not amended in the PR that shipped the
-change, a task ticked without its evidence — process failures, each
-with its own net: the merge gate catches the skipped gate (§8.1), the
-same-PR rule forbids merging without the spec amendment (§5.2), and
-the Review approver spot-checks the evidence
+It is a missing artifact, a spec not amended in the PR that shipped
+the change, a task ticked without its evidence — process failures,
+each with its own net: the merge gate catches the missing artifact
+(§8.1), the same-PR rule forbids merging without the spec amendment
+(§5.2), and the review phase checks the task evidence
 ([reviewing-specs.md](reviewing-specs.md)). No stack prevents any of
-it. If the convention keeps breaking in your repo, look at the gates
+it. If the convention keeps breaking in your repo, look at those nets
 before the toolchain. The converse follows: do not migrate a working
 stack chasing spec-driven fitness. The migration is itself real work,
-usually gated (section 1), and capabilities 1–6 alone rarely justify
-its cost.
+usually qualifying (section 1), and capabilities 1–6 alone rarely
+justify its cost.
 
 ## 5. One stack choice, step by step
 
 The sections above, on one fictitious decision. The cast is the
 walkthrough's ([feature-walkthrough.md](feature-walkthrough.md)); the
 setting is the week before an adoption morning like the one
-[adopting-a-repo.md](adopting-a-repo.md) §6 shows. The team is
+[adopting-a-repo.md](adopting-a-repo.md) §5 shows. The team is
 starting a new repo — statements-service: monthly account statements
 from the transaction stream, one consumed event, a small API, money
 amounts on every line. The technologies named are worked-example
@@ -148,4 +148,4 @@ what, where, how, why — are the columns.
 | **Thursday, afternoon** | **Tulga** + agent | The capability pass, one finding per cell. Exact numbers (capability 3): Go's standard library has no decimal type, and a missed field silently reads as zero — on statement lines, the wrong gap to patch with a library and discipline. Evidence (1): the agent writes the tests too, so mutation testing counts; their check finds it mature on Java bytecode, commercial-or-noisy on Kotlin's. Corpus (6): deepest on Java | The decision note — one row per candidate per capability, findings dated | Section 2, checked against the domain and row 1's weights | The findings are this team's, on this day, in this domain — and they age. A team with no money fields, or with humans writing the tests, lands elsewhere from the same table |
 | **Thursday, late** | **Tulga** | The subset decision: Java and its usual framework, minus the runtime-silent parts. What never shows in program text — hidden proxying, auto-configuration the team cannot enumerate — goes on a written ban list; loud, visible wiring stays | The decision note; the ban list marked for the constitution | Capability 4: what the text does not show, the agent guesses | A stack is not only chosen; it is subsetted. An unwritten ban does not survive; a constitution entry does — every `plan.md`'s constitution check reads it |
 | **Friday** | **Tulga**; **Nara** and **Sarnai** read it | The record: the decision with its rejected alternatives — Go (no exact decimal type, silent zero values, on a money domain), Kotlin (mutation tooling commercial-or-noisy at decision time; re-check at the next major choice) | The decision note, final — kept where the team plans work until the repo exists | [writing-design.md](writing-design.md) move 7's discipline, one level up: a decision names what it rejected and why | Decisions with alternatives survive re-reading months later. Preferences get argued again |
-| **Monday, 09:00** | **Tulga** | Adoption begins — [adopting-a-repo.md](adopting-a-repo.md) §6's morning, replayed on the new repo. `--profile backend-services` is passed regardless of Thursday's outcome; the ban list lands under *Repo principles* in a follow-up PR to the scaffold commit | The new statements-service repo | `uv run bootstrap/init.py ../statements-service --integration claude --profile backend-services`, then the Repo-principles PR | The profile binds documentation shape, not technologies — it would have served Go or Kotlin unchanged. The convention is the same whichever candidate won; that is what stack-agnostic means |
+| **Monday, 09:00** | **Tulga** | Adoption begins — [adopting-a-repo.md](adopting-a-repo.md) §5's morning, replayed on the new repo. `--profile backend-services` is passed regardless of Thursday's outcome; the ban list lands under *Repo principles* in a follow-up PR to the scaffold commit | The new statements-service repo | `uv run bootstrap/init.py ../statements-service --integration claude --profile backend-services`, then the Repo-principles PR | The profile binds documentation shape, not technologies — it would have served Go or Kotlin unchanged. The convention is the same whichever candidate won; that is what stack-agnostic means |

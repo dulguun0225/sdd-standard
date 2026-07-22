@@ -216,9 +216,11 @@ staleness visible; re-verify at adoption.
   fuzzing, characterization replay with its reproducible-generation
   precondition, and production invariants are the working practice
   of an AI-only reference implementation, not cited findings. They
-  are in the seed because the human semantic backstop at the Review
-  gate weakens as volume grows, and these are the deterministic
-  substitutes for the parts of review that catch plausible-but-wrong
-  output. They are also the expensive part of this pack — corpus
+  are in the seed because the standard defines no human approval
+  gates (D-19): its review phase is automated (§3.2), and a model
+  reviewing model output shares its blind spots. These gates are
+  the deterministic outside checks for plausible-but-wrong
+  output — the failure class no human catches by default anymore.
+  They are also the expensive part of this pack — corpus
   maintenance, determinism preconditions, a production job — priced
   for repos where money moves.

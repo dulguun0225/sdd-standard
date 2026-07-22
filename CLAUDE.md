@@ -30,8 +30,11 @@ filenames
 the abstract standard-owner role (SDD-STANDARD §13),
 org-neutrality (D-13), EARS as the requirements notation with the §4.1
 structured fallback (D-15), property-trigger qualifying rules instead of
-story points (D-16, ⚠), and the thin seeded constitution whose shared
-block is drift-checked by `ci/check_convention_version.py` (D-17).
+story points (D-16, ⚠), the thin seeded constitution whose shared
+block is drift-checked by `ci/check_convention_version.py` (D-17), and
+no human approval gates (D-19 — no `Status:` lines, no approver roles,
+no human Review gate; artifact order by presence, review phase as agent
+self-review; don't propose reintroducing approvals).
 Decision records live
 in CHANGELOG.md and SDD-STANDARD sections (e.g. §4.1, §6, §10), indexed
 with stable D-ids in
@@ -40,25 +43,22 @@ updates the index in the same PR.
 
 ## Rules that bind you here (the repo dogfoods its own standard)
 
-- **Never write or modify an approval `Status:` line** — the
-  `APPROVED — <name>, <date>` line — in any artifact (SDD-STANDARD §3.2).
-  Writing `Status: DRAFT` on an artifact you draft is fine and expected; it
-  is the *approval* flip that is reserved for a human approver, added in
-  their own change. This is the one rule that allows no exceptions.
-- A change that alters behavior covered by an approved spec must update
-  that spec **in the same PR**. Approved documents are never silently
-  edited — add a dated amendment note and flag it for re-approval in the
-  PR. The change that re-approves the document removes the note; git
-  history keeps the trail.
+- A change that alters behavior covered by a spec must update
+  that spec **in the same PR**. Normative documents are never silently
+  edited — a substantive change to SDD-STANDARD or a profile carries a
+  dated amendment note or CHANGELOG entry in the same PR; git history
+  keeps the trail. There are no approval `Status:` lines anywhere —
+  human gates were removed (D-19); don't add Status machinery back.
 - R-ids and T-ids are stable: never renumbered, never reused; withdrawn
   entries stay listed as `WITHDRAWN`. Every task carries at least one
   `[R-n]`. Tick a task only when its stated evidence exists (run link,
   passing check, artifact).
-- Binding language (shall/MUST, gates) lives **only** in
+- Binding language (shall/MUST) lives **only** in
   `standard/SDD-STANDARD.md` and `standard/profiles/`. Everything in
   `docs/` is informative and must never legislate. Profiles provide
   defaults and vocabulary only — never gates, approval steps, or artifact
-  types.
+  types (§7.3 keeps that prohibition so nothing reintroduces approvals
+  at the profile level).
 - All tooling is one Python implementation, **stdlib + pathlib only**, run
   via `uv run` — never `.sh`/`.ps1` duplicates, never `shell=True`. Every
   failure message must include the exact remediation command.
@@ -110,8 +110,8 @@ CI: `checks.yml` runs the structure self-check on every push/PR.
 manual) runs
 the full consumption flow on all 6 cells — {ubuntu, windows, macos} ×
 {sh, ps} — including a negative probe asserting the structure check goes
-red on a skipped approval. The full grid is variant-decision evidence;
-never add `fail-fast`.
+red on a task with no [R-n] reference. The full grid is variant-decision
+evidence; never add `fail-fast`.
 
 ## Architecture — the consumption chain
 
@@ -128,8 +128,10 @@ examples/sample-feature — teaching example (kept fresh by check_spec_structure
 
 - The preset overrides four templates (all strategy **replace** — see
   below); the extension adds `speckit.sdd.review` on an
-  `after_implement` hook. It prepares review notes and never writes Status
-  lines. No command or script overrides — only supported upstream override
+  `after_implement` hook. It writes findings to review-notes.md; findings
+  are resolved (fix, same-PR amendment, or explicit accepted-with-reason
+  note) before the item is done. No command or script overrides — only
+  supported upstream override
   points, which is what keeps pin-forwards cheap.
 - `examples/sample-feature` never falls out of date: `ci/check_spec_structure.py --self`
   gates it on every push (it keys on `- **R-n**` requirement bullets), so any
@@ -174,12 +176,10 @@ casually.
 - **pwsh CI steps:** invoking a `.ps1` via `&` does not reset
   `$LASTEXITCODE`; guards reading it see stale state from earlier native
   commands. Reset it explicitly (see `Run-Json` in verify-tri-os.yml).
-- Status lines accept both em dash and plain hyphen after APPROVED; the
-  matrix deliberately exercises hyphen on sh cells and em dash on ps cells.
 
 ## Status and governance
 
-The standard is complete at 0.3.0-draft and being validated on demo projects
+The standard is complete at 0.4.0-draft and being validated on demo projects
 (separate repos, bootstrapped from this one). Owner: the standard owner —
 the repo maintainer(s), a role defined in SDD-STANDARD §13; an adopting
 organization designates its own owner at adoption. Convention changes
