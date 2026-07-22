@@ -8,6 +8,7 @@ guide gets fixed.
 | You want to… | Read |
 | ------------ | ---- |
 | understand what this convention is, and why | the [repo README](../README.md) — its lifecycle section is the overview |
+| understand how the machinery works — bootstrap, preset, extension, and the diff from stock Spec Kit | [how-it-works.md](how-it-works.md) |
 | run your first spec'd feature yourself | [quickstart.md](quickstart.md) (~20 minutes, scratch repo) |
 | see who does what, when, on a real team | [feature-walkthrough.md](feature-walkthrough.md) |
 | write a Requirements Document | [writing-requirements.md](writing-requirements.md) |
