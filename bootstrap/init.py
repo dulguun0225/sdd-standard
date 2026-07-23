@@ -209,7 +209,7 @@ def seed_constitution(target: Path, profile: str) -> None:
 
     At the pinned version, `specify init` seeds
     .specify/memory/constitution.md AFTER the preset installs, from the
-    preset's own constitution-template (verified in the v0.13.0 source:
+    preset's own constitution-template (verified in the v0.13.4 source:
     commands/init.py `ensure_constitution_from_template`, upstream #3276) —
     so the file already holds our template text, with its placeholders
     unfilled. This overwrite fills [PROJECT NAME] / [CONVENTION VERSION]

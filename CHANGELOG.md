@@ -6,6 +6,45 @@ The convention is semantically versioned; Spec Kit is pinned separately in
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.1-draft] - 2026-07-23
+
+The pin-forward release: Spec Kit v0.13.0 → v0.13.4, through the full
+tri-OS matrix, with the pinned-version facts re-verified against source.
+No convention rule changes — this is a pin bump plus documentation
+corrections.
+
+### Changed
+
+- Spec Kit pin v0.13.0 → v0.13.4 (per SDD-STANDARD §9.3: reviewed PR plus
+  the full tri-OS matrix). The v0.13.1–v0.13.4 releases are validation
+  hardening, new agent integrations, and docs; nothing outside the
+  re-verified facts touches an SDD integration point. Four of the five
+  pinned-version facts are unchanged at v0.13.4: the constitution is still
+  seeded after preset install from the preset's own constitution-template
+  (`ensure_constitution_from_template`); `--integration generic` still
+  requires `--commands-dir`; the sh/ps/py script-type offering is intact;
+  and the LW-1 grep/sed/awk JSON fall-through (spec-kit#3304, fixed by
+  v0.12.9) still holds. The `requires.speckit_version` range
+  `>=0.12.3,<0.14.0` already admits v0.13.4, so the preset (0.4.0) and the
+  review extension are unchanged.
+- The scaffold template-resolution fact is corrected (wording only, no
+  behavior change). At v0.13.4 the scaffold workflow scripts — bash and the
+  Python ports added upstream in v0.13.2 (spec-kit#3386) — resolve templates
+  by path convention only (`common.sh`/`common.py` `resolve_template`),
+  which is replace-only. Spec Kit's composition strategies now run in the
+  preset resolver at preset-resolve time (`PresetResolver.resolve_content`),
+  not in the scaffold scripts (`resolve_template_content` is defined but has
+  no call site). The all-replace SDD preset is unaffected and, if anything,
+  more strongly justified: replace is the only strategy honored where the
+  scaffold consumes templates. Wording corrected in `speckit/presets/sdd/preset.yml`,
+  the preset README, `CLAUDE.md`, and `docs/how-it-works.md`.
+- SDD-STANDARD §10.4 re-evaluated at the v0.13.4 pin-forward (2026-07-23,
+  dated amendment note; D-10 note): the `py` script type stays **not
+  adopted**. v0.13.2 (spec-kit#3386) completed the Python ports of the core
+  scaffold scripts, but the script-type offering is otherwise unchanged and
+  `py` still has no cells in the verification matrix, so §10.1's
+  single-variant rule stands.
+
 ## [0.4.0-draft] - 2026-07-22
 
 The simplification release: the human approval gates are removed (D-19).
