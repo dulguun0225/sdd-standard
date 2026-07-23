@@ -1,6 +1,6 @@
 # Spec-Driven Development Standard
 
-**Version: 0.4.0-draft** (pre-release — binding for a repository from the
+**Version: 0.4.1-draft** (pre-release — binding for a repository from the
 moment that repository adopts the convention) · Owner: the **standard
 owner** — a role, not a person, defined in §13 · Changes land by reviewed
 PR and a CHANGELOG entry.
@@ -221,7 +221,12 @@ interpreter resolution, command templates carry `py:` script lines, and
 core and extension scripts gained Python ports — and remains **not
 adopted**: it still has no cells in the verification matrix, and §10.1's
 single-variant rule stands (D-10). Watch again at the next pin-forward;
-adopt only by amending this record with matrix evidence.)*
+adopt only by amending this record with matrix evidence.)* *(Re-evaluated
+2026-07-23 at the v0.13.4 pin-forward: `py` stays **not adopted**. v0.13.2
+(spec-kit#3386) completed the Python ports of the core scaffold scripts
+(create-new-feature, setup-plan, setup-tasks); the script-type offering is
+otherwise unchanged (still sh/ps/py) and `py` still has no cells in the
+verification matrix, so the single-variant rule stands.)*
 
 ## 11. Working language
 

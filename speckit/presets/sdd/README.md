@@ -13,13 +13,15 @@ never install it by hand (SDD-STANDARD §9.2).
 | `tasks-template` | replace | Task List — `[R-n]` traceability |
 
 `tasks-template` is a full replace, not the originally designed append
-addendum. Reason: the scaffolded workflow scripts honor composition
-strategies only when a working python3 + PyYAML exist at scaffold time.
-Without them, the scripts fall back to path-convention resolution, which
-supports replace only (verified in the v0.13.0 source, common.sh
-`resolve_template`). On such a machine an append-strategy file would
-silently vanish. All-replace behaves identically at every degradation
-level.
+addendum. Reason: the scaffolded workflow scripts resolve templates by
+path convention only (verified in the v0.13.4 source, `common.sh` /
+`common.py` `resolve_template`) — they pick the first matching
+`presets/<id>/templates/<name>.md` and copy it, which is replace-only.
+Spec Kit's composition strategies exist, but they run in the preset
+resolver at preset-resolve time (`PresetResolver.resolve_content`), not in
+these scaffold scripts, so a non-replace strategy would be silently
+ignored where the templates are actually consumed. All-replace is the only
+strategy that is honored, at every degradation level.
 
 The review phase lives in the companion extension at
 `speckit/extensions/sdd/`.

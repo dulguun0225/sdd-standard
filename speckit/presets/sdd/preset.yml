@@ -34,12 +34,16 @@ provides:
       description: "Design Document: architecture plus the two contract sections a stack profile fills"
       replaces: "plan-template"
 
-    # Full replace, not an append addendum: at v0.13.0 the scaffolded
-    # workflow scripts apply manifest-declared composition strategies only
-    # when a working python3 + PyYAML are present at scaffold time, and
-    # degrade to path-convention replace-only resolution without them
-    # (common.sh resolve_template fallback paths). All-replace is the one
-    # policy that behaves identically at every degradation level.
+    # Full replace, not an append addendum: at v0.13.4 the scaffolded
+    # workflow scripts (bash and the v0.13.2 Python ports) resolve
+    # templates by path convention only (common.sh/common.py
+    # resolve_template) — first matching presets/<id>/templates/<name>.md
+    # wins and is copied, which is replace-only. Composition strategies run
+    # in the preset resolver at preset-resolve time
+    # (PresetResolver.resolve_content), not in these scripts
+    # (resolve_template_content is defined but never called), so a
+    # non-replace strategy would be silently ignored where the scaffold
+    # consumes templates. All-replace is the only strategy that is honored.
     - type: "template"
       name: "tasks-template"
       file: "templates/tasks-template.md"

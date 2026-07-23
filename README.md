@@ -129,7 +129,7 @@ in [docs/README.md](docs/README.md), with reading paths per role.
 
 ## Status
 
-**Pre-1.0 (0.4.0-draft), complete and usable.** This repository is the standard
+**Pre-1.0 (0.4.1-draft), complete and usable.** This repository is the standard
 and its tooling — nothing else. It is being validated on demo projects.
 Adoption by real teams is a separate, later decision with its own
 approval. Settled decisions are indexed with stable D-ids in

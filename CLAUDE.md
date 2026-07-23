@@ -139,25 +139,30 @@ examples/sample-feature — teaching example (kept fresh by check_spec_structure
 
 ## Pinned-version facts (re-verify at every pin-forward)
 
-Verified against Spec Kit v0.13.0 source; each one shapes code here:
+Verified against Spec Kit v0.13.4 source; each one shapes code here:
 
 1. `specify init` seeds `.specify/memory/constitution.md` *after* the
    preset installs, from the preset's own constitution-template when one
    exists (`ensure_constitution_from_template`, upstream #3276) —
    `bootstrap/init.py::seed_constitution` still overwrites it afterwards
    to fill the placeholders and append the stack-profile block.
-2. The scaffolded shell scripts apply manifest-declared composition
-   strategies only when a working python3 + PyYAML exist at scaffold
-   time, and degrade to path-convention replace-only resolution
-   (`presets/<id>/templates/<name>.md`) without them — which is why every
-   preset override stays `replace`: identical behavior at every
-   degradation level.
+2. The scaffolded workflow scripts — bash and, since v0.13.2 (#3386), the
+   Python ports — resolve templates by path convention only
+   (`common.sh`/`common.py` `resolve_template`): they pick the first
+   matching `presets/<id>/templates/<name>.md` and copy it, so template
+   resolution is replace-only at scaffold time, unconditionally.
+   Composition strategies exist in Spec Kit but run in the preset resolver
+   at preset-resolve time (`PresetResolver.resolve_content`), never in the
+   scaffold scripts (`resolve_template_content` is defined but has no call
+   site) — which is why every preset override stays `replace`: it is the
+   only strategy honored where the scaffold consumes templates.
 3. `--integration generic` requires `--integration-options
    --commands-dir …`; bootstrap defaults it to `.agent/commands`
    (unchanged since v0.12.4).
 4. The `py` script type is still shipped (sh/ps/py) and matured —
-   upstream #3385 fixed the Store-stub interpreter resolution — but
-   remains not adopted (SDD-STANDARD §10.4, re-evaluated 2026-07-20: no
+   upstream #3385 fixed the Store-stub interpreter resolution, and v0.13.2
+   (#3386) completed the Python ports of the core scaffold scripts — but
+   remains not adopted (SDD-STANDARD §10.4, re-evaluated 2026-07-23: no
    verification-matrix cells, single-variant rule). Watch again at the
    next pin-forward.
 
@@ -168,7 +173,7 @@ casually.
 ## Platform pitfalls with prior art
 
 - **LW-1 (Windows):** stock Windows has a Microsoft-Store `python3` stub in
-  Git Bash that *exists but fails at runtime*. At the v0.13.0 pin the
+  Git Bash that *exists but fails at runtime*. At the v0.13.4 pin the
   scaffold scripts survive it (spec-kit#3304 fixed upstream by v0.12.9 —
   they fall through to text parsing), so bootstrap's preflight WARNS
   instead of failing; it still *executes* the parser rather than locating
@@ -179,7 +184,7 @@ casually.
 
 ## Status and governance
 
-The standard is complete at 0.4.0-draft and being validated on demo projects
+The standard is complete at 0.4.1-draft and being validated on demo projects
 (separate repos, bootstrapped from this one). Owner: the standard owner —
 the repo maintainer(s), a role defined in SDD-STANDARD §13; an adopting
 organization designates its own owner at adoption. Convention changes

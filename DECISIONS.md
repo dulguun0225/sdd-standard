@@ -77,7 +77,12 @@ Decisions made after founding.
   stays not adopted: no verification-matrix cells, single-variant rule
   (§10.1). Same PR: LW-1's scaffold-runtime leg was fixed upstream
   (spec-kit#3304 via #3312/#3320), so §10.3 relaxed from a
-  preflight-enforced gate to a recommendation.)*
+  preflight-enforced gate to a recommendation.)* *(2026-07-23, v0.13.4
+  pin-forward: re-evaluated per §10.4 — `py` stays not adopted. v0.13.2
+  (spec-kit#3386) completed the core scaffold-script Python ports
+  (create-new-feature, setup-plan, setup-tasks), but the script-type
+  offering is otherwise unchanged and `py` still has no verification-matrix
+  cells.)*
 - **D-11** (note added 2026-07-05): pre-declared demo-validation
   observables, so validation cannot pass vacuously. Watch and note,
   informally (CHANGELOG observations, never pilot machinery): (1) EARS

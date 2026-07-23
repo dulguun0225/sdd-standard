@@ -4,8 +4,8 @@
 in [SDD-STANDARD.md](../standard/SDD-STANDARD.md) and the stack profiles. In
 any conflict, the standard takes precedence and this guide gets fixed.
 
-It describes the machinery at the current pin — **Spec Kit v0.13.0**,
-convention version **0.4.0-draft**, profile **backend-services
+It describes the machinery at the current pin — **Spec Kit v0.13.4**,
+convention version **0.4.1-draft**, profile **backend-services
 0.2.1-draft**. The file paths and the scaffold inventory below are
 pin-specific and are re-verified at every pin-forward; the source of truth is
 the code (`bootstrap/init.py`, `speckit/`, `ci/`) and the standard.
@@ -33,7 +33,7 @@ Three source pieces do the work, plus two checks and the normative text:
 ## 2. The consumption chain
 
 ```
-speckit/PINNED-VERSION (v0.13.0)
+speckit/PINNED-VERSION (v0.13.4)
         |
         v
 bootstrap/init.py --uv tool run--> stock `specify init` (pinned; never a global install)
@@ -60,7 +60,7 @@ adopting repo's CI.
 
 | # | Layer | Mechanism | Effect |
 | - | ----- | --------- | ------ |
-| 1 | Pin enforcement | `bootstrap/init.py::specify()` always runs `uv tool run --from git+…spec-kit.git@v0.13.0 specify …` | Spec Kit runs at the exact pin, never a global `specify`. A mismatched global `specify` on PATH is a hard preflight failure. |
+| 1 | Pin enforcement | `bootstrap/init.py::specify()` always runs `uv tool run --from git+…spec-kit.git@v0.13.4 specify …` | Spec Kit runs at the exact pin, never a global `specify`. A mismatched global `specify` on PATH is a hard preflight failure. |
 | 2 | Integration choice | bootstrap makes `--integration` required; for `generic` it adds `--integration-options "--commands-dir .agent/commands"` | Stock would silently default to `copilot`. bootstrap forces an explicit, agent-neutral choice. |
 | 3 | Template overrides | Spec Kit **preset** (`preset.yml`, `provides.templates`) | Replaces the 4 core templates (constitution / spec / plan / tasks) with SDD versions. |
 | 4 | Review phase | Spec Kit **extension** (`extension.yml`): one new command + `after_implement` hook | Adds an agent self-review step that writes `review-notes.md`. |
@@ -73,11 +73,15 @@ Two implementation facts matter most.
 declared by a bare `replaces:` key naming the stock template; Spec Kit has no
 `strategy:` field, so `replaces:` means "first match in the resolution stack
 wins entirely". Replace is chosen on purpose. At this pin the scaffold scripts
-honor Spec Kit's other composition strategies (prepend / append / wrap) only
-when a working `python3` and PyYAML exist at scaffold time, and otherwise
-degrade to replace-only path resolution. Replace behaves identically at every
-degradation level; an append-strategy file could silently vanish on a degraded
-machine.
+that actually consume templates — `common.sh`/`common.py` `resolve_template`,
+used by the bash scripts and the Python ports added in v0.13.2 — resolve by
+path convention only: the first matching `presets/<id>/templates/<name>.md`
+wins and is copied. That is replace-only. Spec Kit's other composition
+strategies (prepend / append / wrap) exist, but they run in the preset
+resolver at preset-resolve time (`PresetResolver.resolve_content`), not in the
+scaffold scripts, so a non-replace template strategy would be silently ignored
+where the templates are consumed. Replace is therefore the only strategy that
+is honored.
 
 **The extension only adds.** It registers a new command
 (`speckit.sdd.review`) and attaches it to the documented `after_implement`
